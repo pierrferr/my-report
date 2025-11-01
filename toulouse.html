@@ -26,23 +26,5 @@
     const franceMarker = L.marker([46.2276, 2.2137]).addTo(map);
     franceMarker.bindPopup('<a href="france.html">🇫🇷 France</a>');
   </script>
-
-  <!-- Clé API Google Maps -->
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBU9X6l2TOMIBfQPLsKKNabSAhNTSiSseY&callback=initMap">
-</script>
-
-  <footer>
-    <hr>
-    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
-  </footer>
-
-  <script>
-    // Ajoute la date du jour automatiquement
-    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
-      day: '2-digit', month: 'long', year: 'numeric'
-    });
-  </script>
-  
 </body>
 </html>

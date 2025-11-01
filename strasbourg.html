@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon Report</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>ALEKS REPORT</h1>
+    <p class="tagline">L'essentiel d'Aleks — sobre et direct</p>
+    <hr>
+  </header>
+
+  <main>
+   <section>
+     <h2>Où manger à Strasbourg ?</h2>
+      <div id="filters">
+       <label><input type="checkbox" id="filter-brunchs" checked> 🥐 Brunchs</label>
+       <label><input type="checkbox" id="filter-pizzerias" checked> 🍕 Pizzerias</label>
+      </div>
+      <div id="map"></div>
+   </section>
+   <section>
+    <h2>Bonnes adresses à Strasbourg</h2>
+    <ul>
+     <li><a href="brunchs_strasbourg.html">🥐 Mes brunchs fav </a></li>
+     <li><a href="pizzerias_strasbourg.html">🍕 Mes pizzérias préférées</a></li>
+     <li><a href="pizzerias_strasbourg.html">⛪ Mes coups de coeur en ville</a></li>
+     <li><a href="pizzerias_strasbourg.html">🏰 Mes coups de coeur en Alsace </a></li>
+     </ul>
+   </section>
+   
+    <section>
+      <h2>En vadrouille</h2>
+      <ul>
+        <li><a href="https://www.lemonde.fr/">Fave à Anglet : un brunch qui fait plaisir dans le Pays Basque</a></li>
+        <li><a href="https://www.bbc.com/">Elections américaines : la course s'intensifie</a></li>
+        <li><a href="https://www.reuters.com/">Les marchés hésitent après la décision de la BCE</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>International</h2>
+      <ul>
+        <li><a href="https://www.france24.com/">Conflit au Moyen-Orient : les négociations reprennent</a></li>
+        <li><a href="https://www.aljazeera.com/">Afrique : nouveaux défis économiques</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Culture & Société</h2>
+      <ul>
+        <li><a href="https://www.nytimes.com/">Cinéma : la renaissance des films indépendants</a></li>
+        <li><a href="https://www.telerama.fr/">Les podcasts à écouter ce week-end</a></li>
+      </ul>
+    </section>
+  </main>
+
+<script>
+  let map;
+  let markers = { brunchs: [], pizzerias: [] };
+
+  function initMap() {
+    const strasbourg = { lat: 48.5734, lng: 7.7521 };
+    map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 13,
+      center: strasbourg,
+    });
+
+    // Charger les données depuis le JSON
+    fetch("restaurants_strasbourg.json")
+      .then(response => response.json())
+      .then(data => {
+        createMarkers(data.brunchs, "brunchs");
+        createMarkers(data.pizzerias, "pizzerias");
+      });
+
+    // Gestion du filtrage
+    document.getElementById("filter-brunchs").addEventListener("change", () => toggleMarkers("brunchs"));
+    document.getElementById("filter-pizzerias").addEventListener("change", () => toggleMarkers("pizzerias"));
+  }
+
+  // Crée les marqueurs à partir du JSON
+  function createMarkers(list, type) {
+    const icons = {
+      brunchs: {
+       url: "img/croissant.png",
+       scaledSize: new google.maps.Size(30, 30)
+      },
+      pizzerias: {
+       url: "img/pizza.png",
+       scaledSize: new google.maps.Size(30, 30)
+      }
+    };
+
+    list.forEach(item => {
+      const marker = new google.maps.Marker({
+        position: { lat: item.lat, lng: item.lng },
+        map,
+        title: item.name,
+        icon: icons[type]
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<a href="${item.page}" target="_blank">${item.name}</a>`
+      });
+
+      marker.addListener("click", () => infoWindow.open(map, marker));
+      markers[type].push(marker);
+    });
+  }
+
+  // Affiche ou cache les marqueurs selon le filtre
+  function toggleMarkers(type) {
+    const show = document.getElementById(`filter-${type}`).checked;
+    markers[type].forEach(marker => marker.setMap(show ? map : null));
+  }
+</script>
+
+<p><a href="france.html">← Retour à la carte France</a></p>
+
+<!-- Clé API Google Maps -->
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBU9X6l2TOMIBfQPLsKKNabSAhNTSiSseY&callback=initMap">
+</script>
+
+  <footer>
+    <hr>
+    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script>
+    // Ajoute la date du jour automatiquement
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+  </script>
+</body>
+</html>
+

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Report - France</title>
+  <link rel="stylesheet" href="style.css">
+  <style>#map { height: 500px; width: 100%; margin-top: 1rem; }</style>
+</head>
+<body>
+  <h1>Carte de France</h1>
+  <p>Cliquez sur une ville pour voir nos adresses recommandées.</p>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script>
+    const map = L.map('map').setView([46.2276, 2.2137], 6); // Vue France
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Villes
+    const villes = [
+      { name: "Strasbourg", lat: 48.5734, lng: 7.7521, page: "strasbourg.html" },
+      { name: "Toulouse", lat: 43.6047, lng: 1.4442, page: "toulouse.html" }
+    ];
+
+    villes.forEach(ville => {
+      const marker = L.marker([ville.lat, ville.lng]).addTo(map);
+      marker.bindPopup(`<a href="${ville.page}">${ville.name}</a>`);
+    });
+  </script>
+</body>
+</html>
