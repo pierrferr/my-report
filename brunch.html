@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Top 10 des brunchs à Strasbourg</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>🥐 Mon Top 10 des brunchs à Strasbourg</h1>
+    <p class="tagline">Sélection de mes endroits préférés pour bruncher en 2025</p>
+    <hr>
+    <p><a href="index.html">← Retour à la page d'accueil</a></p>
+  </header>
+
+  <main>
+    <ol>
+      <li><strong>Café Chaussette</strong> — ambiance cosy et café d’exception.</li>
+      <li><strong>Oh Darkness</strong> — options vegan et pancakes incroyables.</li>
+      <li><strong>Le Round Delicatessen</strong> — brunch américain revisité.</li>
+      <li><strong>Les Coupables</strong> — pour un brunch à la française raffiné.</li>
+      <li><strong>La Pause Soja</strong> — healthy & coloré.</li>
+      <li><strong>Le thé jardin</strong> — produits bio, ambiance locale.</li>
+      <li><strong>Breakdown Coffee</strong> — brunch étudiant, prix doux.</li>
+      <li><strong>L’atelier 115</strong> — pains maison et jus pressés.</li>
+      <li><strong>Au Petit Coincoin</strong> — cuisine généreuse et familiale.</li>
+      <li><strong>Monami Coffee</strong> — espresso parfait et tartines créatives.</li>
+    </ol>
+  </main>
+
+  <footer>
+    <hr>
+    <p>© 2025 Mon Report – Dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script>
+    document.getElementById("date").textContent =
+      new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
+  </script>
+</body>
+</html>
