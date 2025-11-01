@@ -15,6 +15,10 @@
 
   <main>
    <section>
+     <h2>Où manger à Strasbourg ?</h2>
+      <div id="map"></div>
+   </section>
+   <section>
     <h2>Bonnes adresses à Strasbourg</h2>
     <ul>
      <li><a href="brunchs_strasbourg.html">🥐 Top 10 des brunchs </a></li>
@@ -49,6 +53,52 @@
       </ul>
     </section>
   </main>
+
+  <script>
+  // Fonction qui initialise la carte
+  function initMap() {
+    const strasbourg = { lat: 48.5734, lng: 7.7521 };
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+      zoom: 13,
+      center: strasbourg,
+    });
+
+    // Liste des lieux recommandés
+    const lieux = [
+      {
+        position: { lat: 48.5794, lng: 7.7483 },
+        title: "🥐 Brunchs de Strasbourg",
+        page: "brunchs.html"
+      },
+      {
+        position: { lat: 48.5852, lng: 7.7465 },
+        title: "🍕 Pizzerias de Strasbourg",
+        page: "pizzerias.html"
+      },
+    ];
+
+    // Ajout des marqueurs
+    lieux.forEach(lieu => {
+      const marker = new google.maps.Marker({
+        position: lieu.position,
+        map,
+        title: lieu.title,
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<a href="${lieu.page}" target="_blank">${lieu.title}</a>`
+      });
+
+      marker.addListener("click", () => infoWindow.open(map, marker));
+    });
+  }
+</script>
+
+<!-- Clé API Google Maps -->
+<script async
+  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBU9X6l2TOMIBfQPLsKKNabSAhNTSiSseY&callback=initMap">
+</script>
 
   <footer>
     <hr>
