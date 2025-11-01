@@ -1,0 +1,55 @@
+body {
+  font-family: Georgia, serif;
+  background: #fff;
+  color: #000;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+  line-height: 1.5;
+}
+
+header h1 {
+  text-align: center;
+  font-size: 3rem;
+  letter-spacing: 2px;
+  margin-bottom: 0;
+}
+
+header .tagline {
+  text-align: center;
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+h2 {
+  border-bottom: 1px solid #ccc;
+  margin-top: 2rem;
+}
+
+ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+li {
+  margin: 0.5rem 0;
+}
+
+a {
+  color: blue;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #555;
+}
+

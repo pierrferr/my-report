@@ -1,1 +1,56 @@
-<h1>My Report</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mon Report</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>MON REPORT</h1>
+    <p class="tagline">L'essentiel de l'actualité — sobre et direct</p>
+    <hr>
+  </header>
+
+  <main>
+    <section>
+      <h2>À la une</h2>
+      <ul>
+        <li><a href="https://www.lemonde.fr/">Crise énergétique : les prix du gaz repartent à la hausse</a></li>
+        <li><a href="https://www.bbc.com/">Elections américaines : la course s'intensifie</a></li>
+        <li><a href="https://www.reuters.com/">Les marchés hésitent après la décision de la BCE</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>International</h2>
+      <ul>
+        <li><a href="https://www.france24.com/">Conflit au Moyen-Orient : les négociations reprennent</a></li>
+        <li><a href="https://www.aljazeera.com/">Afrique : nouveaux défis économiques</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Culture & Société</h2>
+      <ul>
+        <li><a href="https://www.nytimes.com/">Cinéma : la renaissance des films indépendants</a></li>
+        <li><a href="https://www.telerama.fr/">Les podcasts à écouter ce week-end</a></li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <hr>
+    <p>© 2025 Mon Report — dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script>
+    // Ajoute la date du jour automatiquement
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+  </script>
+</body>
+</html>
+
