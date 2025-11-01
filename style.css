@@ -61,3 +61,10 @@ footer {
   border-radius: 8px;
 }
 
+#filters {
+  margin: 1rem 0;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  font-size: 1.1rem;
+}

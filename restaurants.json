@@ -1,0 +1,30 @@
+{
+  "brunchs": [
+    {
+      "name": "Café Bretelles",
+      "lat": 48.5793,
+      "lng": 7.7445,
+      "page": "brunchs_strasbourg.html#cafe-bretelles"
+    },
+    {
+      "name": "Oh My Goodness",
+      "lat": 48.5842,
+      "lng": 7.7501,
+      "page": "brunchs_strasbourg.html#oh-my-goodness"
+    }
+  ],
+  "pizzerias": [
+    {
+      "name": "Pizz’arôme",
+      "lat": 48.5825,
+      "lng": 7.7507,
+      "page": "pizzerias_strasbourg.html#pizzarome"
+    },
+    {
+      "name": "Il Forno",
+      "lat": 48.5728,
+      "lng": 7.7572,
+      "page": "pizzerias_strasbourg.html#il-forno"
+    }
+  ]
+}

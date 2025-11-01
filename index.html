@@ -16,6 +16,10 @@
   <main>
    <section>
      <h2>Où manger à Strasbourg ?</h2>
+      <div id="filters">
+       <label><input type="checkbox" id="filter-brunchs" checked> 🥐 Brunchs</label>
+       <label><input type="checkbox" id="filter-pizzerias" checked> 🍕 Pizzerias</label>
+      </div>
       <div id="map"></div>
    </section>
    <section>
@@ -54,89 +58,67 @@
     </section>
   </main>
 
- <script>
+<script>
+  let map;
+  let markers = { brunchs: [], pizzerias: [] };
+
   function initMap() {
     const strasbourg = { lat: 48.5734, lng: 7.7521 };
-
-    const map = new google.maps.Map(document.getElementById("map"), {
+    map = new google.maps.Map(document.getElementById("map"), {
       zoom: 13,
       center: strasbourg,
     });
 
-    // --- Données : brunchs ---
-    const brunchs = [
-      {
-        name: "Café Bretelles",
-        position: { lat: 48.5793, lng: 7.7445 },
-        page: "brunchs_strasbourg.html#cafe-bretelles",
-      },
-      {
-        name: "Oh My Goodness",
-        position: { lat: 48.5842, lng: 7.7501 },
-        page: "brunchs_strasbourg.html#oh-my-goodness",
-      },
-      {
-        name: "Le Square Delicatessen",
-        position: { lat: 48.5830, lng: 7.7450 },
-        page: "brunchs_strasbourg.html#square-delicatessen",
-      },
-      // ajoute d'autres brunchs ici…
-    ];
-
-    // --- Données : pizzerias ---
-    const pizzerias = [
-      {
-        name: "Pizz’arôme",
-        position: { lat: 48.5825, lng: 7.7507 },
-        page: "pizzerias_strasbourg.html#pizzarome",
-      },
-      {
-        name: "Il Forno",
-        position: { lat: 48.5728, lng: 7.7572 },
-        page: "pizzerias_strasbourg.html#il-forno",
-      },
-      {
-        name: "La Fuga",
-        position: { lat: 48.5756, lng: 7.7433 },
-        page: "pizzerias_strasbourg.html#la-fuga",
-      },
-      // ajoute d'autres pizzerias ici…
-    ];
-
-    // --- Icônes personnalisées ---
-   const icons = {
-    brunch: {
-     url: "img/croissant.png",
-     scaledSize: new google.maps.Size(30, 30)
-    },
-    pizza: {
-     url: "img/pizza.png",
-     scaledSize: new google.maps.Size(30, 30)
-    }
-   };
-
-    // --- Fonction d’ajout de marqueurs ---
-    function ajouterMarqueurs(liste, type) {
-      liste.forEach(item => {
-        const marker = new google.maps.Marker({
-          position: item.position,
-          map,
-          title: item.name,
-          icon: icons[type]
-        });
-
-        const infoWindow = new google.maps.InfoWindow({
-          content: `<a href="${item.page}" target="_blank">${item.name}</a>`
-        });
-
-        marker.addListener("click", () => infoWindow.open(map, marker));
+    // Charger les données depuis le JSON
+    fetch("restaurants.json")
+      .then(response => response.json())
+      .then(data => {
+        createMarkers(data.brunchs, "brunchs");
+        createMarkers(data.pizzerias, "pizzerias");
       });
-    }
 
-    ajouterMarqueurs(brunchs, "brunch");
-    ajouterMarqueurs(pizzerias, "pizza");
+    // Gestion du filtrage
+    document.getElementById("filter-brunchs").addEventListener("change", () => toggleMarkers("brunchs"));
+    document.getElementById("filter-pizzerias").addEventListener("change", () => toggleMarkers("pizzerias"));
+  }
+
+  // Crée les marqueurs à partir du JSON
+  function createMarkers(list, type) {
+    const icons = {
+      brunchs: {
+       url: "img/croissant.png",
+       scaledSize: new google.maps.Size(30, 30)
+      },
+      pizzerias: {
+       url: "img/pizza.png",
+       scaledSize: new google.maps.Size(30, 30)
+      }
+    };
+
+    list.forEach(item => {
+      const marker = new google.maps.Marker({
+        position: { lat: item.lat, lng: item.lng },
+        map,
+        title: item.name,
+        icon: icons[type]
+      });
+
+      const infoWindow = new google.maps.InfoWindow({
+        content: `<a href="${item.page}" target="_blank">${item.name}</a>`
+      });
+
+      marker.addListener("click", () => infoWindow.open(map, marker));
+      markers[type].push(marker);
+    });
+  }
+
+  // Affiche ou cache les marqueurs selon le filtre
+  function toggleMarkers(type) {
+    const show = document.getElementById(`filter-${type}`).checked;
+    markers[type].forEach(marker => marker.setMap(show ? map : null));
   }
 </script>
+
 
 
 <!-- Clé API Google Maps -->
