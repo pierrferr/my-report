@@ -54,8 +54,7 @@
     </section>
   </main>
 
-  <script>
-  // Fonction qui initialise la carte
+ <script>
   function initMap() {
     const strasbourg = { lat: 48.5734, lng: 7.7521 };
 
@@ -64,36 +63,81 @@
       center: strasbourg,
     });
 
-    // Liste des lieux recommandés
-    const lieux = [
+    // --- Données : brunchs ---
+    const brunchs = [
       {
-        position: { lat: 48.5794, lng: 7.7483 },
-        title: "🥐 Brunchs de Strasbourg",
-        page: "brunchs.html"
+        name: "Café Bretelles",
+        position: { lat: 48.5793, lng: 7.7445 },
+        page: "brunchs_strasbourg.html#cafe-bretelles",
       },
       {
-        position: { lat: 48.5852, lng: 7.7465 },
-        title: "🍕 Pizzerias de Strasbourg",
-        page: "pizzerias.html"
+        name: "Oh My Goodness",
+        position: { lat: 48.5842, lng: 7.7501 },
+        page: "brunchs_strasbourg.html#oh-my-goodness",
       },
+      {
+        name: "Le Square Delicatessen",
+        position: { lat: 48.5830, lng: 7.7450 },
+        page: "brunchs_strasbourg.html#square-delicatessen",
+      },
+      // ajoute d'autres brunchs ici…
     ];
 
-    // Ajout des marqueurs
-    lieux.forEach(lieu => {
-      const marker = new google.maps.Marker({
-        position: lieu.position,
-        map,
-        title: lieu.title,
-      });
+    // --- Données : pizzerias ---
+    const pizzerias = [
+      {
+        name: "Pizz’arôme",
+        position: { lat: 48.5825, lng: 7.7507 },
+        page: "pizzerias_strasbourg.html#pizzarome",
+      },
+      {
+        name: "Il Forno",
+        position: { lat: 48.5728, lng: 7.7572 },
+        page: "pizzerias_strasbourg.html#il-forno",
+      },
+      {
+        name: "La Fuga",
+        position: { lat: 48.5756, lng: 7.7433 },
+        page: "pizzerias_strasbourg.html#la-fuga",
+      },
+      // ajoute d'autres pizzerias ici…
+    ];
 
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<a href="${lieu.page}" target="_blank">${lieu.title}</a>`
-      });
+    // --- Icônes personnalisées ---
+    const icons = {
+      brunch: {
+        url: "https://maps.google.com/mapfiles/ms/icons/yellow-dot.png", // tu peux remplacer par ton image 🥐
+        scaledSize: new google.maps.Size(40, 40)
+      },
+      pizza: {
+        url: "https://maps.google.com/mapfiles/ms/icons/red-dot.png", // tu peux remplacer par 🍕
+        scaledSize: new google.maps.Size(40, 40)
+      }
+    };
 
-      marker.addListener("click", () => infoWindow.open(map, marker));
-    });
+    // --- Fonction d’ajout de marqueurs ---
+    function ajouterMarqueurs(liste, type) {
+      liste.forEach(item => {
+        const marker = new google.maps.Marker({
+          position: item.position,
+          map,
+          title: item.name,
+          icon: icons[type]
+        });
+
+        const infoWindow = new google.maps.InfoWindow({
+          content: `<a href="${item.page}" target="_blank">${item.name}</a>`
+        });
+
+        marker.addListener("click", () => infoWindow.open(map, marker));
+      });
+    }
+
+    ajouterMarqueurs(brunchs, "brunch");
+    ajouterMarqueurs(pizzerias, "pizza");
   }
 </script>
+
 
 <!-- Clé API Google Maps -->
 <script async
