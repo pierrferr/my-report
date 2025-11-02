@@ -120,7 +120,22 @@
         // Pizza Cosy (marqueur direct)
         const pizzaCosyIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
         const pizzaCosy = L.marker([48.5762, 7.7540], { icon: pizzaCosyIcon }).addTo(map);
-        pizzaCosy.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" target="_blank">Pizza Cosy</a>');
+
+        const popupHtml = `
+          <div style="max-width:260px">
+            <strong>Pizza Cosy</strong>
+            <p style="margin:0.4rem 0;font-size:0.95rem;color:#334;">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Petit lieu chaleureux, pâte fine et ingrédients frais.
+            </p>
+            <p style="margin:0.4rem 0;">
+              <span class="kicker">#VG</span>&nbsp;<span class="kicker">#BabyFriendly</span>
+            </p>
+            <p style="margin:0.2rem 0;">
+              <a href="https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" target="_blank" rel="noopener">Voir sur Google Maps</a>
+            </p>
+          </div>
+        `;
+        pizzaCosy.bindPopup(popupHtml);
         // ajouter Pizza Cosy à la liste pizzerias en mémoire
         dataCache.pizzerias.push({ name: "Pizza Cosy", lat: 48.5762, lng: 7.7540, page: "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" });
 
