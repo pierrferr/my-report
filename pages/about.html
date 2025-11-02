@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Qui suis‑je — Les voyages du miam</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .about-hero { display:flex; gap:1rem; align-items:center; padding:1rem; }
+    .about-hero img { width:120px; height:120px; object-fit:cover; border-radius:14px; box-shadow:0 8px 20px rgba(2,40,60,0.06); }
+    .about-card { margin:1rem 2rem; padding:1rem; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.9), #fff); box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
+    .meta { color:var(--muted); font-size:0.95rem; margin-top:0.4rem; }
+  </style>
+</head>
+<body>
+  <header id="site-header">
+    <a href="../index.html" class="logo-link">
+      <img src="../img/miam_logo.png" alt="Logo MIAM" id="site-logo">
+    </a>
+    <h1 id="site-title">Les voyages du miam</h1>
+  </header>
+
+  <main class="about-card">
+    <div class="about-hero">
+      <img src="../img/author.jpg" alt="Portrait — voyageuse gourmande" onerror="this.style.display='none'">
+      <div>
+        <h2>Qui suis‑je ?</h2>
+        <p class="meta">Voyageuse & gourmande — je parcoure le monde à la recherche de tables chaleureuses et d'adresses qui ont du coeur.</p>
+      </div>
+    </div>
+
+    <section style="margin-top:0.6rem;">
+      <p>
+        J'aime partager mes découvertes culinaires — des brunchs confortables aux pizzerias de quartier, en passant par des restaurants qui proposent de vraies options VG. Ici tu trouveras des adresses testées et adorées, des petites histoires avec les restaurateurs, et des conseils pour choisir un lieu baby‑friendly ou végétarien.
+      </p>
+
+      <p>
+        Mon objectif : te donner envie de voyager, de goûter et de rencontrer. Les fiches rassemblent coordonnées, carte, descriptions et hashtags (par exemple <strong>VG</strong> ou <strong>BabyFriendly</strong>) — tout est stocké dans les JSON du projet, facile à mettre à jour.
+      </p>
+
+      <p>
+        Si tu veux partager une adresse ou une info, écris‑moi : <a href="mailto:contact@monsite.example">contact@monsite.example</a>
+      </p>
+
+      <p style="margin-top:1rem;">
+        <a class="button" href="../index.html">← Retour à la carte</a>
+      </p>
+    </section>
+  </main>
+
+  <footer style="margin:1.5rem 0;">
+    <hr>
+    <p style="text-align:center; color:var(--muted)">© 2025 Les voyages du miam</p>
+  </footer>
+</body>
+</html>
