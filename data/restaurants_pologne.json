@@ -1,0 +1,20 @@
+﻿{
+  "places": [
+    {
+      "name": "Maska Jedzenie",
+      "type": "restaurant",
+      "lat": 52.2297,
+      "lng": 21.0122,
+      "link": "https://www.google.com/maps/place/Maska+Jedzenie",
+      "note": "Varsovie — cuisine locale"
+    },
+    {
+      "name": "Pomelo Bistro Bar",
+      "type": "restaurant",
+      "lat": 54.3520,
+      "lng": 18.6466,
+      "link": "https://www.google.com/maps/place/Pomelo+Bistro+Bar",
+      "note": "Gdańsk — bistrot moderne"
+    }
+  ]
+}

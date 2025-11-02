@@ -53,27 +53,42 @@
 
     const pizzaIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
 
-    const places = [
-      { name: "La Grand Pizzeria", lat: 43.6065, lng: 1.4440, link: "https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" },
-      { name: "Pizza de l'Ormeau",    lat: 43.5795, lng: 1.4445, link: "https://www.google.com/maps/search/?api=1&query=Pizza+de+l'Ormeau+Toulouse" }
-    ];
+    // chargement dynamique depuis data/restaurants_toulouse.json
+    async function loadToulousePlaces() {
+      try {
+        const res = await fetch('../../data/restaurants_toulouse.json');
+        const data = await res.json();
 
-    function addMarkersAndList() {
-      const container = document.getElementById('places-content');
-      const ul = document.createElement('ul');
+        const places = [].concat(data.pizzerias || [], data.restaurants || []);
+        // marqueurs
+        places.forEach(p => {
+          L.marker([p.lat, p.lng], { icon: pizzaIcon }).addTo(map)
+            .bindPopup(`<a href="${p.page}" target="_blank">${p.name}</a>`);
+        });
 
-      places.forEach(p => {
-        L.marker([p.lat, p.lng], { icon: pizzaIcon }).addTo(map).bindPopup(`<a href="${p.link}" target="_blank">${p.name}</a>`);
-        const li = document.createElement('li');
-        li.innerHTML = `<a href="${p.link}" target="_blank">${p.name}</a>`;
-        ul.appendChild(li);
-      });
-
-      container.innerHTML = '';
-      container.appendChild(ul);
+        // liste sous la carte
+        const container = document.getElementById('places-content');
+        if (!places.length) {
+          container.innerHTML = '<p class="muted">Aucune adresse.</p>';
+          return;
+        }
+        const ul = document.createElement('ul');
+        places.forEach(p => {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="${p.page}" target="_blank">${p.name}</a>`;
+          ul.appendChild(li);
+        });
+        container.innerHTML = '';
+        container.appendChild(ul);
+      } catch (e) {
+        // fallback simple
+        const container = document.getElementById('places-content');
+        container.innerHTML = '<p class="muted">Impossible de charger les adresses (vérifie le JSON).</p>';
+        console.warn('loadToulousePlaces error', e);
+      }
     }
 
-    addMarkersAndList();
+    loadToulousePlaces();
   </script>
 </body>
 </html>

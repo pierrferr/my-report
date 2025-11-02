@@ -1,0 +1,17 @@
+{
+  "pizzerias": [
+    {
+      "name": "La Grand Pizzeria",
+      "lat": 43.6065,
+      "lng": 1.4440,
+      "page": "pizzerias_toulouse.html#la-grand-pizzeria"
+    },
+    {
+      "name": "Pizza de l'Ormeau",
+      "lat": 43.5795,
+      "lng": 1.4445,
+      "page": "pizzerias_toulouse.html#pizza-de-lormeau"
+    }
+  ],
+  "restaurants": []
+}

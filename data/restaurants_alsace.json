@@ -1,0 +1,20 @@
+﻿{
+  "places": [
+    {
+      "name": "La Courrone — Scherwiller",
+      "type": "restaurant",
+      "lat": 48.2890,
+      "lng": 7.3410,
+      "link": "https://www.google.com/maps/search/?api=1&query=La+Courrone+Scherwiller",
+      "note": "Cuisine locale, terrasse"
+    },
+    {
+      "name": "Strasbourg (fiche)",
+      "type": "ville",
+      "lat": 48.5734,
+      "lng": 7.7521,
+      "page": "pages/cities/strasbourg.html",
+      "note": "Fiche ville"
+    }
+  ]
+}
