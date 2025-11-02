@@ -24,6 +24,10 @@
     <a href="https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" target="_blank">La Grand Pizzeria</a>
   </p>
 
+  <p style="margin-left:2rem;">
+    Autre adresse : <a href="https://www.google.com/maps/search/?api=1&query=Pizza+de+l'Ormeau+Toulouse" target="_blank">Pizza de l'Ormeau</a>
+  </p>
+
   <div id="map"></div>
 
   <footer>
@@ -42,10 +46,14 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Marqueur pour La Grand Pizzeria (coordonnées approximatives, ajuste si tu veux)
+    // Marqueur pour La Grand Pizzeria (coordonnées approximatives, ajuste si besoin)
     const pizzaIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
     const grandPizza = L.marker([43.6065, 1.4440], { icon: pizzaIcon }).addTo(map);
     grandPizza.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" target="_blank">La Grand Pizzeria</a>');
+
+    // Marqueur pour Pizza de l'Ormeau (coordonnées approximatives)
+    const ormeauPizza = L.marker([43.5791567, 1.4840783,17], { icon: pizzaIcon }).addTo(map);
+    ormeauPizza.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=Pizza+de+l%27Ormeau+Toulouse" target="_blank">Pizza de l\'Ormeau</a>');
   </script>
 </body>
 </html>
