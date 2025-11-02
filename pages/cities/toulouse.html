@@ -18,7 +18,7 @@
 
   <p style="margin:1rem 2rem;"><a href="../countries/france.html">← Retour à la carte France</a></p>
 
-  <h2 style="margin-left:2rem;">Toulouse — La Grand Pizzeria</h2>
+  <h2 style="margin-left:2rem;">Toulouse — Pizzerias</h2>
   <p style="margin-left:2rem;">
     Voir la pizzeria recommandée :
     <a href="https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" target="_blank">La Grand Pizzeria</a>
@@ -29,6 +29,11 @@
   </p>
 
   <div id="map"></div>
+
+  <section id="places-list" class="card" style="margin:1rem 2rem;">
+    <h3>Adresses à Toulouse</h3>
+    <div id="places-content"></div>
+  </section>
 
   <footer>
     <hr>
@@ -46,14 +51,29 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Marqueur pour La Grand Pizzeria (coordonnées approximatives, ajuste si besoin)
     const pizzaIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
-    const grandPizza = L.marker([43.6065, 1.4440], { icon: pizzaIcon }).addTo(map);
-    grandPizza.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" target="_blank">La Grand Pizzeria</a>');
 
-    // Marqueur pour Pizza de l'Ormeau (coordonnées approximatives)
-    const ormeauPizza = L.marker([43.5791567, 1.4840783,17], { icon: pizzaIcon }).addTo(map);
-    ormeauPizza.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=Pizza+de+l%27Ormeau+Toulouse" target="_blank">Pizza de l\'Ormeau</a>');
+    const places = [
+      { name: "La Grand Pizzeria", lat: 43.6065, lng: 1.4440, link: "https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" },
+      { name: "Pizza de l'Ormeau",    lat: 43.5795, lng: 1.4445, link: "https://www.google.com/maps/search/?api=1&query=Pizza+de+l'Ormeau+Toulouse" }
+    ];
+
+    function addMarkersAndList() {
+      const container = document.getElementById('places-content');
+      const ul = document.createElement('ul');
+
+      places.forEach(p => {
+        L.marker([p.lat, p.lng], { icon: pizzaIcon }).addTo(map).bindPopup(`<a href="${p.link}" target="_blank">${p.name}</a>`);
+        const li = document.createElement('li');
+        li.innerHTML = `<a href="${p.link}" target="_blank">${p.name}</a>`;
+        ul.appendChild(li);
+      });
+
+      container.innerHTML = '';
+      container.appendChild(ul);
+    }
+
+    addMarkersAndList();
   </script>
 </body>
 </html>

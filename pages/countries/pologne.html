@@ -5,15 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mon Report - Pologne</title>
   <link rel="stylesheet" href="../../css/style.css">
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <style>
-    #map { height: 500px; width: 100%; border-radius: 12px; margin-top: 1rem; }
-  </style>
+  <style>#map { height: 500px; width: 100%; border-radius: 12px; margin-top: 1rem; }</style>
 </head>
 <body>
-  <!-- HEADER avec logo + titre -->
   <header id="site-header">
     <a href="../index.html" class="logo-link">
       <img src="../../img/miam_logo.png" alt="Mon Report - Accueil" id="site-logo">
@@ -21,32 +16,32 @@
     <h1 id="site-title">Les voyages du miam</h1>
   </header>
 
-  <!-- Lien retour -->
   <p style="margin: 1rem 2rem;"><a href="../index.html">← Retour à la carte du monde</a></p>
 
-  <!-- Contenu principal -->
   <h2 style="margin-left:2rem;">Restaurants en Pologne 🇵🇱</h2>
-  <p style="margin-left:2rem;">Découvrez deux adresses gourmandes à ne pas manquer :</p>
-
   <div id="map"></div>
+
+  <section id="places-list" class="card" style="margin:1rem 2rem;">
+    <h3>Adresses en Pologne</h3>
+    <div id="places-content"></div>
+  </section>
 
   <footer>
     <hr>
     <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
   </footer>
 
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
       day: '2-digit', month: 'long', year: 'numeric'
     });
 
-    // Initialiser la carte centrée sur la Pologne
     const map = L.map('map').setView([52.0, 19.0], 6);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Liste des restaurants
     const restaurants = [
       {
         name: "Maska Jedzenie",
@@ -64,11 +59,22 @@
       }
     ];
 
-    // Ajouter les marqueurs
-    restaurants.forEach(r => {
-      const marker = L.marker([r.lat, r.lng]).addTo(map);
-      marker.bindPopup(`<b>${r.name}</b><br>${r.city}<br><a href="${r.link}" target="_blank">Voir sur Google Maps</a>`);
-    });
+    function addMarkersAndList() {
+      const container = document.getElementById('places-content');
+      const ul = document.createElement('ul');
+
+      restaurants.forEach(r => {
+        L.marker([r.lat, r.lng]).addTo(map).bindPopup(`<b>${r.name}</b><br>${r.city}<br><a href="${r.link}" target="_blank">Voir</a>`);
+        const li = document.createElement('li');
+        li.innerHTML = `<strong>${r.name}</strong> — ${r.city} — <a href="${r.link}" target="_blank">Voir</a>`;
+        ul.appendChild(li);
+      });
+
+      container.innerHTML = '';
+      container.appendChild(ul);
+    }
+
+    addMarkersAndList();
   </script>
 </body>
 </html>

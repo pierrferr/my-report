@@ -21,6 +21,11 @@
   <h2 style="margin-left:2rem;">Carte — Alsace</h2>
   <div id="map"></div>
 
+  <section id="places-list" class="card" style="margin:1rem 2rem;">
+    <h3>Adresses en Alsace</h3>
+    <div id="places-content"></div>
+  </section>
+
   <section style="margin:1rem 2rem;">
     <h3>Villes / lieux</h3>
     <ul>
@@ -40,15 +45,33 @@
       day:'2-digit', month:'long', year:'numeric'
     });
 
-    // Vue générale sur l'Alsace
     const map = L.map('map').setView([48.3, 7.4], 10);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Restaurant "La Courrone" — Scherwiller (coordonnées approximatives)
-    const laCourrone = L.marker([48.2890, 7.3410]).addTo(map);
-    laCourrone.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=La+Courrone+Scherwiller" target="_blank">La Courrone — Scherwiller</a>');
+    const places = [
+      { name: "La Courrone — Scherwiller", lat: 48.2890, lng: 7.3410, link: "https://www.google.com/maps/search/?api=1&query=La+Courrone+Scherwiller" },
+      { name: "Strasbourg", lat: 48.5734, lng: 7.7521, page: "../cities/strasbourg.html" }
+    ];
+
+    function addMarkersAndList() {
+      const container = document.getElementById('places-content');
+      const ul = document.createElement('ul');
+
+      places.forEach(p => {
+        L.marker([p.lat, p.lng]).addTo(map).bindPopup(p.page ? `<a href="${p.page}">${p.name}</a>` : `<a href="${p.link}" target="_blank">${p.name}</a>`);
+        const li = document.createElement('li');
+        if (p.page) li.innerHTML = `<strong>${p.name}</strong> — <a href="${p.page}">Fiche</a>`;
+        else li.innerHTML = `<strong>${p.name}</strong> — <a href="${p.link}" target="_blank">Voir</a>`;
+        ul.appendChild(li);
+      });
+
+      container.innerHTML = '';
+      container.appendChild(ul);
+    }
+
+    addMarkersAndList();
   </script>
 </body>
 </html>

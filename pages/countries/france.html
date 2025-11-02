@@ -21,12 +21,19 @@
   <h2 style="margin-left:2rem;">Carte — France</h2>
   <div id="map"></div>
 
+  <!-- Liste des lieux (sera remplie par JS) -->
+  <section id="places-list" class="card" style="margin:1rem 2rem;">
+    <h3>Adresses sur la carte</h3>
+    <div id="places-content">
+      <!-- JS injecte ici la liste des villes / restaurants -->
+    </div>
+  </section>
+
   <section style="margin:1rem 2rem;">
-    <h3>Villes </h3>
+    <h3>Villes avec fiches</h3>
     <ul>
       <li><a href="../cities/strasbourg.html">Strasbourg</a></li>
       <li><a href="../cities/toulouse.html">Toulouse</a></li>
-      <!-- ajouter d'autres villes ici -->
     </ul>
   </section>
 
@@ -52,14 +59,50 @@
       { name: "Toulouse",   lat: 43.6047, lng: 1.4442, page: "../cities/toulouse.html" }
     ];
 
-    villes.forEach(v => {
-      const m = L.marker([v.lat, v.lng]).addTo(map);
-      m.bindPopup(`<a href="${v.page}">${v.name}</a>`);
-    });
+    const restaurants = [
+      { name: "FAVE — Hendaye", lat: 43.3693, lng: -1.7720, link: "https://www.google.com/maps/search/?api=1&query=FAVE+Hendaye" }
+    ];
 
-    // Restaurant FAVE — Hendaye
-    const fave = L.marker([43.3693, -1.7720]).addTo(map);
-    fave.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=FAVE+Hendaye" target="_blank">FAVE — Hendaye</a>');
+    // Ajout des marqueurs et génération de la liste
+    function addMarkersAndList() {
+      const places = [];
+
+      villes.forEach(v => {
+        const m = L.marker([v.lat, v.lng]).addTo(map);
+        m.bindPopup(`<a href="${v.page}">${v.name}</a>`);
+        places.push({ type: 'Ville', name: v.name, href: v.page });
+      });
+
+      restaurants.forEach(r => {
+        const m = L.marker([r.lat, r.lng]).addTo(map);
+        m.bindPopup(`<a href="${r.link}" target="_blank">${r.name}</a>`);
+        places.push({ type: 'Restaurant', name: r.name, href: r.link });
+      });
+
+      renderPlacesList(places);
+    }
+
+    function renderPlacesList(places) {
+      const container = document.getElementById('places-content');
+      if (!places.length) {
+        container.innerHTML = '<p class="muted">Aucune adresse à afficher.</p>';
+        return;
+      }
+      const ul = document.createElement('ul');
+      places.forEach(p => {
+        const li = document.createElement('li');
+        if (p.href) {
+          li.innerHTML = `<strong>${p.type}:</strong> <a href="${p.href}" ${p.type==='Restaurant' ? 'target="_blank"' : ''}>${p.name}</a>`;
+        } else {
+          li.textContent = `${p.type}: ${p.name}`;
+        }
+        ul.appendChild(li);
+      });
+      container.innerHTML = '';
+      container.appendChild(ul);
+    }
+
+    addMarkersAndList();
   </script>
 </body>
 </html>

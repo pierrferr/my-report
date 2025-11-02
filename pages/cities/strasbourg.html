@@ -30,6 +30,12 @@
 
   <div id="map"></div>
 
+  <!-- listes dynamiques -->
+  <section id="places-list" class="card" style="margin:1rem 2rem;">
+    <h3>Adresses à Strasbourg</h3>
+    <div id="places-content">Chargement…</div>
+  </section>
+
   <footer>
     <hr>
     <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
@@ -47,6 +53,7 @@
     }).addTo(map);
 
     let markers = { brunchs: [], pizzerias: [] };
+    let dataCache = { brunchs: [], pizzerias: [] };
 
     function createMarkers(list, type, iconUrl) {
       const icon = L.icon({ iconUrl, iconSize: [30,30] });
@@ -54,38 +61,78 @@
         const m = L.marker([item.lat, item.lng], { icon }).addTo(map);
         m.bindPopup(`<a href="${item.page}" target="_blank">${item.name}</a>`);
         markers[type].push(m);
+        dataCache[type].push(item);
       });
     }
 
     function toggleMarkers(type) {
       const show = document.getElementById(`filter-${type}`).checked;
-      markers[type].forEach(m => show ? m.addTo(map) : map.removeLayer(m));
+      dataCache[type].forEach((_, i) => {
+        const m = markers[type][i];
+        show ? m.addTo(map) : map.removeLayer(m);
+      });
     }
 
-    document.getElementById('filter-brunchs').addEventListener('change', () => toggleMarkers('brunchs'));
-    document.getElementById('filter-pizzerias').addEventListener('change', () => toggleMarkers('pizzerias'));
+    document.getElementById('filter-brunchs').addEventListener('change', () => { toggleMarkers('brunchs'); renderPlaces(); });
+    document.getElementById('filter-pizzerias').addEventListener('change', () => { toggleMarkers('pizzerias'); renderPlaces(); });
 
-    // Charge le JSON depuis le dossier data (ajuste le chemin si nécessaire)
+    function renderPlaces() {
+      const container = document.getElementById('places-content');
+      const showBr = document.getElementById('filter-brunchs').checked;
+      const showPz = document.getElementById('filter-pizzerias').checked;
+      const ul = document.createElement('ul');
+
+      if (showBr && dataCache.brunchs.length) {
+        const hB = document.createElement('li'); hB.innerHTML = '<strong>Brunchs</strong>'; ul.appendChild(hB);
+        dataCache.brunchs.forEach(b => {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="${b.page}">${b.name}</a>`;
+          ul.appendChild(li);
+        });
+      }
+
+      if (showPz && dataCache.pizzerias.length) {
+        const hP = document.createElement('li'); hP.innerHTML = '<strong>Pizzerias</strong>'; ul.appendChild(hP);
+        dataCache.pizzerias.forEach(p => {
+          const li = document.createElement('li');
+          li.innerHTML = `<a href="${p.page}">${p.name}</a>`;
+          ul.appendChild(li);
+        });
+      }
+
+      // Pizza Cosy (marqueur ajouté séparément)
+      const cosyExists = !!document.querySelector('a[href*="Pizza+Cosy"], a[href*="Pizza+Cosy+Strasbourg"]');
+      if (!showPz && !showBr && !dataCache.brunchs.length && !dataCache.pizzerias.length) {
+        container.innerHTML = '<p class="muted">Aucune adresse affichée.</p>';
+      } else {
+        container.innerHTML = '';
+        container.appendChild(ul);
+      }
+    }
+
+    // Charge le JSON depuis le dossier data
     fetch('../../data/restaurants_strasbourg.json')
       .then(r => r.json())
       .then(data => {
         if (data.brunchs) createMarkers(data.brunchs, 'brunchs', '../../img/croissant.png');
         if (data.pizzerias) createMarkers(data.pizzerias, 'pizzerias', '../../img/pizza.png');
 
-        // Ajout d'un marqueur direct pour "Pizza Cosy" (lien vers recherche Google Maps)
+        // Pizza Cosy (marqueur direct)
         const pizzaCosyIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
         const pizzaCosy = L.marker([48.5762, 7.7540], { icon: pizzaCosyIcon }).addTo(map);
         pizzaCosy.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" target="_blank">Pizza Cosy</a>');
+        // ajouter Pizza Cosy à la liste pizzerias en mémoire
+        dataCache.pizzerias.push({ name: "Pizza Cosy", lat: 48.5762, lng: 7.7540, page: "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" });
+
+        renderPlaces();
       })
       .catch(() => {
-        // fallback minimal si le JSON manque
-        createMarkers([
-          { name: "Brunch exemple", lat: 48.579, lng: 7.751, page: "#" }
-        ], 'brunchs', '../../img/croissant.png');
-
-        const pizzaCosyIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
-        const pizzaCosy = L.marker([48.5762, 7.7540], { icon: pizzaCosyIcon }).addTo(map);
-        pizzaCosy.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" target="_blank">Pizza Cosy</a>');
+        // fallback
+        dataCache.brunchs = [{ name: "Brunch exemple", lat:48.579, lng:7.751, page: "#" }];
+        dataCache.pizzerias = [{ name: "Pizza Cosy", lat:48.5762, lng:7.7540, page: "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg" }];
+        createMarkers(dataCache.brunchs, 'brunchs', '../../img/croissant.png');
+        createMarkers(dataCache.pizzerias, 'pizzerias', '../../img/pizza.png');
+        renderPlaces();
       });
   </script>
 </body>
