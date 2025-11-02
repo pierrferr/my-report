@@ -10,9 +10,10 @@
 <body>
   <!-- Logo cliquable -->
 <header id="site-header">
-  <a href="index.html">
+  <a href="index.html" class="logo-link">
     <img src="img/miam_logo.png" alt="Mon Report - Accueil" id="site-logo">
   </a>
+  <h1 id="site-title">Les voyages du miam</h1>
 </header>
   <h1>Carte de France</h1>
   <p>Cliquez sur une ville pour voir nos adresses recommandées.</p>
@@ -28,15 +29,29 @@
 
     // Villes
     const villes = [
-      { name: "Strasbourg", lat: 48.5734, lng: 7.7521, page: "strasbourg.html" },
-      { name: "Toulouse", lat: 43.6047, lng: 1.4442, page: "toulouse.html" }
+      { name: "Strasbourg", lat: 48.5734, lng: 7.7521, page: "pages/cities/strasbourg.html" },
+      { name: "Toulouse", lat: 43.6047, lng: 1.4442, page: "pages/cities/toulouse.html" }
     ];
 
     villes.forEach(ville => {
       const marker = L.marker([ville.lat, ville.lng]).addTo(map);
       marker.bindPopup(`<a href="${ville.page}">${ville.name}</a>`);
     });
+
+    // Restaurant FAVE — Hendaye
+    const fave = L.marker([43.3693, -1.7720]).addTo(map);
+    fave.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=FAVE+Hendaye" target="_blank">FAVE — Hendaye</a>');
   </script>
   <p><a href="index.html">← Retour à la carte du monde</a></p>
+  <footer>
+    <hr>
+    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+  </script>
 </body>
 </html>

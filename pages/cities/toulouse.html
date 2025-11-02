@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aleks Report — Toulouse</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>#map { height:500px; border-radius:8px; margin:1rem 0; }</style>
+</head>
+<body>
+  <header id="site-header">
+    <a href="../../index.html" class="logo-link">
+      <img src="../../img/miam_logo.png" alt="Mon Report - Accueil" id="site-logo">
+    </a>
+    <h1 id="site-title">Les voyages du miam</h1>
+  </header>
+
+  <p style="margin:1rem 2rem;"><a href="../countries/france.html">← Retour à la carte France</a></p>
+
+  <h2 style="margin-left:2rem;">Toulouse — La Grand Pizzeria</h2>
+  <p style="margin-left:2rem;">
+    Voir la pizzeria recommandée :
+    <a href="https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" target="_blank">La Grand Pizzeria</a>
+  </p>
+
+  <div id="map"></div>
+
+  <footer>
+    <hr>
+    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day:'2-digit', month:'long', year:'numeric'
+    });
+
+    const map = L.map('map').setView([43.6047, 1.4442], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Marqueur pour La Grand Pizzeria (coordonnées approximatives, ajuste si tu veux)
+    const pizzaIcon = L.icon({ iconUrl: '../../img/pizza.png', iconSize: [30,30] });
+    const grandPizza = L.marker([43.6065, 1.4440], { icon: pizzaIcon }).addTo(map);
+    grandPizza.bindPopup('<a href="https://www.google.com/maps/search/?api=1&query=La+Grand+Pizzeria+Toulouse" target="_blank">La Grand Pizzeria</a>');
+  </script>
+</body>
+</html>

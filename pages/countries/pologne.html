@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Report - Pologne</title>
+  <link rel="stylesheet" href="../../css/style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <style>
+    #map { height: 500px; width: 100%; border-radius: 12px; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <!-- HEADER avec logo + titre -->
+  <header id="site-header">
+    <a href="../index.html" class="logo-link">
+      <img src="../../img/miam_logo.png" alt="Mon Report - Accueil" id="site-logo">
+    </a>
+    <h1 id="site-title">Les voyages du miam</h1>
+  </header>
+
+  <!-- Lien retour -->
+  <p style="margin: 1rem 2rem;"><a href="../index.html">← Retour à la carte du monde</a></p>
+
+  <!-- Contenu principal -->
+  <h2 style="margin-left:2rem;">Restaurants en Pologne 🇵🇱</h2>
+  <p style="margin-left:2rem;">Découvrez deux adresses gourmandes à ne pas manquer :</p>
+
+  <div id="map"></div>
+
+  <footer>
+    <hr>
+    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day: '2-digit', month: 'long', year: 'numeric'
+    });
+
+    // Initialiser la carte centrée sur la Pologne
+    const map = L.map('map').setView([52.0, 19.0], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Liste des restaurants
+    const restaurants = [
+      {
+        name: "Maska Jedzenie",
+        lat: 52.2297,
+        lng: 21.0122,
+        city: "Varsovie",
+        link: "https://www.google.com/maps/place/Maska+Jedzenie"
+      },
+      {
+        name: "Pomelo Bistro Bar",
+        lat: 54.3520,
+        lng: 18.6466,
+        city: "Gdańsk",
+        link: "https://www.google.com/maps/place/Pomelo+Bistro+Bar"
+      }
+    ];
+
+    // Ajouter les marqueurs
+    restaurants.forEach(r => {
+      const marker = L.marker([r.lat, r.lng]).addTo(map);
+      marker.bindPopup(`<b>${r.name}</b><br>${r.city}<br><a href="${r.link}" target="_blank">Voir sur Google Maps</a>`);
+    });
+  </script>
+</body>
+</html>

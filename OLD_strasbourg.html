@@ -44,73 +44,47 @@
    
   </main>
 
+<!-- Use Leaflet for the city map and load markers from restaurants_strasbourg.json -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script>
-  let map;
+  const map = L.map('map').setView([48.5734, 7.7521], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
+
+  // marqueurs par catégorie
   let markers = { brunchs: [], pizzerias: [] };
 
-  function initMap() {
-    const strasbourg = { lat: 48.5734, lng: 7.7521 };
-    map = new google.maps.Map(document.getElementById("map"), {
-      zoom: 13,
-      center: strasbourg,
-    });
-
-    // Charger les données depuis le JSON
-    fetch("restaurants_strasbourg.json")
-      .then(response => response.json())
-      .then(data => {
-        createMarkers(data.brunchs, "brunchs");
-        createMarkers(data.pizzerias, "pizzerias");
-      });
-
-    // Gestion du filtrage
-    document.getElementById("filter-brunchs").addEventListener("change", () => toggleMarkers("brunchs"));
-    document.getElementById("filter-pizzerias").addEventListener("change", () => toggleMarkers("pizzerias"));
-  }
-
-  // Crée les marqueurs à partir du JSON
-  function createMarkers(list, type) {
-    const icons = {
-      brunchs: {
-       url: "img/croissant.png",
-       scaledSize: new google.maps.Size(30, 30)
-      },
-      pizzerias: {
-       url: "img/pizza.png",
-       scaledSize: new google.maps.Size(30, 30)
-      }
-    };
-
+  // crée et ajoute des marqueurs Leaflet (réutilise restaurants_strasbourg.json)
+  function createMarkers(list, type, iconUrl) {
+    const icon = L.icon({ iconUrl, iconSize: [30, 30] });
     list.forEach(item => {
-      const marker = new google.maps.Marker({
-        position: { lat: item.lat, lng: item.lng },
-        map,
-        title: item.name,
-        icon: icons[type]
-      });
-
-      const infoWindow = new google.maps.InfoWindow({
-        content: `<a href="${item.page}" target="_blank">${item.name}</a>`
-      });
-
-      marker.addListener("click", () => infoWindow.open(map, marker));
+      const marker = L.marker([item.lat, item.lng], { icon }).addTo(map);
+      marker.bindPopup(`<a href="${item.page}" target="_blank">${item.name}</a>`);
       markers[type].push(marker);
     });
   }
 
-  // Affiche ou cache les marqueurs selon le filtre
+  // charge les données et instancie les marqueurs
+  fetch('restaurants_strasbourg.json')
+    .then(r => r.json())
+    .then(data => {
+      createMarkers(data.brunchs, 'brunchs', 'img/croissant.png');
+      createMarkers(data.pizzerias, 'pizzerias', 'img/pizza.png');
+    });
+
+  // affichage / masquage via les checkbox
   function toggleMarkers(type) {
     const show = document.getElementById(`filter-${type}`).checked;
-    markers[type].forEach(marker => marker.setMap(show ? map : null));
+    markers[type].forEach(m => show ? m.addTo(map) : map.removeLayer(m));
   }
+
+  document.getElementById('filter-brunchs').addEventListener('change', () => toggleMarkers('brunchs'));
+  document.getElementById('filter-pizzerias').addEventListener('change', () => toggleMarkers('pizzerias'));
 </script>
 
 <p><a href="france.html">← Retour à la carte France</a></p>
-
-<!-- Clé API Google Maps -->
-<script async
-  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBU9X6l2TOMIBfQPLsKKNabSAhNTSiSseY&callback=initMap">
-</script>
 
   <footer>
     <hr>
@@ -118,7 +92,6 @@
   </footer>
 
   <script>
-    // Ajoute la date du jour automatiquement
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
       day: '2-digit', month: 'long', year: 'numeric'
     });

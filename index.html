@@ -4,85 +4,66 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Aleks report</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map { height: 500px; width: 100%; border-radius: 8px; margin-top: 1rem; }
   </style>
 </head>
 <body>
 <header id="site-header">
-  <a href="index.html" class="logo-link">
+  <a href="pages/index.html" class="logo-link">
     <img src="img/miam_logo.png" alt="Logo MIAM" id="site-logo">
   </a>
-  <h1 id="site-title">Les voyages du miam </h1>
+  <h1 id="site-title">Les voyages du miam</h1>
 </header>
-   <!-- Section présentation du site -->
-  <section id="presentation">
-    <h2>Ce que vous trouverez sur le site :</h2>
-    <ul class="feature-list">
-      <li>🥐 <strong>Idées de brunchs</strong> — mes adresses préférées pour bien commencer la journée</li>
-      <li>🍕 <strong>Pizzerias délicieuses</strong> — les meilleures pizzas à tester</li>
-      <li>❤️ <strong>Restaurants coup de cœur</strong> — mes lieux favoris à découvrir</li>
-      <li>🛏️ <strong>Où dormir</strong> — conseils pour trouver un hébergement agréable</li>
-    </ul>
-  </section>
-   <!-- Section carte -->
-    <h2>Carte des délices</h2>
-  <p>Se régaler en voyageant</p>
-  <div id="map"></div>
 
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <script>
-    const map = L.map('map').setView([20, 0], 2); // Vue monde
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
+<section id="presentation">
+  <h2>Ce que vous trouverez sur le site :</h2>
+  <ul class="feature-list">
+    <li>🥐 <strong>Idées de brunchs</strong></li>
+    <li>🍕 <strong>Pizzerias délicieuses</strong></li>
+    <li>❤️ <strong>Restaurants coup de cœur</strong></li>
+    <li>🛏️ <strong>Où dormir</strong></li>
+  </ul>
+</section>
 
-    // Lien cliquable France
-    const franceMarker = L.marker([46.2276, 2.2137]).addTo(map);
-    franceMarker.bindPopup('<a href="france.html">🇫🇷 France</a>');
-  </script>
+<h2>Carte des délices</h2>
+<p>Se régaler en voyageant</p>
+<div id="map"></div>
 
-   <section>
-    <h2>Bonnes adresses à Strasbourg</h2>
-    <ul>
-     <li><a href="brunchs_strasbourg.html">🥐 Mes brunchs fav </a></li>
-     <li><a href="pizzerias_strasbourg.html">🍕 Mes pizzérias préférées</a></li>
-     <li><a href="pizzerias_strasbourg.html">⛪ Mes coups de coeur en ville</a></li>
-     <li><a href="pizzerias_strasbourg.html">🏰 Mes coups de coeur en Alsace </a></li>
-     </ul>
-   </section>
-   
-    <section>
-      <h2>En vadrouille</h2>
-      <h3>A Toulouse</h2>
-      <ul>
-        <li><a href="https://www.lemonde.fr/">Bliblablabla</a></li>
-        <li><a href="https://www.bbc.com/">Elections américaines : la course s'intensifie</a></li>
-        <li><a href="https://www.reuters.com/">Les marchés hésitent après la décision de la BCE</a></li>
-      </ul>
-    </section>
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script>
+  const map = L.map('map').setView([20, 0], 2);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; OpenStreetMap contributors'
+  }).addTo(map);
 
-     <section>
-      <h2>Les petits derniers</h2>
-      <ul>
-        <li><a href="https://www.lemonde.fr/">Granada à Hendaye - un restaurant arménien avec restaurateurs généreux</a></li>
-        <li><a href="https://www.lemonde.fr/">Fave à Anglet : un brunch qui fait plaisir dans le Pays Basque</a></li>
-      </ul>
-    </section>
+  const franceMarker = L.marker([46.2276, 2.2137]).addTo(map);
+  franceMarker.bindPopup('<a href="pages/countries/france.html">🇫🇷 France</a>');
 
-  <footer>
-    <hr>
-    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
-  </footer>
+  const polandMarker = L.marker([52.0, 19.0]).addTo(map);
+  polandMarker.bindPopup('<a href="pages/countries/pologne.html">🇵🇱 Pologne</a>');
+</script>
 
-  <script>
-    // Ajoute la date du jour automatiquement
-    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
-      day: '2-digit', month: 'long', year: 'numeric'
-    });
-  </script>
+<section>
+  <h2>Bonnes adresses à Strasbourg</h2>
+  <ul>
+    <li><a href="pages/cities/strasbourg.html">🥐 Mes brunchs fav</a></li>
+    <li><a href="pages/cities/strasbourg.html">🍕 Mes pizzerias préférées</a></li>
+  </ul>
+</section>
+
+<footer>
+  <hr>
+  <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+</footer>
+
+<script>
+  document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+    day: '2-digit', month: 'long', year: 'numeric'
+  });
+</script>
 
 </body>
 </html>
