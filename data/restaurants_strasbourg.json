@@ -1,30 +1,49 @@
 {
-  "brunchs": [
+  "places": [
     {
       "name": "Café Bretelles",
+      "type": "brunch",
       "lat": 48.5793,
       "lng": 7.7445,
-      "page": "brunchs_strasbourg.html#cafe-bretelles"
+      "page": "pages/cities/brunchs_strasbourg.html#cafe-bretelles",
+      "description": "Petit café cosy, oeufs bio, jus pressés. Parfait pour un dimanche tranquille.",
+      "tags": ["VG", "BabyFriendly"]
     },
     {
       "name": "Oh My Goodness",
+      "type": "brunch",
       "lat": 48.5842,
       "lng": 7.7501,
-      "page": "brunchs_strasbourg.html#oh-my-goodness"
-    }
-  ],
-  "pizzerias": [
+      "page": "pages/cities/brunchs_strasbourg.html#oh-my-goodness",
+      "description": "Brunch copieux, pâtisseries maison, ambiance chaleureuse.",
+      "tags": ["Familial", "Vegan"]
+    },
     {
       "name": "Pizz’arôme",
+      "type": "pizzeria",
       "lat": 48.5825,
       "lng": 7.7507,
-      "page": "pizzerias_strasbourg.html#pizzarome"
+      "page": "pages/cities/pizzerias_strasbourg.html#pizzarome",
+      "description": "Four au feu de bois, ingrédients importés d'Italie, pâte fine.",
+      "tags": ["Authentique"]
     },
     {
       "name": "Il Forno",
+      "type": "pizzeria",
       "lat": 48.5728,
       "lng": 7.7572,
-      "page": "pizzerias_strasbourg.html#il-forno"
+      "page": "pages/cities/pizzerias_strasbourg.html#il-forno",
+      "description": "Pizzas classiques et créatives, ambiance italienne.",
+      "tags": ["Traditionnel", "Vegan"]
+    },
+    {
+      "name": "Pizza Cosy",
+      "type": "pizzeria",
+      "lat": 48.5762,
+      "lng": 7.7540,
+      "link": "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg",
+      "description": "Lieu chaleureux, options végétariennes, table haute et espace bébé.",
+      "tags": ["VG", "BabyFriendly"]
     }
   ]
 }

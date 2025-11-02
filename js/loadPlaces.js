@@ -3,13 +3,13 @@
    * loadPlaces(map, options)
    * - map: instance Leaflet (L.map)
    * - options:
-   *    jsonPath: string (required) - chemin vers le JSON
+   *    jsonPath: string (required)
    *    listContainerId: string (default: 'places-content')
-   *    icons: object mapping types -> iconUrl (optional)
-   *    markerOptions: object default options pour L.marker
-   *    clearBefore: boolean (default: true) - supprime les marqueurs existants
+   *    icons: object mapping types -> iconUrl
+   *    markerOptions: object for L.marker
+   *    clearBefore: boolean
    *
-   * Retourne une Promise qui résout { places, layerGroup }
+   * Returns Promise<{ places, layerGroup }>
    */
   async function loadPlaces(map, options = {}) {
     if (!map) throw new Error('loadPlaces: map is required');
@@ -23,15 +23,12 @@
     }, options);
 
     const container = document.getElementById(cfg.listContainerId);
-    if (!container) {
-      console.warn('loadPlaces: list container not found:', cfg.listContainerId);
-    }
+    if (!container) console.warn('loadPlaces: list container not found:', cfg.listContainerId);
 
-    // couche pour gérer facilement les marqueurs ajoutés
+    // manage marker layers on the map
     if (!map._loadPlaces_layers) map._loadPlaces_layers = [];
     const layerGroup = L.layerGroup();
     if (cfg.clearBefore) {
-      // retire anciens layers si présents
       (map._loadPlaces_layers || []).forEach(l => map.removeLayer(l));
       map._loadPlaces_layers = [];
     }
@@ -43,69 +40,66 @@
       if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + res.statusText);
       const data = await res.json();
 
-      // Normalize data -> array "places"
+      // Normalize into array "places"
       let places = [];
       if (Array.isArray(data.places)) {
         places = data.places;
       } else {
-        // legacy format: brunchs / pizzerias / restaurants
-        const keys = ['brunchs', 'pizzerias', 'restaurants', 'places'];
-        keys.forEach(k => {
+        // legacy support: brunchs/pizzerias/restaurants keys
+        ['brunchs', 'pizzerias', 'restaurants', 'places'].forEach(k => {
           if (Array.isArray(data[k])) {
             const type = k === 'places' ? null : k.replace(/s$/, '');
-            data[k].forEach(item => {
-              places.push(Object.assign({}, item, { type: item.type || type }));
-            });
+            data[k].forEach(it => places.push(Object.assign({}, it, { type: it.type || type })));
           }
         });
-        // if still empty, try to collect any top-level arrays of objects
         if (!places.length) {
           Object.keys(data).forEach(k => {
             if (Array.isArray(data[k]) && data[k].length && typeof data[k][0] === 'object') {
-              data[k].forEach(item => places.push(Object.assign({}, item, { type: item.type || k })));
+              data[k].forEach(it => places.push(Object.assign({}, it, { type: it.type || k })));
             }
           });
         }
       }
 
-      // create list element
       if (container) container.innerHTML = '';
-
       const ul = document.createElement('ul');
 
       places.forEach(p => {
-        const lat = Number(p.lat) || Number(p.latitude) || 0;
-        const lng = Number(p.lng) || Number(p.longitude) || 0;
-        if (!lat || !lng) return; // skip invalid
+        const lat = Number(p.lat || p.latitude);
+        const lng = Number(p.lng || p.longitude);
+        if (!lat || !lng) return;
 
-        // choose icon if provided for this type
-        let icon = null;
-        const t = (p.type || '').toString().toLowerCase();
-        if (t && cfg.icons && cfg.icons[t]) {
-          icon = L.icon({ iconUrl: cfg.icons[t], iconSize: [30, 30] });
-        }
+        const type = (p.type || '').toString().toLowerCase();
+        const iconUrl = cfg.icons && cfg.icons[type];
+        const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
+        const marker = icon ? L.marker([lat, lng], Object.assign({}, cfg.markerOptions, { icon })) : L.marker([lat, lng], cfg.markerOptions);
 
-        const marker = icon
-          ? L.marker([lat, lng], Object.assign({}, cfg.markerOptions, { icon }))
-          : L.marker([lat, lng], cfg.markerOptions);
+        // popup html: name, description, tags, link/page
+        const name = escapeHtml(p.name || '—');
+        const desc = p.description ? `<p style="margin:0.35rem 0;font-size:0.95rem;color:#334;">${escapeHtml(p.description)}</p>` : '';
+        const tags = (() => {
+          if (!p.tags) return '';
+          const arr = Array.isArray(p.tags) ? p.tags : String(p.tags).split(/[,#;]/).map(s => s.trim()).filter(Boolean);
+          if (!arr.length) return '';
+          return `<p style="margin:0.35rem 0;">${arr.map(t => `<span class="kicker" style="margin-right:6px;font-size:0.85rem;padding:0.18rem 0.45rem;border-radius:999px;background:rgba(0,163,224,0.08);color:var(--primary);">${escapeHtml(t)}</span>`).join('')}</p>`;
+        })();
 
-        // popup content
         const href = p.page || p.link || null;
-        const note = p.note ? `<div class="muted">${escapeHtml(p.note)}</div>` : '';
-        const popup = href
-          ? `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a>${note}`
-          : `<strong>${escapeHtml(p.name)}</strong>${note}`;
+        const hrefLabel = p.page ? 'Fiche' : (p.link ? 'Voir sur Google Maps' : null);
+        const hrefHtml = href ? `<p style="margin:0.25rem 0;"><a href="${href}" target="_blank" rel="noopener">${escapeHtml(hrefLabel)}</a></p>` : '';
 
-        marker.bindPopup(popup);
+        const popupHtml = `<div style="max-width:320px"><strong>${name}</strong>${desc}${tags}${hrefHtml}</div>`;
+
+        marker.bindPopup(popupHtml);
         marker.addTo(layerGroup);
 
         // list item
         if (container) {
           const li = document.createElement('li');
           if (href) {
-            li.innerHTML = `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a>${p.type ? ` — <small class="muted">${escapeHtml(p.type)}</small>` : ''}${p.note ? ` — <span class="muted">${escapeHtml(p.note)}</span>` : ''}`;
+            li.innerHTML = `<a href="${href}" target="_blank" rel="noopener">${escapeHtml(p.name)}</a>${p.type ? ` — <small class="muted">${escapeHtml(p.type)}</small>` : ''}`;
           } else {
-            li.innerHTML = `<strong>${escapeHtml(p.name)}</strong>${p.type ? ` — <small class="muted">${escapeHtml(p.type)}</small>` : ''}${p.note ? ` — <span class="muted">${escapeHtml(p.note)}</span>` : ''}`;
+            li.innerHTML = `<strong>${escapeHtml(p.name)}</strong>${p.type ? ` — <small class="muted">${escapeHtml(p.type)}</small>` : ''}`;
           }
           ul.appendChild(li);
         }
@@ -124,9 +118,8 @@
     }
   }
 
-  // petit helper pour éviter XSS basique dans noms/notes
   function escapeHtml(str) {
-    if (!str && str !== 0) return '';
+    if (str === null || str === undefined) return '';
     return String(str)
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -135,15 +128,5 @@
       .replace(/'/g, '&#39;');
   }
 
-  // expose
   window.loadPlaces = loadPlaces;
 })();
-
-<script src="../../js/loadPlaces.js"></script>
-<script>
-  loadPlaces(map, {
-    jsonPath: '../../data/restaurants_pologne.json',
-    listContainerId: 'places-content',
-    icons: { restaurant: '../../img/restaurant.png', ville: null }
-  });
-</script>
