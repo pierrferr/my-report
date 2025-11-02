@@ -68,3 +68,63 @@ footer {
   align-items: center;
   font-size: 1.1rem;
 }
+
+/* === HEADER GLOBAL === */
+#site-header {
+  display: flex;
+  justify-content: space-between;   /* logo à gauche, titre à droite */
+  align-items: center;
+  padding: 0.8rem 2rem;
+  background-color: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;                 /* reste visible en haut */
+  top: 0;
+  z-index: 1000;
+  /* positionnement relatif pour que le titre positionné absolument soit centré */
+  /* (position: sticky suffit mais on explicite pour compatibilité) */
+  position: sticky;
+}
+
+/* === LOGO === */
+#site-logo {
+  height: 70px;                     /* ajuste selon ton image */
+  width: auto;
+  transition: transform 0.2s ease;
+}
+
+#site-logo {
+  height: 70px;
+  width: auto;
+  transition: transform 0.2s ease;
+  z-index: 1000;
+}
+
+/* === TITRE === */
+#site-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 1.8rem;
+  color: #333;
+  margin: 0;
+  z-index: 1001;
+}
+
+/* === LIEN LOGO === */
+.logo-link {
+  text-decoration: none;
+}
+
+/* === Responsive mobile === */
+@media (max-width: 600px) {
+  #site-header {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  #site-title {
+    font-size: 1.4rem;
+  }
+}
+
