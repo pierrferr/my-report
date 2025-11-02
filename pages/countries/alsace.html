@@ -6,32 +6,30 @@
   <title>Aleks Report — Alsace</title>
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <style>#map { height:500px; border-radius:8px; margin:1rem 0; }</style>
+  <style>#map { height:500px; border-radius:8px; margin:1rem 0; } #filters{margin:0.6rem 0;display:flex;gap:0.8rem;flex-wrap:wrap}</style>
 </head>
 <body>
   <header id="site-header">
-    <a href="../../index.html" class="logo-link">
-      <img src="../../img/miam_logo.png" alt="Mon Report - Accueil" id="site-logo">
-    </a>
+    <a href="../../index.html" class="logo-link"><img src="../../img/miam_logo.png" id="site-logo" alt=""></a>
     <h1 id="site-title">Les voyages du miam</h1>
   </header>
 
   <p style="margin:1rem 2rem;"><a href="../../index.html">← Retour à la carte du monde</a></p>
 
   <h2 style="margin-left:2rem;">Carte — Alsace</h2>
+
+  <div id="filters" style="margin-left:2rem;">
+    <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
+    <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
+    <button id="filter-vg" class="tag-button">#VG</button>
+    <button id="filter-baby" class="tag-button">#BabyFriendly</button>
+  </div>
+
   <div id="map"></div>
 
   <section id="places-list" class="card" style="margin:1rem 2rem;">
     <h3>Adresses en Alsace</h3>
-    <div id="places-content"></div>
-  </section>
-
-  <section style="margin:1rem 2rem;">
-    <h3>Villes / lieux</h3>
-    <ul>
-      <li><a href="../cities/alsace.html">Fiche Alsace (villes & itinéraires)</a></li>
-      <li><a href="../cities/strasbourg.html">Strasbourg</a></li>
-    </ul>
+    <div id="places-content">Chargement…</div>
   </section>
 
   <footer>
@@ -40,38 +38,44 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="../../js/loadPlaces.js"></script>
   <script>
-    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
-      day:'2-digit', month:'long', year:'numeric'
-    });
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
+    const map = L.map('map').setView([48.3,7.4],10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
 
-    const map = L.map('map').setView([48.3, 7.4], 10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; OpenStreetMap contributors'
-    }).addTo(map);
-
-    const places = [
-      { name: "La Courrone — Scherwiller", lat: 48.2890, lng: 7.3410, link: "https://www.google.com/maps/search/?api=1&query=La+Courrone+Scherwiller" },
-      { name: "Strasbourg", lat: 48.5734, lng: 7.7521, page: "../cities/strasbourg.html" }
-    ];
-
-    function addMarkersAndList() {
-      const container = document.getElementById('places-content');
-      const ul = document.createElement('ul');
-
-      places.forEach(p => {
-        L.marker([p.lat, p.lng]).addTo(map).bindPopup(p.page ? `<a href="${p.page}">${p.name}</a>` : `<a href="${p.link}" target="_blank">${p.name}</a>`);
-        const li = document.createElement('li');
-        if (p.page) li.innerHTML = `<strong>${p.name}</strong> — <a href="${p.page}">Fiche</a>`;
-        else li.innerHTML = `<strong>${p.name}</strong> — <a href="${p.link}" target="_blank">Voir</a>`;
-        ul.appendChild(li);
+    let allPlaces = [];
+    function doFilteredLoad(filteredPlaces){
+      const blob = new Blob([JSON.stringify({places: filteredPlaces})],{type:'application/json'});
+      const url = URL.createObjectURL(blob);
+      return loadPlaces(map,{ jsonPath: url, listContainerId:'places-content', icons:{ brunch:'../../img/croissant.png', pizzeria:'../../img/pizza.png', restaurant:'../../img/restaurant.png' }, clearBefore:true })
+        .finally(()=>URL.revokeObjectURL(url));
+    }
+    function applyFilters(){
+      const showBr = document.getElementById('filter-brunchs').checked;
+      const showPz = document.getElementById('filter-pizzerias').checked;
+      const vgOnly = document.getElementById('filter-vg').classList.contains('active');
+      const babyOnly = document.getElementById('filter-baby').classList.contains('active');
+      const filtered = allPlaces.filter(p=>{
+        const t=(p.type||'').toLowerCase();
+        if(t==='brunch' && !showBr) return false;
+        if(t==='pizzeria' && !showPz) return false;
+        const tags=(p.tags? (Array.isArray(p.tags)?p.tags:p.tags.toString().split(/[,#;]/)) : []).map(s=>String(s).trim().toLowerCase());
+        if(vgOnly && !tags.includes('vg')) return false;
+        if(babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
+        return true;
       });
-
-      container.innerHTML = '';
-      container.appendChild(ul);
+      return doFilteredLoad(filtered);
     }
 
-    addMarkersAndList();
+    loadPlaces(map,{ jsonPath:'../../data/restaurants_alsace.json', listContainerId:'places-content', icons:{ brunch:'../../img/croissant.png', pizzeria:'../../img/pizza.png', restaurant:'../../img/restaurant.png' }, clearBefore:true })
+      .then(({places})=>{ allPlaces=places.slice();
+        document.getElementById('filter-brunchs').addEventListener('change',applyFilters);
+        document.getElementById('filter-pizzerias').addEventListener('change',applyFilters);
+        const vgBtn=document.getElementById('filter-vg'), babyBtn=document.getElementById('filter-baby');
+        vgBtn.addEventListener('click',()=>{vgBtn.classList.toggle('active'); applyFilters();});
+        babyBtn.addEventListener('click',()=>{babyBtn.classList.toggle('active'); applyFilters();});
+      }).catch(()=>{});
   </script>
 </body>
 </html>
