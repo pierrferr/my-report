@@ -146,12 +146,33 @@ footer {
 /* Responsive */
 @media (max-width:900px){
   body{padding:0.8rem}
-  #site-header{flex-direction:row; gap:0.6rem; padding:0.6rem}
-  #site-title{font-size:1.05rem}
+  #site-header{
+    /* rester en ligne */
+    flex-direction: row;
+    gap:0.6rem;
+    padding:0.6rem;
+    align-items:center;
+  }
+  #site-title{font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   #map{height:360px}
+  #site-logo { height:48px; }
 }
 @media (max-width:480px){
-  #site-header{flex-direction:column; align-items:flex-start; gap:0.6rem}
+  /* conserver l'entête en ligne mais réduire les tailles */
+  #site-header{
+    flex-direction: row;
+    align-items:center;
+    gap:0.5rem;
+    padding:0.5rem;
+  }
   .feature-list{flex-direction:column; gap:0.4rem}
+  #site-title{
+    font-size:0.98rem;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    max-width:calc(100% - 64px); /* laisse de la place pour le logo */
+  }
+  #site-logo { height:44px; width:auto; }
   #map{height:300px}
 }

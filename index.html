@@ -13,7 +13,7 @@
 </head>
 <body>
 <header id="site-header">
-  <a href="pages/index.html" class="logo-link">
+  <a href="index.html" class="logo-link">
     <img src="img/miam_logo.png" alt="Logo MIAM" id="site-logo">
   </a>
   <h1 id="site-title">Les voyages du miam</h1>
@@ -21,8 +21,11 @@
 
 <section id="presentation">
   <p class="lead">
-    Ici tu trouveras : des cools restaus du monde entier, testés et adorés pour du bonheur dans l'assiette et de belles rencontres avec des restaurateurs passionnés.
-    Brunchs, pizzas, choix VG de BG, lieux babyfriendly... Trouve ton prochain coup de cœur gourmand !
+    🍴 Des idées de cools restaus du monde entier, testés et adorés pour du bonheur dans l'assiette et de belles rencontres avec des restaurateurs passionnés.
+    Brunchs, pizzas, choix VG de BG*, lieux baby friendly**.
+    <br />
+    <br />
+    Trouve ton prochain coup de cœur gourmand !
   </p>
 </section>
 
@@ -79,6 +82,11 @@
   <hr>
   <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
 </footer>
+
+<section style="margin:0.6rem 0 2rem; color:var(--muted); font-size:0.95rem;">
+  <p style="margin:0.2rem 0;"><small>* VG de BG = des endroits où les végétariens ont du choix !</small></p>
+  <p style="margin:0.2rem 0;"><small>** baby friendly = avec au minimum une chaise haute et une table pour manger.</small></p>
+</section>
 
 <script>
   document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
