@@ -8,11 +8,28 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <style>
     #map { height:500px; border-radius:8px; margin:1rem 0; }
-    #filters { margin:0.5rem 0; display:flex; gap:1rem; align-items:center;}
+    #filters { margin:0.5rem 0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;}
+    .tag-button {
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:0.4rem 0.7rem;
+      border-radius:999px;
+      border:1px solid rgba(16,24,40,0.06);
+      background:transparent;
+      cursor:pointer;
+      font-weight:600;
+      color:var(--primary);
+    }
+    .tag-button.active {
+      background: linear-gradient(90deg,var(--primary),var(--primary-600));
+      color:#fff;
+      box-shadow: 0 6px 14px rgba(0,163,224,0.12);
+    }
   </style>
 </head>
 <body>
-    <header id="site-header">
+  <header id="site-header">
     <a href="../../index.html" class="logo-link">
       <img src="../../img/miam_logo.png" alt="Mon Report - Accueil" id="site-logo">
     </a>
@@ -26,6 +43,10 @@
   <div id="filters" style="margin-left:2rem;">
     <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
     <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
+
+    <!-- Nouveaux boutons de filtre par tag -->
+    <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
   </div>
 
   <div id="map"></div>
@@ -53,7 +74,49 @@
       attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Charge les lieux depuis le JSON (une seule source à éditer)
+    // stocke toutes les places chargées pour filtrage côté client
+    let allPlaces = [];
+
+    function doFilteredLoad(filteredPlaces) {
+      const filtered = { places: filteredPlaces };
+      const blob = new Blob([JSON.stringify(filtered)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      return loadPlaces(map, {
+        jsonPath: url,
+        listContainerId: 'places-content',
+        icons: {
+          brunch: '../../img/croissant.png',
+          pizzeria: '../../img/pizza.png',
+          restaurant: '../../img/restaurant.png',
+          ville: null
+        },
+        clearBefore: true
+      }).finally(() => URL.revokeObjectURL(url));
+    }
+
+    // fonction qui construit le jeu filtré à partir de allPlaces et des contrôles
+    function applyFiltersFromControls() {
+      const showBr = document.getElementById('filter-brunchs').checked;
+      const showPz = document.getElementById('filter-pizzerias').checked;
+      const vgOnly = document.getElementById('filter-vg').classList.contains('active');
+      const babyOnly = document.getElementById('filter-baby').classList.contains('active');
+
+      const filtered = allPlaces.filter(p => {
+        const type = (p.type || '').toLowerCase();
+        // type filters
+        if (type === 'brunch' && !showBr) return false;
+        if (type === 'pizzeria' && !showPz) return false;
+        // tag filters: if vgOnly true, require tag 'VG'
+        const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(t => String(t).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s=>s.trim())) : [];
+        if (vgOnly && !tags.includes('vg') && !tags.includes('#vg')) return false;
+        if (babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby') && !tags.includes('#babyfriendly')) return false;
+        return true;
+      });
+
+      return doFilteredLoad(filtered);
+    }
+
+    // initial load
     loadPlaces(map, {
       jsonPath: '../../data/restaurants_strasbourg.json',
       listContainerId: 'places-content',
@@ -63,39 +126,28 @@
         restaurant: '../../img/restaurant.png',
         ville: null
       },
-      markerOptions: {},
       clearBefore: true
     }).then(({ places }) => {
-      // Optionnel : filtre simple local en fonction des checkboxes
-      const allPlaces = places;
-      function applyFilters() {
-        const showBr = document.getElementById('filter-brunchs').checked;
-        const showPz = document.getElementById('filter-pizzerias').checked;
-        // rebuild visible layer: reload but avoid removing layerGroup history => call loadPlaces with clearBefore true and a filtered temp JSON-like object
-        const filtered = { places: allPlaces.filter(p => {
-          const t = (p.type || '').toLowerCase();
-          if (t === 'brunch') return showBr;
-          if (t === 'pizzeria') return showPz;
-          return true;
-        })};
-        // create a Blob URL to pass to loadPlaces without writing file
-        const blob = new Blob([JSON.stringify(filtered)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        loadPlaces(map, {
-          jsonPath: url,
-          listContainerId: 'places-content',
-          icons: {
-            brunch: '../../img/croissant.png',
-            pizzeria: '../../img/pizza.png',
-            restaurant: '../../img/restaurant.png',
-            ville: null
-          },
-          clearBefore: true
-        }).finally(() => URL.revokeObjectURL(url));
-      }
+      allPlaces = places.slice(); // clone
 
-      document.getElementById('filter-brunchs').addEventListener('change', applyFilters);
-      document.getElementById('filter-pizzerias').addEventListener('change', applyFilters);
+      // wire up filters
+      document.getElementById('filter-brunchs').addEventListener('change', applyFiltersFromControls);
+      document.getElementById('filter-pizzerias').addEventListener('change', applyFiltersFromControls);
+
+      // tag buttons toggle
+      const vgBtn = document.getElementById('filter-vg');
+      const babyBtn = document.getElementById('filter-baby');
+
+      vgBtn.addEventListener('click', () => {
+        vgBtn.classList.toggle('active');
+        // if activating VG and Baby is active, keep both active (logical AND)
+        applyFiltersFromControls();
+      });
+
+      babyBtn.addEventListener('click', () => {
+        babyBtn.classList.toggle('active');
+        applyFiltersFromControls();
+      });
     }).catch(err => {
       console.warn(err);
     });
