@@ -87,13 +87,7 @@ footer {
 
 /* === LOGO === */
 #site-logo {
-  height: 70px;                     /* ajuste selon ton image */
-  width: auto;
-  transition: transform 0.2s ease;
-}
-
-#site-logo {
-  height: 70px;
+  height: 60px;
   width: auto;
   transition: transform 0.2s ease;
   z-index: 1000;
