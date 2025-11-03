@@ -44,6 +44,15 @@
       "link": "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg",
       "description": "Lieu chaleureux, options végétariennes, table haute et espace bébé.",
       "tags": ["VG", "BabyFriendly"]
+    },
+    {
+      "name": "La Hache",
+      "type": "restaurant",
+      "lat": 48.5795016,
+      "lng": 7.7465863,
+      "link": "https://www.google.fr/maps/place/La+Hache/@48.5795016,7.7465863,16z/data=!3m1!4b1!4m6!3m5!1s0x4796c852d5d7ce0b:0x6da1733801b3304d!8m2!3d48.5795016!4d7.7491612!16s%2Fg%2F1tdkqr86?entry=ttu&g_ep=EgoyMDI1MTAyOS4yIKXMDSoASAFQAw%3D%3D",
+      "description": "Nourriture traditionnelle alsacienne.",
+      "tags": ["VG"]
     }
   ]
 }
