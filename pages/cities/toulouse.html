@@ -21,8 +21,10 @@
   <div id="filters" style="margin-left:2rem;">
     <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
     <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
-    <button id="filter-vg" class="tag-button">#VG</button>
-    <button id="filter-baby" class="tag-button">#BabyFriendly</button>
+
+    <!-- Tag buttons (VG / BabyFriendly) -->
+    <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
   </div>
 
   <div id="map"></div>
@@ -68,14 +70,18 @@
       return doFilteredLoad(filtered);
     }
 
-    loadPlaces(map,{ jsonPath:'../../data/restaurants_toulouse.json', listContainerId:'places-content', icons:{ pizzeria:'../../img/pizza.png', restaurant:'../../img/restaurant.png' }, clearBefore:true })
-      .then(({places})=>{ allPlaces=places.slice();
-        document.getElementById('filter-brunchs').addEventListener('change',applyFilters);
-        document.getElementById('filter-pizzerias').addEventListener('change',applyFilters);
-        const vgBtn=document.getElementById('filter-vg'), babyBtn=document.getElementById('filter-baby');
-        vgBtn.addEventListener('click',()=>{vgBtn.classList.toggle('active'); applyFilters();});
-        babyBtn.addEventListener('click',()=>{babyBtn.classList.toggle('active'); applyFilters();});
-      }).catch(()=>{});
+    loadPlaces(map, {
+      jsonPath: '../../data/restaurants_toulouse.json',
+      listContainerId: 'places-content',
+      icons: {
+        brunch: '../../img/croissant.png',
+        pizzeria: '../../img/pizza.png',
+        restaurant: '../../img/cloche.png', /* <- remplacé */
+        ville: null
+      },
+      markerOptions: {},
+      clearBefore: true
+    });
   </script>
 </body>
 </html>

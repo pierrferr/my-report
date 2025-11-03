@@ -123,9 +123,10 @@
       icons: {
         brunch: '../../img/croissant.png',
         pizzeria: '../../img/pizza.png',
-        restaurant: '../../img/restaurant.png',
+        restaurant: '../../img/cloche.png', /* <- remplacé */
         ville: null
       },
+      markerOptions: {},
       clearBefore: true
     }).then(({ places }) => {
       allPlaces = places.slice(); // clone

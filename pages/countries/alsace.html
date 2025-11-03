@@ -40,42 +40,26 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="../../js/loadPlaces.js"></script>
   <script>
-    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
-    const map = L.map('map').setView([48.3,7.4],10);
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{attribution:'&copy; OpenStreetMap contributors'}).addTo(map);
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day:'2-digit', month:'long', year:'numeric'
+    });
 
-    let allPlaces = [];
-    function doFilteredLoad(filteredPlaces){
-      const blob = new Blob([JSON.stringify({places: filteredPlaces})],{type:'application/json'});
-      const url = URL.createObjectURL(blob);
-      return loadPlaces(map,{ jsonPath: url, listContainerId:'places-content', icons:{ brunch:'../../img/croissant.png', pizzeria:'../../img/pizza.png', restaurant:'../../img/restaurant.png' }, clearBefore:true })
-        .finally(()=>URL.revokeObjectURL(url));
-    }
-    function applyFilters(){
-      const showBr = document.getElementById('filter-brunchs').checked;
-      const showPz = document.getElementById('filter-pizzerias').checked;
-      const vgOnly = document.getElementById('filter-vg').classList.contains('active');
-      const babyOnly = document.getElementById('filter-baby').classList.contains('active');
-      const filtered = allPlaces.filter(p=>{
-        const t=(p.type||'').toLowerCase();
-        if(t==='brunch' && !showBr) return false;
-        if(t==='pizzeria' && !showPz) return false;
-        const tags=(p.tags? (Array.isArray(p.tags)?p.tags:p.tags.toString().split(/[,#;]/)) : []).map(s=>String(s).trim().toLowerCase());
-        if(vgOnly && !tags.includes('vg')) return false;
-        if(babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
-        return true;
-      });
-      return doFilteredLoad(filtered);
-    }
+    const map = L.map('map').setView([48.3, 7.4], 10);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-    loadPlaces(map,{ jsonPath:'../../data/restaurants_alsace.json', listContainerId:'places-content', icons:{ brunch:'../../img/croissant.png', pizzeria:'../../img/pizza.png', restaurant:'../../img/restaurant.png' }, clearBefore:true })
-      .then(({places})=>{ allPlaces=places.slice();
-        document.getElementById('filter-brunchs').addEventListener('change',applyFilters);
-        document.getElementById('filter-pizzerias').addEventListener('change',applyFilters);
-        const vgBtn=document.getElementById('filter-vg'), babyBtn=document.getElementById('filter-baby');
-        vgBtn.addEventListener('click',()=>{vgBtn.classList.toggle('active'); applyFilters();});
-        babyBtn.addEventListener('click',()=>{babyBtn.classList.toggle('active'); applyFilters();});
-      }).catch(()=>{});
+    loadPlaces(map, {
+      jsonPath: '../../data/restaurants_alsace.json',
+      listContainerId: 'places-content',
+      icons: {
+        brunch: '../../img/croissant.png',
+        pizzeria: '../../img/pizza.png',
+        restaurant: '../../img/cloche.png',
+        ville: null
+      },
+      clearBefore: true
+    });
   </script>
 </body>
 </html>

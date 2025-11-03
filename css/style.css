@@ -143,7 +143,53 @@ footer {
 .kicker { color:var(--primary); font-weight:700; font-size:0.95rem; }
 .muted { color:var(--muted); font-size:0.95rem; }
 
-/* Responsive */
+/* Tag/filter buttons (reuse across pages) */
+.tag-button {
+  display:inline-flex;
+  align-items:center;
+  gap:0.5rem;
+  padding:0.38rem 0.7rem;
+  border-radius:999px;
+  border:1px solid rgba(16,24,40,0.06);
+  background:transparent;
+  cursor:pointer;
+  font-weight:700;
+  color:var(--primary);
+  transition: all 180ms ease;
+  user-select: none;
+}
+.tag-button:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,163,224,0.06); }
+.tag-button.active {
+  background: linear-gradient(90deg,var(--primary),var(--primary-600));
+  color:#fff;
+  box-shadow: 0 8px 20px rgba(0,163,224,0.12);
+}
+
+/* Smaller nav button for "Qui suis-je ?" to avoid hiding title on mobile */
+header nav .button {
+  padding: 0.4rem 0.72rem;
+  font-size: 0.95rem;
+  border-radius: 999px;
+}
+
+/* Mobile: reduce size further and ensure title keeps space */
+@media (max-width:480px){
+  header nav .button {
+    padding: 0.28rem 0.5rem;
+    font-size: 0.82rem;
+    max-width: 110px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  /* ensure title doesn't get pushed out by nav button on very small screens */
+  #site-title {
+    max-width: calc(100% - 132px); /* leave room for logo + nav button */
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+}
 @media (max-width:900px){
   body{padding:0.8rem}
   #site-header{
@@ -156,23 +202,4 @@ footer {
   #site-title{font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   #map{height:360px}
   #site-logo { height:48px; }
-}
-@media (max-width:480px){
-  /* conserver l'entête en ligne mais réduire les tailles */
-  #site-header{
-    flex-direction: row;
-    align-items:center;
-    gap:0.5rem;
-    padding:0.5rem;
-  }
-  .feature-list{flex-direction:column; gap:0.4rem}
-  #site-title{
-    font-size:0.98rem;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-    max-width:calc(100% - 64px); /* laisse de la place pour le logo */
-  }
-  #site-logo { height:44px; width:auto; }
-  #map{height:300px}
 }

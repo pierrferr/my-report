@@ -22,6 +22,11 @@
       clearBefore: true
     }, options);
 
+    // fallback par défaut pour l'icône "restaurant"
+    cfg.icons = Object.assign({
+      restaurant: 'img/cloche.png' // chemin relatif par défaut (depuis la racine)
+    }, cfg.icons);
+
     const container = document.getElementById(cfg.listContainerId);
     if (!container) console.warn('loadPlaces: list container not found:', cfg.listContainerId);
 
