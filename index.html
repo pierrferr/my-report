@@ -17,19 +17,11 @@
     <img src="img/miam_logo.png" alt="Logo MIAM" id="site-logo">
   </a>
   <h1 id="site-title">Les voyages du miam</h1>
-  <nav aria-label="Site navigation" style="margin-left:auto;">
-    <a class="button" href="pages/about.html">Qui suis‑je ?</a>
-  </nav>
 </header>
 
 <section id="presentation">
   <p class="lead">
-    Bienvenue sur Les voyages du miam ! Je partage ici des idées de cools restaus du monde entier, testés et adorés pour du bonheur dans l'assiette et de belles rencontres avec des restaurateurs passionnés.
-    <br />
-    Brunchs, pizzas, choix VG de BG*, lieux baby friendly**.
-    <br />
-    <br />
-    Trouve ton prochain coup de cœur gourmand !
+    Bienvenue sur Les voyages du miam. Trouve ici ton prochain coup de cœur gourmand !
   </p>
 </section>
 
@@ -62,16 +54,28 @@
   </div>
 </section>
 
+<section id="presentation">
+  <p class="lead">
+    Je partage ici des idées de cools restaus du monde entier, testés et adorés pour du bonheur dans l'assiette et de belles rencontres avec des restaurateurs passionnés.
+    <br />
+    <ul>
+<li>Brunchs</li>
+<li>Pizzas</li>
+<li>Choix VG de BG (des endroits où les végétariens ont du choix) </li>
+<li>Lieux baby friendly (avec au minimum une chaise haute et une table à langer) </li>
+</ul>
+
+  </p>
+</section>
+
 
 <footer>
   <hr>
   <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  <nav aria-label="Site navigation" style="margin-left:auto;">
+    <a class="button" href="pages/about.html">Qui suis‑je ?</a>
+  </nav>
 </footer>
-
-<section style="margin:0.6rem 0 2rem; color:var(--muted); font-size:0.95rem;">
-  <p style="margin:0.2rem 0;"><small>* VG de BG = des endroits où les végétariens ont du choix !</small></p>
-  <p style="margin:0.2rem 0;"><small>** baby friendly = avec au minimum une chaise haute et une table à langer.</small></p>
-</section>
 
 <script>
   document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
