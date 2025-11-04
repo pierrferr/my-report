@@ -2,15 +2,16 @@
 
 /* Palette (Pantone 299c ~ #00A3E0) */
 :root{
-  --primary: #00A3E0;
-  --primary-600: #0097cc;
-  --accent: #FF6F3C;      /* chaleureux */
-  --muted: #6b7280;
-  --bg: #fbfeff;
+  /* Palette basée sur Pantone 7623 C (approx. hex) */
+  --primary: #C92A2C;       /* couleur principale (Pantone 7623C approximé) */
+  --primary-600: #B02022;   /* teinte foncée pour hover/gradients */
+  --accent: #FF8A3B;        /* accent chaleureux complémentaire */
+  --muted: #6b4b4b;         /* texte secondaire adapté au ton chaud */
+  --bg: #fff6f6;            /* fond léger, chaud */
   --card: #ffffff;
   --glass: rgba(255,255,255,0.6);
   --radius: 12px;
-  --shadow-sm: 0 6px 18px rgba(16,24,40,0.06);
+  --shadow-sm: 0 6px 18px rgba(32,16,16,0.06);
 }
 
 /* Reset + layout */
