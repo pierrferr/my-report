@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
 
 /* Palette (Pantone 299c ~ #00A3E0) */
-:root{
-  /* Palette basée sur Pantone 7623 C (approx. hex) */
-  --primary: #C92A2C;       /* couleur principale (Pantone 7623C approximé) */
-  --primary-600: #B02022;   /* teinte foncée pour hover/gradients */
-  --accent: #FF8A3B;        /* accent chaleureux complémentaire */
-  --muted: #6b4b4b;         /* texte secondaire adapté au ton chaud */
-  --bg: #fff6f6;            /* fond léger, chaud */
-  --card: #ffffff;
-  --glass: rgba(255,255,255,0.6);
+:root {
+  --primary: #8B2B2B;         /* Rouge bordeaux – couleur principale */
+  --primary-600: #6E1F1F;     /* Variante plus foncée */
+  --accent: #FF7F50;          /* Corail orangé gourmand */
+  --muted: #7A6F6F;           /* Gris chaud, pour le texte secondaire */
+  --bg: #FFF9F7;              /* Fond légèrement crème */
+  --card: #FFFFFF;            /* Fond des sections */
   --radius: 12px;
-  --shadow-sm: 0 6px 18px rgba(32,16,16,0.06);
+  --shadow-sm: 0 6px 18px rgba(40,20,20,0.06);
+  --shadow-md: 0 10px 30px rgba(40,20,20,0.1);
 }
 
 /* Reset + layout */
@@ -34,7 +33,8 @@ body {
   align-items: center;
   gap: 0.75rem;
   padding: 0.6rem 1rem;
-  background: linear-gradient(90deg, rgba(0,163,224,0.06), rgba(255,111,60,0.02));
+  background: linear-gradient(90deg, rgba(139,43,43,0.08), rgba(255,127,80,0.04));
+
   border-radius: var(--radius);
   box-shadow: var(--shadow-sm);
   position: static;
@@ -116,7 +116,7 @@ header nav .button {
 #presentation {
   margin:1.25rem 0;
   padding:1rem;
-  background: linear-gradient(180deg, rgba(0,163,224,0.03), rgba(255,111,60,0.01));
+  background: linear-gradient(180deg, rgba(139,43,43,0.05), rgba(255,127,80,0.02));
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(10,20,30,0.03);
 }
