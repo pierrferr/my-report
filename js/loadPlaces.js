@@ -75,9 +75,17 @@
         if (!lat || !lng) return;
 
         const type = (p.type || '').toString().toLowerCase();
-        const iconUrl = cfg.icons && cfg.icons[type];
-        const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
-        const marker = icon ? L.marker([lat, lng], Object.assign({}, cfg.markerOptions, { icon })) : L.marker([lat, lng], cfg.markerOptions);
+const iconUrl = cfg.icons && cfg.icons[type];
+const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
+
+// --- Correction légère pour le fond de carte Carto Light ---
+const offset = { lat: 0.0008, lng: -0.0008 }; // ≈ 80 m vers le nord-ouest
+const correctedLat = lat + offset.lat;
+const correctedLng = lng + offset.lng;
+
+const marker = icon
+  ? L.marker([correctedLat, correctedLng], Object.assign({}, cfg.markerOptions, { icon }))
+  : L.marker([correctedLat, correctedLng], cfg.markerOptions);
 
         // popup html: name, description, tags, link/page
         const name = escapeHtml(p.name || '—');

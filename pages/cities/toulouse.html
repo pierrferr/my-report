@@ -47,7 +47,6 @@
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
-
     let allPlaces=[];
     function doFilteredLoad(filteredPlaces){
       const blob=new Blob([JSON.stringify({places:filteredPlaces})],{type:'application/json'});
