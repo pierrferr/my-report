@@ -51,7 +51,7 @@ body {
   flex: 0 0 auto; /* ne pas étirer */
 }
 #site-logo {
-  height: 56px;
+  height: 112px; /* doublé (avant 56px) */
   width: auto;
   border-radius: 8px;
   box-shadow: 0 4px 10px rgba(0,0,0,0.06);
@@ -91,11 +91,11 @@ header nav .button {
     gap: 0.5rem;
     padding: 0.5rem;
   }
-  #site-logo { height:48px; }
+  #site-logo { height:96px; } /* doublé (avant 48px) */
   #site-title { font-size:1.25rem; } /* ajusté pour écrans moyens */
 }
 @media (max-width:480px){
-  #site-logo { height:44px; }
+  #site-logo { height:88px; } /* doublé (avant 44px) */
   header nav .button {
     padding: 0.28rem 0.5rem;
     font-size: 0.84rem;
@@ -257,5 +257,5 @@ header nav .button {
   }
   #site-title{font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   #map{height:360px}
-  #site-logo { height:48px; }
+  #site-logo { height:96px; }
 }
