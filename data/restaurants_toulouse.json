@@ -1,17 +1,30 @@
 {
   "pizzerias": [
     {
-      "name": "La Grand Pizzeria",
-      "lat": 43.6065,
-      "lng": 1.4440,
-      "page": "pizzerias_toulouse.html#la-grand-pizzeria"
+      "name": "La Grand' Pizzeria",
+      "lat": 43.6049019,
+      "lng": 1.4476057,
+      "link": "https://www.google.fr/maps/place/La+Grand'+Pizzeria/@43.6049019,1.4476057,17z/data=!3m1!4b1!4m6!3m5!1s0x12aebc99733d7075:0x757b6f7172f3d25e!8m2!3d43.604898!4d1.4501806!16s%2Fg%2F1tjzms3p?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      "description": "Des pizzas énormes (taille au choix), cuites au feu de bois, miam !",
+      "tags": ["VG", "Gourmand"]
     },
     {
       "name": "Pizza de l'Ormeau",
-      "lat": 43.5795,
-      "lng": 1.4445,
-      "page": "pizzerias_toulouse.html#pizza-de-lormeau"
+      "lat": 43.5791606,
+      "lng": 1.4815034,
+      "link": "https://www.google.fr/maps/place/Pizza+de+l'Ormeau/@43.5791606,1.4815034,17z/data=!3m1!4b1!4m6!3m5!1s0x12aebc56f81dc94b:0xe2baf5841a3963ff!8m2!3d43.5791567!4d1.4840783!16s%2Fg%2F1hc2m5wbx?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      "description": "Une des pizzéria les plus célèbre de Toulouse et on comprend vite pourquoi ! Uniquement à emporter",
+      "tags": ["VG"]
     }
   ],
-  "restaurants": []
+  "restaurants": [
+    {
+      "name": "Bep Chay",
+      "lat": 43.5985756,
+      "lng": 1.4392146,
+      "link": "https://www.google.fr/maps/place/Bep+Chay/@43.5985756,1.4392146,17z/data=!3m2!4b1!5s0x12aebb7d3dd76b11:0x174c07d967bb0d62!4m6!3m5!1s0x12aebb40cbe98bfd:0xf4dd80856812194a!8m2!3d43.5985717!4d1.4417895!16s%2Fg%2F11pcnwt14h?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      "description": "Des pizzas énormes (taille au choix), cuites au feu de bois, miam !",
+      "tags": ["VG"]
+    }
+  ]
 }
