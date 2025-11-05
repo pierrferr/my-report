@@ -44,9 +44,10 @@
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
     const map = L.map('map').setView([43.6047,1.4442],13);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
+
     let allPlaces=[];
     function doFilteredLoad(filteredPlaces){
       const blob=new Blob([JSON.stringify({places:filteredPlaces})],{type:'application/json'});
