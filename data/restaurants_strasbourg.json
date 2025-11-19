@@ -39,8 +39,8 @@
     {
       "name": "Pizza Cosy",
       "type": "pizzeria",
-      "lat": 48.5762,
-      "lng": 7.7540,
+      "lat": 48.569968,
+      "lng": 7.762547,
       "link": "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg",
       "description": "Lieu chaleureux, options végétariennes, table haute et espace bébé.",
       "tags": ["VG", "BabyFriendly"]
