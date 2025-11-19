@@ -62,105 +62,33 @@
   <footer>
     <hr>
     <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+    <p><small><a href="../../credits.html">Crédits</a></small></p>
   </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="../../js/loadPlaces.js"></script>
+  <script src="../../js/map-filters.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
       day:'2-digit', month:'long', year:'numeric'
     });
 
     const map = L.map('map').setView([48.5734, 7.7521], 13);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-}).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+    }).addTo(map);
 
-    // stocke toutes les places chargées pour filtrage côté client
-    let allPlaces = [];
-
-    function doFilteredLoad(filteredPlaces) {
-      const filtered = { places: filteredPlaces };
-      const blob = new Blob([JSON.stringify(filtered)], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      return loadPlaces(map, {
-        jsonPath: url,
+    setupMapFilters(map, {
+        jsonPath: '../../data/restaurants_strasbourg.json',
         listContainerId: 'places-content',
         icons: {
-          brunch: '../../img/croissant.png',
-          pizzeria: '../../img/pizza.png',
-          'fast-food': '../../img/burger.png',
-          restaurant: '../../img/cloche.png',
-          ville: null
+            brunch: '../../img/croissant.png',
+            pizzeria: '../../img/pizza.png',
+            'fast-food': '../../img/burger.png',
+            restaurant: '../../img/cloche.png',
+            ville: null
         },
         clearBefore: true
-      }).finally(() => URL.revokeObjectURL(url));
-    }
-
-    // fonction qui construit le jeu filtré à partir de allPlaces et des contrôles
-    function applyFiltersFromControls() {
-      const showBr = document.getElementById('filter-brunchs').checked;
-      const showPz = document.getElementById('filter-pizzerias').checked;
-      const showRest = document.getElementById('filter-restaurants').checked;
-      const showFf = document.getElementById('filter-fast-food').checked;
-      const vgOnly = document.getElementById('filter-vg').classList.contains('active');
-      const babyOnly = document.getElementById('filter-baby').classList.contains('active');
-
-      const filtered = allPlaces.filter(p => {
-        const type = (p.type || '').toLowerCase();
-        // type filters
-        if (type === 'brunch' && !showBr) return false;
-        if (type === 'pizzeria' && !showPz) return false;
-        if (type === 'restaurant' && !showRest) return false;
-        if (type === 'fast-food' && !showFf) return false;
-        // tag filters: if vgOnly true, require tag 'VG'
-        const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(t => String(t).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s=>s.trim())) : [];
-        if (vgOnly && !tags.includes('vg') && !tags.includes('#vg')) return false;
-        if (babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby') && !tags.includes('#babyfriendly')) return false;
-        return true;
-      });
-
-      return doFilteredLoad(filtered);
-    }
-
-    // initial load
-    loadPlaces(map, {
-      jsonPath: '../../data/restaurants_strasbourg.json',
-      listContainerId: 'places-content',
-      icons: {
-        brunch: '../../img/croissant.png',
-        pizzeria: '../../img/pizza.png',
-        'fast-food': '../../img/burger.png',
-        restaurant: '../../img/cloche.png',
-        ville: null
-      },
-      markerOptions: {},
-      clearBefore: true
-    }).then(({ places }) => {
-      allPlaces = places.slice(); // clone
-
-      // wire up filters
-      document.getElementById('filter-brunchs').addEventListener('change', applyFiltersFromControls);
-      document.getElementById('filter-pizzerias').addEventListener('change', applyFiltersFromControls);
-      document.getElementById('filter-restaurants').addEventListener('change', applyFiltersFromControls);
-      document.getElementById('filter-fast-food').addEventListener('change', applyFiltersFromControls);
-
-      // tag buttons toggle
-      const vgBtn = document.getElementById('filter-vg');
-      const babyBtn = document.getElementById('filter-baby');
-
-      vgBtn.addEventListener('click', () => {
-        vgBtn.classList.toggle('active');
-        // if activating VG and Baby is active, keep both active (logical AND)
-        applyFiltersFromControls();
-      });
-
-      babyBtn.addEventListener('click', () => {
-        babyBtn.classList.toggle('active');
-        applyFiltersFromControls();
-      });
-    }).catch(err => {
-      console.warn(err);
     });
   </script>
 </body>
