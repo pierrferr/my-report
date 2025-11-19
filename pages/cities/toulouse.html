@@ -42,48 +42,54 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="../../js/loadPlaces.js"></script>
   <script>
-    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
-    const map = L.map('map').setView([43.6047,1.4442],13);
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-}).addTo(map);
+  const map = L.map('map').setView([43.6047, 1.4442], 13);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
 
-    let allPlaces=[];
-    function doFilteredLoad(filteredPlaces){
-      const blob=new Blob([JSON.stringify({places:filteredPlaces})],{type:'application/json'});
-      const url=URL.createObjectURL(blob);
-      return loadPlaces(map,{ jsonPath:url, listContainerId:'places-content', icons:{ pizzeria:'../../img/pizza.png', restaurant:'../../img/restaurant.png' }, clearBefore:true })
-        .finally(()=>URL.revokeObjectURL(url));
-    }
-    function applyFilters(){
-      const showBr=document.getElementById('filter-brunchs').checked;
-      const showPz=document.getElementById('filter-pizzerias').checked;
-      const vgOnly=document.getElementById('filter-vg').classList.contains('active');
-      const babyOnly=document.getElementById('filter-baby').classList.contains('active');
-      const filtered=allPlaces.filter(p=>{
-        const t=(p.type||'').toLowerCase();
-        if(t==='brunch' && !showBr) return false;
-        if(t==='pizzeria' && !showPz) return false;
-        const tags=(p.tags? (Array.isArray(p.tags)?p.tags:p.tags.toString().split(/[,#;]/)) : []).map(s=>String(s).trim().toLowerCase());
-        if(vgOnly && !tags.includes('vg')) return false;
-        if(babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
-        return true;
-      });
-      return doFilteredLoad(filtered);
-    }
+  let allPlaces = [];
 
-    loadPlaces(map, {
-      jsonPath: '../../data/restaurants_toulouse.json',
+  function doFilteredLoad(filteredPlaces){
+    const blob = new Blob([JSON.stringify({ places: filteredPlaces })], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    return loadPlaces(map, {
+      jsonPath: url,
       listContainerId: 'places-content',
-      icons: {
-        brunch: '../../img/croissant.png',
-        pizzeria: '../../img/pizza.png',
-        restaurant: '../../img/cloche.png', /* <- remplacé */
-        ville: null
-      },
-      markerOptions: {},
+      icons: { brunch: '../../img/croissant.png', pizzeria: '../../img/pizza.png', restaurant: '../../img/cloche.png', ville: null },
       clearBefore: true
+    }).finally(() => URL.revokeObjectURL(url));
+  }
+
+  function applyFilters(){
+    const showBr = document.getElementById('filter-brunchs')?.checked ?? true;
+    const showPz = document.getElementById('filter-pizzerias')?.checked ?? true;
+    const vgOnly = document.getElementById('filter-vg')?.classList.contains('active');
+    const babyOnly = document.getElementById('filter-baby')?.classList.contains('active');
+
+    const filtered = allPlaces.filter(p => {
+      const t = (p.type||'').toLowerCase();
+      if (t === 'brunch' && !showBr) return false;
+      if (t === 'pizzeria' && !showPz) return false;
+      const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(s=>String(s).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s=>s.trim())) : [];
+      if (vgOnly && !tags.includes('vg')) return false;
+      if (babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
+      return true;
     });
-  </script>
+
+    return doFilteredLoad(filtered);
+  }
+
+  loadPlaces(map, {
+    jsonPath: '../../data/restaurants_toulouse.json',
+    listContainerId: 'places-content',
+    icons: { brunch: '../../img/croissant.png', pizzeria: '../../img/pizza.png', restaurant: '../../img/cloche.png', ville: null },
+    clearBefore: true
+  }).then(({ places }) => {
+    allPlaces = places.slice();
+
+    document.getElementById('filter-brunchs')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-pizzerias')?.addEventListener('change', applyFilters);
+    document.getElementById('filter-vg')?.addEventListener('click', e => { e.currentTarget.classList.toggle('active'); applyFilters(); });
+    document.getElementById('filter-baby')?.addEventListener('click', e => { e.currentTarget.classList.toggle('active'); applyFilters(); });
+  }).catch(console.warn);
+</script>
 </body>
 </html>

@@ -43,44 +43,59 @@
   <script src="../../js/loadPlaces.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR',{day:'2-digit',month:'long',year:'numeric'});
-    const map = L.map('map').setView([52.0,19.0],6);
+    const map = L.map('map').setView([52.0, 19.0], 6);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; OpenStreetMap contributors'
+    }).addTo(map);
 
-L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-  attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-}).addTo(map);
+    let allPlaces = [];
 
-    let allPlaces=[];
     function doFilteredLoad(filteredPlaces){
-      const blob=new Blob([JSON.stringify({places:filteredPlaces})],{type:'application/json'});
-      const url=URL.createObjectURL(blob);
-      return loadPlaces(map,{ jsonPath:url, listContainerId:'places-content', icons:{ restaurant:'../../img/restaurant.png' }, clearBefore:true })
-        .finally(()=>URL.revokeObjectURL(url));
+      const blob = new Blob([JSON.stringify({ places: filteredPlaces })], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      return loadPlaces(map, {
+        jsonPath: url,
+        listContainerId: 'places-content',
+        icons: { restaurant: '../../img/cloche.png', ville: null },
+        clearBefore: true
+      }).finally(() => URL.revokeObjectURL(url));
     }
+
     function applyFilters(){
-      const showBr=document.getElementById('filter-brunchs').checked;
-      const showPz=document.getElementById('filter-restos').checked;
-      const vgOnly=document.getElementById('filter-vg').classList.contains('active');
-      const babyOnly=document.getElementById('filter-baby').classList.contains('active');
-      const filtered=allPlaces.filter(p=>{
-        const t=(p.type||'').toLowerCase();
-        if(t==='brunch' && !showBr) return false;
-        if(t==='pizzeria' && !showPz) return false;
-        const tags=(p.tags? (Array.isArray(p.tags)?p.tags:p.tags.toString().split(/[,#;]/)) : []).map(s=>String(s).trim().toLowerCase());
-        if(vgOnly && !tags.includes('vg')) return false;
-        if(babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
+      const showBr = document.getElementById('filter-brunchs')?.checked ?? true;
+      const showRest = document.getElementById('filter-restos')?.checked ?? true;
+      const vgOnly = document.getElementById('filter-vg')?.classList.contains('active');
+      const babyOnly = document.getElementById('filter-baby')?.classList.contains('active');
+
+      const filtered = allPlaces.filter(p => {
+        const t = (p.type||'').toLowerCase();
+        if (t === 'brunch' && !showBr) return false;
+        if ((t === 'restaurant' || t === 'resto' || t === 'restos') && !showRest) return false;
+        if (t === 'pizzeria' && !showRest) return false; // treat pizzeria as horeca/resto here
+        const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(s=>String(s).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s=>s.trim())) : [];
+        if (vgOnly && !tags.includes('vg')) return false;
+        if (babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
         return true;
       });
+
       return doFilteredLoad(filtered);
     }
 
+    // initial load
     loadPlaces(map, {
       jsonPath: '../../data/restaurants_pologne.json',
       listContainerId: 'places-content',
-      icons: {
-        restaurant: '../../img/cloche.png', /* <- remplacé */
-        ville: null
-      }
-    });
+      icons: { restaurant: '../../img/cloche.png', ville: null },
+      clearBefore: true
+    }).then(({ places }) => {
+      allPlaces = places.slice();
+
+      // wire controls
+      document.getElementById('filter-brunchs')?.addEventListener('change', applyFilters);
+      document.getElementById('filter-restos')?.addEventListener('change', applyFilters);
+      document.getElementById('filter-vg')?.addEventListener('click', e => { e.currentTarget.classList.toggle('active'); applyFilters(); });
+      document.getElementById('filter-baby')?.addEventListener('click', e => { e.currentTarget.classList.toggle('active'); applyFilters(); });
+    }).catch(console.warn);
   </script>
 </body>
 </html>
