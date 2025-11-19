@@ -9,6 +9,15 @@
       "note": "Cuisine locale, terrasse"
     },
     {
+      "name": "Aphrodite's Restaurant Grec- Kaysersberg",
+      "type": "restaurant",
+      "lat": 48.147955, 
+      "lng": 7.251251,
+      "description": "Restaurant grec qui fait du bien",
+      "link": "https://maps.app.goo.gl/kEtmPZW4ptpiXP296",
+      "tags": ["VG"]
+    },
+    {
       "name": "Strasbourg (fiche)",
       "type": "ville",
       "lat": 48.5734,
