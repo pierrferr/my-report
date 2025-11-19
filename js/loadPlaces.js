@@ -74,10 +74,28 @@
         const lng = Number(p.lng || p.longitude);
         if (!lat || !lng) return;
 
+        //const type = (p.type || '').toString().toLowerCase();
+        //const iconUrl = cfg.icons && cfg.icons[type];
+        //const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
+        //const marker = icon ? L.marker([lat, lng], Object.assign({}, cfg.markerOptions, { icon })) : L.marker([lat, lng], cfg.markerOptions);
+
         const type = (p.type || '').toString().toLowerCase();
-        const iconUrl = cfg.icons && cfg.icons[type];
-        const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
-        const marker = icon ? L.marker([lat, lng], Object.assign({}, cfg.markerOptions, { icon })) : L.marker([lat, lng], cfg.markerOptions);
+const iconUrl = cfg.icons && cfg.icons[type];
+const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
+
+const offset = {
+  lat: -0.00612 + 0.0000545,   // = -0.0060655
+  lng:  0.00601 + 0.0000504    // =  0.0060604
+};
+
+const correctedLat = lat + offset.lat;
+const correctedLng = lng + offset.lng;
+
+const marker = icon
+  ? L.marker([correctedLat, correctedLng], Object.assign({}, cfg.markerOptions, { icon }))
+  : L.marker([correctedLat, correctedLng], cfg.markerOptions);
+
+
 
         // popup html: name, description, tags, link/page
         const name = escapeHtml(p.name || '—');
