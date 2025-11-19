@@ -43,7 +43,9 @@
   <script src="../../js/loadPlaces.js"></script>
   <script>
   const map = L.map('map').setView([43.6047, 1.4442], 13);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+  }).addTo(map);
 
   let allPlaces = [];
 
