@@ -1,40 +1,29 @@
 {
   "places": [
     {
-      "name": "Café Bretelles",
+      "name": "Snack Saray",
+      "type": "fast-food",
+      "lat": 48.565346, 
+      "lng": 7.764224,
+      "link": "https://maps.app.goo.gl/6LnCcPQWmEg2LZf58",
+      "description": "Un kébab incontournable à Neudorf, avec des option végétarienne.",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Madame Julia",
       "type": "brunch",
-      "lat": 48.5793,
-      "lng": 7.7445,
-      "page": "pages/cities/brunchs_strasbourg.html#cafe-bretelles",
-      "description": "Petit café cosy, oeufs bio, jus pressés. Parfait pour un dimanche tranquille.",
-      "tags": ["VG", "BabyFriendly"]
+      "lat": 48.576056, 
+      "lng": 7.752580,
+      "description": "Institution à Strasbourg, et on comprend vite pourquoi, les pancakes sont énormes et délicieux",
+      "tags": ["Familial", "VG"]
     },
     {
-      "name": "Oh My Goodness",
-      "type": "brunch",
-      "lat": 48.5842,
-      "lng": 7.7501,
-      "page": "pages/cities/brunchs_strasbourg.html#oh-my-goodness",
-      "description": "Brunch copieux, pâtisseries maison, ambiance chaleureuse.",
-      "tags": ["Familial", "Vegan"]
-    },
-    {
-      "name": "Pizz’arôme",
-      "type": "pizzeria",
-      "lat": 48.5825,
-      "lng": 7.7507,
-      "page": "pages/cities/pizzerias_strasbourg.html#pizzarome",
-      "description": "Four au feu de bois, ingrédients importés d'Italie, pâte fine.",
-      "tags": ["Authentique"]
-    },
-    {
-      "name": "Il Forno",
-      "type": "pizzeria",
-      "lat": 48.5728,
-      "lng": 7.7572,
-      "page": "pages/cities/pizzerias_strasbourg.html#il-forno",
-      "description": "Pizzas classiques et créatives, ambiance italienne.",
-      "tags": ["Traditionnel", "Vegan"]
+      "name": "Sain Sushi",
+      "type": "restaurant",
+      "lat": 48.567118, 
+      "lng": 7.757964,
+      "description": "Des sushis et un cuisinier au top.",
+      "tags": ["VG", "Japonnais"]
     },
     {
       "name": "Pizza Cosy",

@@ -21,6 +21,8 @@
   <div id="filters" style="margin-left:2rem;">
     <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
     <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
+    <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
+    <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
     <button id="filter-vg" class="tag-button">#VG</button>
     <button id="filter-baby" class="tag-button">#BabyFriendly</button>
   </div>
@@ -57,7 +59,7 @@
       return loadPlaces(map, {
         jsonPath: url,
         listContainerId: 'places-content',
-        icons: { brunch: '../../img/croissant.png', pizzeria: '../../img/pizza.png', restaurant: '../../img/cloche.png', ville: null },
+        icons: { brunch: '../../img/croissant.png', pizzeria: '../../img/pizza.png', restaurant: '../../img/cloche.png', 'fast-food': '../../img/burger.png', ville: null },
         clearBefore: true
       }).finally(() => URL.revokeObjectURL(url));
     }
@@ -65,6 +67,8 @@
     function applyFilters(){
       const showBr = document.getElementById('filter-brunchs')?.checked ?? true;
       const showPz = document.getElementById('filter-pizzerias')?.checked ?? true;
+      const showRest = document.getElementById('filter-restaurants')?.checked ?? true;
+      const showFf = document.getElementById('filter-fast-food')?.checked ?? true;
       const vgOnly = document.getElementById('filter-vg')?.classList.contains('active');
       const babyOnly = document.getElementById('filter-baby')?.classList.contains('active');
 
@@ -72,6 +76,8 @@
         const t = (p.type||'').toLowerCase();
         if (t === 'brunch' && !showBr) return false;
         if (t === 'pizzeria' && !showPz) return false;
+        if (t === 'restaurant' && !showRest) return false;
+        if (t === 'fast-food' && !showFf) return false;
         const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(s=>String(s).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s=>s.trim())) : [];
         if (vgOnly && !tags.includes('vg')) return false;
         if (babyOnly && !tags.includes('babyfriendly') && !tags.includes('baby')) return false;
@@ -87,13 +93,16 @@
       icons: {
         brunch: '../../img/croissant.png',
         pizzeria: '../../img/pizza.png',
-        restaurant: '../../img/cloche.png'
+        restaurant: '../../img/cloche.png',
+        'fast-food': '../../img/burger.png'
       },
       clearBefore: true
     }).then(({ places }) => {
       allPlaces = places.slice();
       document.getElementById('filter-brunchs')?.addEventListener('change', applyFilters);
       document.getElementById('filter-pizzerias')?.addEventListener('change', applyFilters);
+      document.getElementById('filter-restaurants')?.addEventListener('change', applyFilters);
+      document.getElementById('filter-fast-food')?.addEventListener('change', applyFilters);
       document.getElementById('filter-vg')?.addEventListener('click', e => { e.currentTarget.classList.toggle('active'); applyFilters(); });
       document.getElementById('filter-baby')?.addEventListener('click', e => { e.currentTarget.classList.toggle('active'); applyFilters(); });
     });

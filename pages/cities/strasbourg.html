@@ -43,6 +43,8 @@
   <div id="filters" style="margin-left:2rem;">
     <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
     <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
+    <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
+    <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
 
     <!-- Nouveaux boutons de filtre par tag -->
     <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
@@ -87,7 +89,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         icons: {
           brunch: '../../img/croissant.png',
           pizzeria: '../../img/pizza.png',
-          restaurant: '../../img/restaurant.png',
+          'fast-food': '../../img/burger.png',
+          restaurant: '../../img/cloche.png',
           ville: null
         },
         clearBefore: true
@@ -98,6 +101,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
     function applyFiltersFromControls() {
       const showBr = document.getElementById('filter-brunchs').checked;
       const showPz = document.getElementById('filter-pizzerias').checked;
+      const showRest = document.getElementById('filter-restaurants').checked;
+      const showFf = document.getElementById('filter-fast-food').checked;
       const vgOnly = document.getElementById('filter-vg').classList.contains('active');
       const babyOnly = document.getElementById('filter-baby').classList.contains('active');
 
@@ -106,6 +111,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         // type filters
         if (type === 'brunch' && !showBr) return false;
         if (type === 'pizzeria' && !showPz) return false;
+        if (type === 'restaurant' && !showRest) return false;
+        if (type === 'fast-food' && !showFf) return false;
         // tag filters: if vgOnly true, require tag 'VG'
         const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(t => String(t).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s=>s.trim())) : [];
         if (vgOnly && !tags.includes('vg') && !tags.includes('#vg')) return false;
@@ -123,7 +130,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       icons: {
         brunch: '../../img/croissant.png',
         pizzeria: '../../img/pizza.png',
-        restaurant: '../../img/cloche.png', /* <- remplacé */
+        'fast-food': '../../img/burger.png',
+        restaurant: '../../img/cloche.png',
         ville: null
       },
       markerOptions: {},
@@ -134,6 +142,8 @@ L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
       // wire up filters
       document.getElementById('filter-brunchs').addEventListener('change', applyFiltersFromControls);
       document.getElementById('filter-pizzerias').addEventListener('change', applyFiltersFromControls);
+      document.getElementById('filter-restaurants').addEventListener('change', applyFiltersFromControls);
+      document.getElementById('filter-fast-food').addEventListener('change', applyFiltersFromControls);
 
       // tag buttons toggle
       const vgBtn = document.getElementById('filter-vg');
