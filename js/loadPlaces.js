@@ -84,8 +84,8 @@ const iconUrl = cfg.icons && cfg.icons[type];
 const icon = iconUrl ? L.icon({ iconUrl, iconSize: [30, 30] }) : null;
 
 const offset = {
-  lat: -0.00612 + 0.0000545,   // = -0.0060655
-  lng:  0.00601 + 0.0000504    // =  0.0060604
+  lat: -0.0060655,   // = -0.0060655
+  lng:  0.0060604    // =  0.0060604
 };
 
 const correctedLat = lat + offset.lat;
