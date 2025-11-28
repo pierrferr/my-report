@@ -1,10 +1,24 @@
 {
   "places": [
     {
-      "name": "Exemple de restaurant",
-      "type": "restaurant",
-      "description": "Ajoutez ici une description pour ce restaurant parisien.",
-      "tags": ["Exemple"]
+      "name": "Gabriel Café",
+      "type": "brunch",
+      "lat": 48.859457,  
+      "lng": 2.386220,
+      "link": "https://maps.app.goo.gl/L3vdMXXif8w2s3fs8",
+      "description": "Un brunch en mode buffet avec des options originales et une touche brésielienne.",
+      "tags": ["VG"]
+
     }
-  ]
+    ,
+    {
+      "name": "Pizzeria Iovine's",
+      "type": "pizzeria",
+      "lat": 48.863251,   
+      "lng": 2.340435,
+      "link": "https://maps.app.goo.gl/uLbtz56vYsAQczSm9",
+      "description": "Une délicieuse pâte et des garnitures qui changent les habitudes.",
+      "tags": ["VG"]
+    }
+]
 }
