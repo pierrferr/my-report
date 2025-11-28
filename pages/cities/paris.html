@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Aleks Report — Paris</title>
+  <link rel="stylesheet" href="../../css/style.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <style>
+    #map { height:500px; border-radius:8px; margin:1rem 0; }
+    #filters { margin:0.5rem 0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;}
+    .tag-button {
+      display:inline-flex;
+      align-items:center;
+      gap:0.5rem;
+      padding:0.4rem 0.7rem;
+      border-radius:999px;
+      border:1px solid rgba(16,24,40,0.06);
+      background:transparent;
+      cursor:pointer;
+      font-weight:600;
+      color:var(--primary);
+    }
+    .tag-button.active {
+      background: linear-gradient(90deg,var(--primary),var(--primary-600));
+      color:#fff;
+      box-shadow: 0 6px 14px rgba(0,163,224,0.12);
+    }
+  </style>
+</head>
+<body>
+  <header id="site-header">
+    <a href="../../index.html" class="logo-link">
+      <img src="../../img/logo-miam-bordeaux.png" alt="Mon Report - Accueil" id="site-logo">
+    </a>
+    <h1 id="site-title">Les voyages du miam</h1>
+  </header>
+
+  <p style="margin:1rem 2rem;"><a href="../countries/france.html">← Retour à la carte France</a></p>
+
+  <h2 style="margin-left:2rem;">Paris — bonnes adresses</h2>
+
+  <div id="filters" style="margin-left:2rem;">
+    <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
+    <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
+    <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
+    <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
+
+    <!-- Nouveaux boutons de filtre par tag -->
+    <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
+  </div>
+
+  <div id="map"></div>
+
+  <!-- listes dynamiques -->
+  <section id="places-list" class="card" style="margin:1rem 2rem;">
+    <h3>Adresses à Paris</h3>
+    <div id="places-content">Chargement…</div>
+  </section>
+
+  <footer>
+    <hr>
+    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+    <p><small><a href="../../credits.html">Crédits</a></small></p>
+  </footer>
+
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="../../js/loadPlaces.js"></script>
+  <script src="../../js/map-filters.js"></script>
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+      day:'2-digit', month:'long', year:'numeric'
+    });
+
+    const map = L.map('map').setView([48.8566, 2.3522], 12); // Coordonnées de Paris
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
+    }).addTo(map);
+
+    setupMapFilters(map, {
+        jsonPath: '../../data/restaurants_paris.json',
+        listContainerId: 'places-content',
+        icons: {
+            brunch: '../../img/croissant.png',
+            pizzeria: '../../img/pizza.png',
+            'fast-food': '../../img/burger.png',
+            restaurant: '../../img/cloche.png',
+            ville: null
+        },
+        clearBefore: true
+    });
+  </script>
+</body>
+</html>

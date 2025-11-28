@@ -1,0 +1,10 @@
+{
+  "places": [
+    {
+      "name": "Exemple de restaurant",
+      "type": "restaurant",
+      "description": "Ajoutez ici une description pour ce restaurant parisien.",
+      "tags": ["Exemple"]
+    }
+  ]
+}
