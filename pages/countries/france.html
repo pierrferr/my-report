@@ -19,6 +19,13 @@
   <p style="margin:1rem 2rem;"><a href="../../index.html">← Retour à la carte du monde</a></p>
 
   <h2 style="margin-left:2rem;">Carte — France</h2>
+
+  <!-- Filtres par tag -->
+  <div id="filters" style="margin-left:2rem; margin-bottom: 1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
+    <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
+  </div>
+
   <div id="map"></div>
 
   <!-- Liste des lieux (sera remplie par JS) -->
@@ -50,6 +57,14 @@
       day:'2-digit', month:'long', year:'numeric'
     });
 
+    // Style pour les boutons de filtre
+    const style = document.createElement('style');
+    style.textContent = `
+      .tag-button { display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 0.7rem; border-radius:999px; border:1px solid rgba(16,24,40,0.06); background:transparent; cursor:pointer; font-weight:600; color:var(--primary); }
+      .tag-button.active { background: linear-gradient(90deg,var(--primary),var(--primary-600)); color:#fff; box-shadow: 0 6px 14px rgba(0,163,224,0.12); }
+    `;
+    document.head.appendChild(style);
+
     const map = L.map('map').setView([46.8, 2.6], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
@@ -62,40 +77,80 @@
       { name: "Paris",      lat: 48.8566, lng: 2.3522, page: "../cities/paris.html" }
     ];
 
-    const restaurants = [
-      { name: "FAVE — Hendaye", lat: 43.3693, lng: -1.7720, link: "https://www.google.com/maps/search/?api=1&query=FAVE+Hendaye" }
-    ];
+    // Configuration des icônes personnalisées
+    const icons = {
+        brunch: L.icon({ iconUrl: '../../img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        pizzeria: L.icon({ iconUrl: '../../img/pizza.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        'fast-food': L.icon({ iconUrl: '../../img/burger.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        restaurant: L.icon({ iconUrl: '../../img/cloche.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
+    };
+
+    let allMarkers = []; // Pour stocker tous les marqueurs (villes et restaurants)
+    let restaurantMarkers = []; // Pour stocker uniquement les marqueurs de restaurants pour le filtrage
 
     // Ajout des marqueurs et génération de la liste
-    function addMarkersAndList() {
+    async function addMarkersAndList() {
       const places = [];
 
+      // 1. Villes
       villes.forEach(v => {
-        const m = L.marker([v.lat, v.lng]).addTo(map);
+        const m = L.marker([v.lat, v.lng]);
         m.bindPopup(`<a href="${v.page}">${v.name}</a>`);
         places.push({ type: 'Ville', name: v.name, href: v.page });
+        allMarkers.push(m);
       });
 
-      restaurants.forEach(r => {
-        const m = L.marker([r.lat, r.lng]).addTo(map);
-        m.bindPopup(`<a href="${r.link}" target="_blank">${r.name}</a>`);
-        places.push({ type: 'Restaurant', name: r.name, href: r.link });
-      });
+      // 2. Restaurants depuis JSON
+      try {
+        const response = await fetch('../../data/restaurants_france.json');
+        const data = await response.json();
+        const restaurants = data.places || []; // Assurez-vous que le JSON a une clé "places"
+
+        restaurants.forEach(r => {
+          const customIcon = icons[r.type];
+          const m = L.marker([r.lat, r.lng], { icon: customIcon });
+          
+          // Stocker les tags sur le marqueur pour le filtrage
+          m.options.tags = r.tags || [];
+
+          let popupContent = `<b>${r.name}</b>`;
+          if (r.description) popupContent += `<br>${r.description}`;
+          if (r.tags && r.tags.length > 0) {
+            popupContent += `<br><small>Tags: ${r.tags.join(', ')}</small>`;
+          }
+          if (r.link) popupContent += `<br><a href="${r.link}" target="_blank">Voir sur la carte</a>`;
+          m.bindPopup(popupContent);
+
+          places.push({ type: 'Restaurant', name: r.name, href: r.link });
+          restaurantMarkers.push(m);
+          allMarkers.push(m);
+        });
+      } catch (error) {
+        console.error("Erreur lors du chargement des restaurants pour la France :", error);
+      }
+
+      // Ajout de tous les marqueurs à la carte
+      allMarkers.forEach(m => m.addTo(map));
 
       renderPlacesList(places);
     }
 
     function renderPlacesList(places) {
       const container = document.getElementById('places-content');
-      if (!places.length) {
+      if (!places || places.length === 0) {
         container.innerHTML = '<p class="muted">Aucune adresse à afficher.</p>';
         return;
       }
+
+      // Tri pour afficher les villes en premier
+      places.sort((a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name));
+
       const ul = document.createElement('ul');
       places.forEach(p => {
         const li = document.createElement('li');
         if (p.href) {
-          li.innerHTML = `<strong>${p.type}:</strong> <a href="${p.href}" ${p.type==='Restaurant' ? 'target="_blank"' : ''}>${p.name}</a>`;
+          const target = p.type === 'Restaurant' ? 'target="_blank"' : '';
+          li.innerHTML = `<strong>${p.type}:</strong> <a href="${p.href}" ${target}>${p.name}</a>`;
         } else {
           li.textContent = `${p.type}: ${p.name}`;
         }
@@ -105,7 +160,38 @@
       container.appendChild(ul);
     }
 
-    addMarkersAndList();
+    // Logique de filtrage par tag
+    function setupTagFilters() {
+        const vgButton = document.getElementById('filter-vg');
+        const babyButton = document.getElementById('filter-baby');
+
+        function applyFilters() {
+            const vgActive = vgButton.classList.contains('active');
+            const babyActive = babyButton.classList.contains('active');
+
+            restaurantMarkers.forEach(marker => {
+                const tags = marker.options.tags;
+                const hasVg = tags.includes('VG');
+                const hasBaby = tags.includes('BabyFriendly');
+
+                const vgMatch = !vgActive || hasVg;
+                const babyMatch = !babyActive || hasBaby;
+
+                if (vgMatch && babyMatch) {
+                    marker.addTo(map);
+                } else {
+                    marker.removeFrom(map);
+                }
+            });
+        }
+
+        [vgButton, babyButton].forEach(button => button.addEventListener('click', () => {
+            button.classList.toggle('active');
+            applyFilters();
+        }));
+    }
+
+    addMarkersAndList().then(setupTagFilters);
   </script>
 </body>
 </html>

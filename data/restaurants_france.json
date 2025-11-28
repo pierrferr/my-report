@@ -1,0 +1,13 @@
+{
+  "places": [
+    {
+      "name": "FAVE — Hendaye",
+      "type": "fast-food",
+      "lat": 43.3693,
+      "lng": -1.7720,
+      "description": "Fastfood de cuisine arménienne dans le Pays Basque",
+      "link": "https://www.google.com/maps/search/?api=1&query=FAVE+Hendaye",
+      "tags": ["VG"]
+    }
+  ]
+}
