@@ -14,6 +14,7 @@
       "type": "restaurant",
       "lat": 48.576056, 
       "lng": 7.752580,
+      "link": "https://www.google.fr/maps/place/Madame+Julia/@48.5760855,7.7500158,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c95c2e512d27:0x5783882e50fb66ed!8m2!3d48.576082!4d7.7525907!16s%2Fg%2F11f651k395?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
       "description": "Institution à Strasbourg, et on comprend vite pourquoi, les pancakes sont énormes et délicieux",
       "tags": ["brunch", "VG"]
     },
@@ -22,6 +23,7 @@
       "type": "restaurant",
       "lat": 48.567118, 
       "lng": 7.757964,
+      "link": "https://maps.app.goo.gl/2Vvv9FnAJReU8MqW6",
       "description": "Des sushis et un cuisinier au top.",
       "tags": ["VG", "japonais"]
     },
