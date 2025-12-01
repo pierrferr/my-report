@@ -23,6 +23,7 @@
   <!-- Filtres par tag -->
   <div id="filters" style="margin-left:2rem; margin-bottom: 1rem; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;">
     <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button id="filter-brunch" class="tag-button" title="Afficher seulement les lieux avec le tag brunch">#brunch</button>
     <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
   </div>
 
@@ -164,20 +165,24 @@
     function setupTagFilters() {
         const vgButton = document.getElementById('filter-vg');
         const babyButton = document.getElementById('filter-baby');
+        const brunchButton = document.getElementById('filter-brunch');
 
         function applyFilters() {
             const vgActive = vgButton.classList.contains('active');
             const babyActive = babyButton.classList.contains('active');
+            const brunchActive = brunchButton.classList.contains('active');
 
             restaurantMarkers.forEach(marker => {
-                const tags = marker.options.tags;
-                const hasVg = tags.includes('VG');
-                const hasBaby = tags.includes('BabyFriendly');
+                const tags = (marker.options.tags || []).map(t => String(t).toLowerCase());
+                const hasVg = tags.includes('vg');
+                const hasBaby = tags.includes('babyfriendly');
+                const hasBrunch = tags.includes('brunch');
 
                 const vgMatch = !vgActive || hasVg;
                 const babyMatch = !babyActive || hasBaby;
+                const brunchMatch = !brunchActive || hasBrunch;
 
-                if (vgMatch && babyMatch) {
+                if (vgMatch && babyMatch && brunchMatch) {
                     marker.addTo(map);
                 } else {
                     marker.removeFrom(map);
@@ -185,7 +190,7 @@
             });
         }
 
-        [vgButton, babyButton].forEach(button => button.addEventListener('click', () => {
+        [vgButton, babyButton, brunchButton].forEach(button => button.addEventListener('click', () => {
             button.classList.toggle('active');
             applyFilters();
         }));

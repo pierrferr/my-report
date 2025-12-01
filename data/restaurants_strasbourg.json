@@ -11,11 +11,11 @@
     },
     {
       "name": "Madame Julia",
-      "type": "brunch",
+      "type": "restaurant",
       "lat": 48.576056, 
       "lng": 7.752580,
       "description": "Institution à Strasbourg, et on comprend vite pourquoi, les pancakes sont énormes et délicieux",
-      "tags": ["Familial", "VG"]
+      "tags": ["brunch", "VG"]
     },
     {
       "name": "Sain Sushi",
@@ -23,7 +23,7 @@
       "lat": 48.567118, 
       "lng": 7.757964,
       "description": "Des sushis et un cuisinier au top.",
-      "tags": ["VG", "Japonnais"]
+      "tags": ["VG", "japonais"]
     },
     {
       "name": "Pizza Cosy",

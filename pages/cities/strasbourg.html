@@ -41,12 +41,12 @@
   <h2 style="margin-left:2rem;">Strasbourg — bonnes adresses</h2>
 
   <div id="filters" style="margin-left:2rem;">
-    <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
     <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
     <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
     <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
 
     <!-- Nouveaux boutons de filtre par tag -->
+    <button id="filter-brunch" class="tag-button" title="Afficher seulement les lieux avec le tag brunch">#brunch</button>
     <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
     <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
   </div>
@@ -82,7 +82,6 @@
         jsonPath: '../../data/restaurants_strasbourg.json',
         listContainerId: 'places-content',
         icons: {
-            brunch: '../../img/croissant.png',
             pizzeria: '../../img/pizza.png',
             'fast-food': '../../img/burger.png',
             restaurant: '../../img/cloche.png',

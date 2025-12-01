@@ -2,12 +2,12 @@
   "places": [
     {
       "name": "Gabriel Café",
-      "type": "brunch",
+      "type": "restaurant",
       "lat": 48.859457,  
       "lng": 2.386220,
       "link": "https://maps.app.goo.gl/L3vdMXXif8w2s3fs8",
       "description": "Un brunch en mode buffet avec des options originales et une touche brésielienne.",
-      "tags": ["VG"]
+      "tags": ["VG", "brunch"]
 
     }
     ,
