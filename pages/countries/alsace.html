@@ -19,10 +19,11 @@
   <h2 style="margin-left:2rem;">Carte — Alsace</h2>
 
   <div id="filters" style="margin-left:2rem;">
-    <label><input id="filter-brunchs" type="checkbox" checked> Brunchs</label>
     <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
     <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
     <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
+    <label><input id="filter-cafes" type="checkbox" checked> Cafés</label>
+    <button id="filter-brunch" class="tag-button" title="Afficher seulement les lieux avec le tag brunch">#Brunch</button>
     <button id="filter-vg" class="tag-button">#VG</button>
     <button id="filter-baby" class="tag-button">#BabyFriendly</button>
   </div>
@@ -54,7 +55,7 @@
     setupMapFilters(map, {
         jsonPath: '../../data/restaurants_alsace.json',
         listContainerId: 'places-content',
-        icons: { brunch: '../../img/croissant.png', pizzeria: '../../img/pizza.png', restaurant: '../../img/cloche.png', 'fast-food': '../../img/burger.png', ville: null },
+        icons: { brunch: '../../img/croissant.png', pizzeria: '../../img/pizza.png', restaurant: '../../img/cloche.png', 'fast-food': '../../img/burger.png', ville: null, 'café': '../../img/tasse.png' },
         clearBefore: true
     });
   </script>

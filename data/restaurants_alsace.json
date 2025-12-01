@@ -6,7 +6,8 @@
       "lat": 48.286797, 
       "lng": 7.420968,
       "link": "https://www.google.com/maps/search/?api=1&query=La+Courrone+Scherwiller",
-      "note": "Cuisine locale, terrasse"
+      "note": "Cuisine locale, terrasse",
+      "tags": ["VG"]
     },
     {
       "name": "Aphrodite's Restaurant Grec- Kaysersberg",
@@ -22,7 +23,7 @@
       "type": "ville",
       "lat": 48.5734,
       "lng": 7.7521,
-      "page": "pages/cities/strasbourg.html",
+      "page": "../cities/strasbourg.html",
       "note": "Fiche ville"
     }
   ]

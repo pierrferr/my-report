@@ -26,6 +26,7 @@ function setupMapFilters(map, initialLoadOptions) {
     const showPz = document.getElementById('filter-pizzerias')?.checked ?? true;
     const showRest = document.getElementById('filter-restaurants')?.checked ?? document.getElementById('filter-restos')?.checked ?? true;
     const showFf = document.getElementById('filter-fast-food')?.checked ?? true;
+    const showCafe = document.getElementById('filter-cafes')?.checked ?? true;
     
     const brunchOnly = document.getElementById('filter-brunch')?.classList.contains('active');
     const vgOnly = document.getElementById('filter-vg')?.classList.contains('active');
@@ -36,6 +37,7 @@ function setupMapFilters(map, initialLoadOptions) {
       if (t === 'pizzeria' && !showPz) return false;
       if (t === 'restaurant' && !showRest) return false;
       if (t === 'fast-food' && !showFf) return false;
+      if (t === 'café' && !showCafe) return false;
 
       const tags = p.tags ? (Array.isArray(p.tags) ? p.tags.map(s => String(s).toLowerCase()) : String(p.tags).toLowerCase().split(/[,#;]/).map(s => s.trim())) : [];
       if (brunchOnly && !tags.includes('brunch')) return false;
@@ -53,7 +55,7 @@ function setupMapFilters(map, initialLoadOptions) {
       allPlaces = places.slice();
 
       // Wire up all potential filters
-      const filterIds = ['filter-pizzerias', 'filter-restaurants', 'filter-restos', 'filter-fast-food'];
+      const filterIds = ['filter-pizzerias', 'filter-restaurants', 'filter-restos', 'filter-fast-food', 'filter-cafes'];
       filterIds.forEach(id => {
         document.getElementById(id)?.addEventListener('change', applyFilters);
       });

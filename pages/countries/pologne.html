@@ -21,6 +21,7 @@
   <div id="filters" style="margin-left:2rem;">
     <label><input id="filter-restos" type="checkbox" checked> Restaurants</label>
     <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
+    <label><input id="filter-cafes" type="checkbox" checked> Cafés</label>
 
     <!-- Tag buttons (VG / BabyFriendly) -->
     <button id="filter-brunch" class="tag-button" title="Afficher seulement les lieux avec le tag brunch">#Brunch</button>
@@ -54,7 +55,7 @@
     setupMapFilters(map, {
         jsonPath: '../../data/restaurants_pologne.json',
         listContainerId: 'places-content',
-        icons: { restaurant: '../../img/cloche.png', 'fast-food': '../../img/burger.png', ville: null },
+        icons: { restaurant: '../../img/cloche.png', 'fast-food': '../../img/burger.png', ville: null, 'café': '../../img/tasse.png' },
         clearBefore: true
     });
   </script>

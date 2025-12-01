@@ -27,6 +27,15 @@
       "description": "Des sushis et un cuisinier au top.",
       "tags": ["VG", "japonais"]
     },
+      {
+      "name": "La Taverne Française",
+      "type": "café",
+      "lat": 48.58424218088011,  
+      "lng": 7.738423119149092,
+      "link": "https://www.google.fr/maps/place/La+Taverne+Fran%C3%A7aise/@48.5853283,7.7534358,16z/data=!3m1!4b1!4m6!3m5!1s0x4796c9ccfb9dc6c7:0xf2b9abab96d60f2a!8m2!3d48.5853248!4d7.7560107!16s%2Fg%2F11fn6cth0c?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Un café agréable pour travailler ",
+      "tags": ["VG"]
+    },
     {
       "name": "Pizza Cosy",
       "type": "pizzeria",
