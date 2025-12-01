@@ -1,13 +1,13 @@
 {
   "places": [
     {
-      "name": "Snack Saray",
-      "type": "fast-food",
-      "lat": 48.565346, 
-      "lng": 7.764224,
-      "link": "https://maps.app.goo.gl/6LnCcPQWmEg2LZf58",
-      "description": "Un kébab incontournable à Neudorf, avec des option végétarienne.",
-      "tags": ["VG"]
+      "name": "Little World",
+      "type": "restaurant",
+      "lat": 48.57908989392358, 
+      "lng": 7.7431698319022795 ,
+      "link": "https://www.google.fr/maps/place/Little+World/@48.5789444,7.7402516,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c9446473c9ef:0xd706f3c326e16e2b!8m2!3d48.5789409!4d7.7428265!16s%2Fg%2F11g1t0m4t7?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Les meilleurs bobuns jamais mangés !",
+      "tags": ["VG","vietnamien"]
     },
     {
       "name": "Madame Julia",
@@ -16,7 +16,7 @@
       "lng": 7.752580,
       "link": "https://www.google.fr/maps/place/Madame+Julia/@48.5760855,7.7500158,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c95c2e512d27:0x5783882e50fb66ed!8m2!3d48.576082!4d7.7525907!16s%2Fg%2F11f651k395?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
       "description": "Institution à Strasbourg, et on comprend vite pourquoi, les pancakes sont énormes et délicieux",
-      "tags": ["brunch", "VG"]
+      "tags": ["brunch", "VG", "pancakes"]
     },
     {
       "name": "Sain Sushi",
@@ -42,16 +42,34 @@
       "lat": 48.569968,
       "lng": 7.762547,
       "link": "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg",
-      "description": "Lieu chaleureux, options végétariennes, table haute et espace bébé.",
-      "tags": ["VG", "BabyFriendly"]
+      "description": "Des pizzas tellement bonnes qu'on dirait pas qu'elles viennent d'une chaine. Pâte délicieuse et ingrédients de qualité.",
+      "tags": ["VG"]
     },
     {
-      "name": "La Hache",
+      "name": "La Pépinière",
       "type": "restaurant",
-      "lat": 48.579487,
-      "lng": 7.749184,
-      "link": "https://www.google.fr/maps/place/La+Hache/@48.5795016,7.7465863,16z/data=!3m1!4b1!4m6!3m5!1s0x4796c852d5d7ce0b:0x6da1733801b3304d!8m2!3d48.5795016!4d7.7491612!16s%2Fg%2F1tdkqr86?entry=ttu&g_ep=EgoyMDI1MTAyOS4yIKXMDSoASAFQAw%3D%3D",
-      "description": "Nourriture traditionnelle alsacienne.",
+      "lat": 48.57813499320446, 
+      "lng": 7.753185080658426,
+      "link": "https://www.google.fr/maps/place/La+P%C3%A9pini%C3%A8re/@48.5779966,7.750063,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c91dbc223357:0xc5ee809a700e51fe!8m2!3d48.5779931!4d7.7526379!16s%2Fg%2F11p56qhjx7?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Autant pour le brunch que pour y boire un verre et s'y restaurer. Local et fait maison.",
+      "tags": ["VG","brunch"]
+    },
+    {
+      "name": "Lalibela Restaurant",
+      "type": "restaurant",
+      "lat": 48.56954472555225, 
+      "lng": 7.753982486804729,
+      "link": "https://www.google.fr/maps/place/Lalibela+Restaurant/@48.5694489,7.7510428,17z/data=!3m2!4b1!5s0x4796c9a86ff1f10f:0xfe977d7df843a099!4m6!3m5!1s0x4796c9226db4c3bd:0x57b2017640674514!8m2!3d48.5694454!4d7.7536177!16s%2Fg%2F11fsynvv0q?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Pour goûter l'Ethiopie dans une ambiance chaleureuse. Un accueil plein de gentillesse et d'atention",
+      "tags": ["VG"]
+    },
+        {
+      "name": "Pâtisserie Jaune Citron",
+      "type": "patisserie",
+      "lat": 48.57995460084825,
+      "lng":  7.74893712388484,
+      "link": "https://www.google.fr/maps/place/P%C3%A2tisserie+Jaune+Citron/@48.579873,7.7456863,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c98e3b735643:0xfa0f764d47dbbf54!8m2!3d48.5798695!4d7.7482612!16s%2Fg%2F11qp142y8t?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Des patisseries toutes en finesse et des cookies à tomber.",
       "tags": ["VG"]
     }
   ]
