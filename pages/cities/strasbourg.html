@@ -40,7 +40,7 @@
     </a>
   </header>
 
-  <p style="margin:1rem 2rem;"><a href="../../index.html">← Retour à la carte du monde</a></p>
+  <p style="margin:1rem 2rem;"><a href="../countries/france.html">← Retour à la carte France</a></p>
 
   <h2 style="margin-left:2rem;">Strasbourg — bonnes adresses</h2>
 
@@ -158,6 +158,31 @@
     }
 
     fetchData().then(setupFilters);
+
+    // --- Ajout de la fonctionnalité de géolocalisation ---
+
+    // 1. Création du contrôle personnalisé pour Leaflet
+    const GeolocateControl = L.Control.extend({
+        onAdd: function(map) {
+            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
+            container.innerHTML = '⌖'; // Icône de cible
+            container.title = 'Me géolocaliser';
+
+            L.DomEvent.on(container, 'click', function(e) {
+                L.DomEvent.stopPropagation(e);
+                map.locate({setView: true, maxZoom: 14});
+            });
+
+            return container;
+        }
+    });
+
+    // 2. Ajout du contrôle à la carte
+    new GeolocateControl().addTo(map);
+
+    // 3. Gestion des événements de localisation
+    map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
+    map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
   </script>
 </body>
 </html>
