@@ -10,6 +10,8 @@
     #map { height:500px; border-radius:8px; margin:1rem 0; }
     #filters { margin:0.5rem 0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;}
     .tag-button {
+      /* Styles pour les boutons de tag */
+    }
       display:inline-flex;
       align-items:center;
       gap:0.5rem;
@@ -22,6 +24,8 @@
       color:var(--primary);
     }
     .tag-button.active {
+      /* Styles pour les boutons de tag actifs */
+    }
       background: linear-gradient(90deg,var(--primary),var(--primary-600));
       color:#fff;
       box-shadow: 0 6px 14px rgba(0,163,224,0.12);
@@ -33,7 +37,6 @@
     <a href="../../index.html" class="logo-link">
       <img src="../../img/logo-miam-bordeaux.png" alt="Mon Report - Accueil" id="site-logo">
     </a>
-    <h1 id="site-title">Les voyages du miam</h1>
   </header>
 
   <p style="margin:1rem 2rem;"><a href="../countries/france.html">← Retour à la carte France</a></p>
@@ -67,30 +70,93 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="../../js/loadPlaces.js"></script>
-  <script src="../../js/map-filters.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
       day:'2-digit', month:'long', year:'numeric'
     });
 
     const map = L.map('map').setView([48.8566, 2.3522], 12); // Coordonnées de Paris
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-      attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
-    }).addTo(map);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
 
-    setupMapFilters(map, {
-        jsonPath: '../../data/restaurants_paris.json',
-        listContainerId: 'places-content',
-        icons: {
-            pizzeria: '../../img/pizza.png',
-            'fast-food': '../../img/burger.png',
-            restaurant: '../../img/cloche.png',
-            ville: null,
-            'café': '../../img/tasse.png'
-        },
-        clearBefore: true
-    });
+    let allPlaces = [];
+    const markers = L.layerGroup().addTo(map);
+    const listContainer = document.getElementById('places-content');
+
+    const customIcons = {
+        pizzeria: L.icon({ iconUrl: '../../img/pizza.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        brunch: L.icon({ iconUrl: '../../img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        restaurant: L.icon({ iconUrl: '../../img/cloche.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        'fast-food': L.icon({ iconUrl: '../../img/burger.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        café: L.icon({ iconUrl: '../../img/tasse.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        patisserie: L.icon({ iconUrl: '../../img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
+    };
+    const defaultIcon = new L.Icon.Default();
+
+    function distance(lat1, lon1, lat2, lon2) {
+        const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
+        const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
+    }
+
+    async function fetchData() {
+        try {
+            const response = await fetch('../../data/all_restaurants.json');
+            const data = await response.json();
+            const cityCenter = { lat: 48.8566, lng: 2.3522 };
+            const filterRadius = 15; // 15km pour Paris
+            allPlaces = data.places.filter(p => distance(cityCenter.lat, cityCenter.lng, p.lat, p.lng) < filterRadius);
+            displayContent(allPlaces);
+        } catch (error) {
+            console.error("Erreur de chargement:", error);
+            if (listContainer) listContainer.innerHTML = '<p class="muted">Impossible de charger les adresses.</p>';
+        }
+    }
+
+    function displayContent(places) {
+        markers.clearLayers();
+        if (listContainer) listContainer.innerHTML = '';
+        const ul = document.createElement('ul');
+
+        places.forEach(place => {
+            if (place.lat && place.lng) {
+                let chosenIcon = customIcons[place.type] || defaultIcon;
+                if (place.tags && place.tags.includes('brunch')) chosenIcon = customIcons.brunch;
+                
+                const marker = L.marker([place.lat, place.lng], { icon: chosenIcon });
+                const popupContent = `<strong>${place.name}</strong><br>${place.description}<br><a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>`;
+                marker.bindPopup(popupContent);
+                markers.addLayer(marker);
+
+                const li = document.createElement('li');
+                li.innerHTML = `<a href="${place.link}" target="_blank" rel="noopener">${place.name}</a> — <small class="muted">${place.type}</small>`;
+                ul.appendChild(li);
+            }
+        });
+
+        if (listContainer) {
+            if (!ul.children.length) listContainer.innerHTML = '<p class="muted">Aucune adresse à afficher.</p>';
+            else listContainer.appendChild(ul);
+        }
+    }
+
+    function setupFilters() {
+        const filterElements = document.querySelectorAll('#filters input[type="checkbox"], #filters button.tag-button');
+        filterElements.forEach(el => el.addEventListener('click', applyFilters));
+    }
+
+    function applyFilters() {
+        const selectedTypes = Array.from(document.querySelectorAll('#filters input[type="checkbox"]:checked')).map(cb => cb.id.replace('filter-', 's'));
+        const activeTags = Array.from(document.querySelectorAll('#filters button.tag-button.active')).map(btn => btn.id.replace('filter-', ''));
+
+        const filteredPlaces = allPlaces.filter(place => {
+            const typeMatch = selectedTypes.includes(place.type + 's');
+            const tagMatch = activeTags.every(tag => (place.tags || []).includes(tag));
+            return typeMatch && tagMatch;
+        });
+        displayContent(filteredPlaces);
+    }
+
+    fetchData().then(setupFilters);
   </script>
 </body>
 </html>
