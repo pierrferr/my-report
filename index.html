@@ -7,6 +7,37 @@
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    .explore-banner-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 3rem 1rem; /* Contrôle la hauteur pour la rendre "fine" */
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7); /* Ombre portée pour la lisibilité */
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease-out;
+      overflow: hidden;
+      position: relative;
+    }
+    .explore-banner-link:hover {
+      transform: scale(1.02);
+    }
+    /* Classes spécifiques pour chaque image de fond */
+    .banner-toulouse { background-image: url('img/toulouse.jpg'); }
+    .banner-strasbourg { background-image: url('img/strasbourg.jpg'); }
+    .banner-alsace { background-image: url('img/alsace.jpg'); }
+    .banner-pologne { background-image: url('img/pologne.jpg'); }
+    .banner-paris { background-image: url('img/paris.jpg'); }
+
+  </style>
 </head>
 <body>
 <header id="site-header">
@@ -199,12 +230,12 @@
 <section id="explore" style="margin:1.5rem 0;">
   <h2>Les bonnes adresses</h2>
 
-  <div style="display:flex;flex-wrap:wrap;gap:1rem;">
-    <a class="button" href="pages/cities/strasbourg.html" aria-label="Coups de coeur à Strasbourg">Coups de cœur — Strasbourg</a>
-    <a class="button" href="pages/countries/alsace.html" aria-label="Bien manger en Alsace">Bien manger — Alsace</a>
-    <a class="button" href="pages/countries/pologne.html" aria-label="Voyager en Pologne">Voyager — Pologne</a>
-    <a class="button" href="pages/cities/toulouse.html" aria-label="Voyager à Toulouse">Voyager — Toulouse</a>
-    <a class="button" href="pages/cities/paris.html" aria-label="Miam à Paris">Miam — Paris</a>
+  <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; width: 80%; margin: 1rem auto;">
+    <a href="pages/cities/strasbourg.html" class="explore-banner-link banner-strasbourg">Coups de cœur à Strasbourg</a>
+    <a href="pages/countries/alsace.html" class="explore-banner-link banner-alsace">Bien manger en Alsace</a>
+    <a href="pages/countries/pologne.html" class="explore-banner-link banner-pologne">Voyager en Pologne</a>
+    <a href="pages/cities/paris.html" class="explore-banner-link banner-paris">Miam à Paris</a>
+    <a href="pages/cities/toulouse.html" class="explore-banner-link banner-toulouse">Bien manger à Toulouse</a>
   </div>
 </section>
 
