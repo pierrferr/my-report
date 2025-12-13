@@ -87,7 +87,7 @@
 
   function displayMarkers(places) {
     markers.clearLayers();
-    const zoomThreshold = 9; // Le niveau de zoom à partir duquel les icônes personnalisées apparaissent
+    const zoomThreshold = 13; // Le niveau de zoom à partir duquel les icônes personnalisées apparaissent
     const currentZoom = map.getZoom();
 
     places.forEach(place => {
@@ -156,7 +156,7 @@
 
   // Met à jour les icônes quand le niveau de zoom change
   map.on('zoomend', function() {
-    const zoomThreshold = 9;
+    const zoomThreshold = 13;
     const currentZoom = map.getZoom();
 
     markers.eachLayer(function(marker) {
