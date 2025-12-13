@@ -1,173 +1,3 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Les voyages du miam</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
- <style>
-    #map { height: 500px; width: 100%; border-radius: 8px; margin-top: 1rem; }
-    .tag-button { display:inline-flex; align-items:center; gap:0.5rem; padding:0.4rem 0.7rem; border-radius:999px; border:1px solid rgba(16,24,40,0.06); background:transparent; cursor:pointer; font-weight:600; color:var(--primary); }
-    .tag-button.active { background: linear-gradient(90deg,var(--primary),var(--primary-600)); color:#fff; box-shadow: 0 6px 14px rgba(0,163,224,0.12); }
-    #filters-container { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1rem; }
-    #type-filters, #tag-filters { display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; }
-    #type-filters label { cursor: pointer; }
-  </style>
-</head>
-<body>
-<header id="site-header">
-  <a href="index.html" class="logo-link">
-    <img src="img/logo-miam-bordeaux.png" alt="Logo MIAM" id="site-logo">
-  </a>
-  <h1 id="site-title">Les voyages du miam</h1>
-</header>
-
-<section id="presentation">
-  <p class="lead">
-    Bienvenue sur Les voyages du miam. Trouve ici ton prochain coup de cœur gourmand !
-  </p>
-</section>
-
-<h2>Miam à la carte</h2>
-<div id="filters-container">
-  <div id="type-filters">
-    <label><input type="checkbox" class="type-filter" value="restaurant" checked> Restaurants</label>
-    <label><input type="checkbox" class="type-filter" value="pizzeria" checked> Pizzerias</label>
-    <label><input type="checkbox" class="type-filter" value="fast-food" checked> Fast-food</label>
-    <label><input type="checkbox" class="type-filter" value="café" checked> Cafés</label>
-  </div>
-  <div id="tag-filters">
-    <button class="tag-button" data-tag="VG">#VG</button>
-    <button class="tag-button" data-tag="brunch">#Brunch</button>
-    <button class="tag-button" data-tag="babyfriendly">#BabyFriendly</button>
-  </div>
-</div>
-<div id="map"></div>
-
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<script>
-  const map = L.map('map').setView([46.63, 2.4], 5); // Centered on France
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
-  }).addTo(map);
-
-  let allPlaces = [];
-  const markers = L.layerGroup().addTo(map);
-
-  // Définition des icônes personnalisées (en dehors de la fonction pour la performance)
-  const customIcons = {
-    pizzeria: L.icon({ iconUrl: 'img/pizza.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-    brunch: L.icon({ iconUrl: 'img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-    restaurant: L.icon({ iconUrl: 'img/cloche.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-    'fast-food': L.icon({ iconUrl: 'img/burger.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-    café: L.icon({ iconUrl: 'img/tasse.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-    patisserie: L.icon({ iconUrl: 'img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
-  };
-  const defaultIcon = new L.Icon.Default(); // Icône par défaut de Leaflet
-
-  async function fetchData() {
-    try {
-      const response = await fetch('data/all_restaurants.json');
-      const data = await response.json();
-      
-      if (data && data.places) {
-        allPlaces = data.places;
-      } else {
-        allPlaces = [];
-      }
-      
-      displayMarkers(allPlaces);
-
-    } catch (error) {
-      console.error("Erreur lors du chargement des données des restaurants:", error);
-    }
-  }
-
-  function displayMarkers(places) {
-    markers.clearLayers();
-    const zoomThreshold = 13; // Le niveau de zoom à partir duquel les icônes personnalisées apparaissent
-    const currentZoom = map.getZoom();
-
-    places.forEach(place => {
-      let chosenIcon = defaultIcon;
-
-      // On affiche les icônes personnalisées seulement si le zoom est suffisant
-      if (currentZoom >= zoomThreshold) {
-        if (place.tags && place.tags.includes('brunch')) {
-          chosenIcon = customIcons.brunch;
-        } else if (customIcons[place.type]) {
-          chosenIcon = customIcons[place.type];
-        }
-      }
-
-      if (place.lat && place.lng) {
-        const markerOptions = { icon: chosenIcon };
-
-        const marker = L.marker([place.lat, place.lng], markerOptions);
-
-        const popupContent = `
-          <strong>${place.name}</strong><br>
-          ${place.description}<br>
-          <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
-        `;
-        marker.bindPopup(popupContent);
-        markers.addLayer(marker);
-
-        // On stocke les données du lieu dans le marqueur pour pouvoir changer l'icône au zoom
-        marker.placeData = place;
-      }
-    });
-  }
-
-  function setupFilters() {
-    const typeCheckboxes = document.querySelectorAll('.type-filter');
-    const tagButtons = document.querySelectorAll('.tag-button');
-
-    function applyFilters() {
-      const selectedTypes = Array.from(typeCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-
-      const activeTags = Array.from(tagButtons)
-        .filter(btn => btn.classList.contains('active'))
-        .map(btn => btn.dataset.tag);
-
-      const filteredPlaces = allPlaces.filter(place => {
-        const typeMatch = selectedTypes.includes(place.type);
-        
-        const placeTags = (place.tags || []).map(t => String(t).toLowerCase());
-        const tagMatch = activeTags.every(tag => placeTags.includes(tag));
-
-        return typeMatch && tagMatch;
-      });
-
-      displayMarkers(filteredPlaces);
-    }
-
-    typeCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
-    tagButtons.forEach(button => button.addEventListener('click', () => {
-      button.classList.toggle('active');
-      applyFilters();
-    }));
-  }
-
-
-  // Met à jour les icônes quand le niveau de zoom change
-  map.on('zoomend', function() {
-    const zoomThreshold = 13;
-    const currentZoom = map.getZoom();
-
-    markers.eachLayer(function(marker) {
-      let newIcon = defaultIcon;
-      const place = marker.placeData;
-
-      if (currentZoom >= zoomThreshold && place) {
-        if (place.tags && place.tags.includes('brunch')) {
-          newIcon = customIcons.brunch || defaultIcon;
-        } else if (customIcons[place.type]) {
-          newIcon = customIcons[place.type];
         }
       }
       marker.setIcon(newIcon);
@@ -177,6 +7,28 @@
   fetchData().then(() => {
     setupFilters(); // Initialise les filtres après le chargement des données
   });
+
+  // --- Ajout de la fonctionnalité de géolocalisation ---
+  const GeolocateControl = L.Control.extend({
+      onAdd: function(map) {
+          const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
+          container.innerHTML = '⌖'; // Icône de cible
+          container.title = 'Me géolocaliser';
+
+          L.DomEvent.on(container, 'click', function(e) {
+              L.DomEvent.stopPropagation(e);
+              map.locate({setView: true, maxZoom: 14});
+          });
+
+          return container;
+      }
+  });
+
+  new GeolocateControl().addTo(map);
+
+  // Gestion des événements de localisation
+  map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
+  map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
 
 </script>
 
@@ -198,29 +50,3 @@
     <br />
     <ul>
 <li>Brunchs</li>
-<li>Pizzas</li>
-<li>Choix VG de BG (des endroits où les végétariens ont du choix) </li>
-<li>Lieux baby friendly (avec au minimum une chaise haute et une table à langer) </li>
-</ul>
-
-  </p>
-</section>
-
-
-<footer>
-  <hr>
-  <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
-  <nav aria-label="Site navigation" style="margin-left:auto;">
-    <a class="button" href="pages/about.html">Qui suis‑je ?</a>
-  </nav>
-  <p><small><a href="../../credits.html">Crédits</a></small></p>
-</footer>
-
-<script>
-  document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
-    day: '2-digit', month: 'long', year: 'numeric'
-  });
-</script>
-
-</body>
-</html>

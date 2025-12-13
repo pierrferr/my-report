@@ -246,6 +246,20 @@ header nav .button {
     text-overflow:ellipsis;
   }
 }
+
+/* Style pour le bouton de géolocalisation sur la carte Leaflet */
+.leaflet-control-geolocate {
+  background-color: white;
+  width: 38px;
+  height: 38px;
+  border-radius: 4px;
+  border: 2px solid rgba(0,0,0,0.2);
+  background-clip: padding-box;
+  text-align: center;
+  line-height: 34px;
+  cursor: pointer;
+  font-size: 26px;
+}
 @media (max-width:900px){
   body{padding:0.8rem}
   #site-header{
