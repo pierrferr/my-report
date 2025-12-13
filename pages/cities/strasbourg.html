@@ -79,18 +79,36 @@
       attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
     }).addTo(map);
 
-    setupMapFilters(map, {
-        jsonPath: '../../data/restaurants_strasbourg.json',
-        listContainerId: 'places-content',
-        icons: {
-            pizzeria: '../../img/pizza.png',
-            'fast-food': '../../img/burger.png',
-            restaurant: '../../img/cloche.png',
-            ville: null,
-            'café': '../../img/tasse.png'
-        },
-        clearBefore: true
-    });
+    // Coordonnées du centre de Strasbourg pour le filtrage
+    const cityCenter = { lat: 48.58, lng: 7.75 };
+    const filterRadius = 10; // Rayon de filtrage en km
+
+    // Fonction pour calculer la distance entre deux points GPS
+    function distance(lat1, lon1, lat2, lon2) {
+      const R = 6371; // Rayon de la Terre en km
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+                Math.sin(dLon / 2) * Math.sin(dLon / 2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      return R * c;
+    }
+
+    fetch('../../data/all_restaurants.json')
+      .then(response => response.json())
+      .then(data => {
+        // Filtrer les lieux pour ne garder que ceux proches de Strasbourg
+        const strasbourgPlaces = data.places.filter(p => distance(cityCenter.lat, cityCenter.lng, p.lat, p.lng) < filterRadius);
+        
+        // Lancer le script de la carte avec les données filtrées
+        setupMapFilters(map, {
+            places: strasbourgPlaces, // Utiliser les données pré-filtrées
+            listContainerId: 'places-content',
+            icons: { restaurant: '../../img/cloche.png', pizzeria: '../../img/pizza.png', 'fast-food': '../../img/burger.png', 'café': '../../img/tasse.png', patisserie: '../../img/croissant.png' }
+        });
+      })
+      .catch(error => console.error("Erreur lors du chargement des données pour Strasbourg:", error));
   </script>
 </body>
 </html>

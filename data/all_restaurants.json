@@ -1,0 +1,157 @@
+{
+  "places": [
+    {
+      "name": "Little World",
+      "type": "restaurant",
+      "lat": 48.57908989392358,
+      "lng": 7.7431698319022795,
+      "link": "https://www.google.fr/maps/place/Little+World/@48.5789444,7.7402516,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c9446473c9ef:0xd706f3c326e16e2b!8m2!3d48.5789409!4d7.7428265!16s%2Fg%2F11g1t0m4t7?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Les meilleurs bobuns jamais mangés !",
+      "tags": ["VG", "vietnamien"]
+    },
+    {
+      "name": "Madame Julia",
+      "type": "restaurant",
+      "lat": 48.576056,
+      "lng": 7.752580,
+      "link": "https://www.google.fr/maps/place/Madame+Julia/@48.5760855,7.7500158,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c95c2e512d27:0x5783882e50fb66ed!8m2!3d48.576082!4d7.7525907!16s%2Fg%2F11f651k395?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Institution à Strasbourg, et on comprend vite pourquoi, les pancakes sont énormes et délicieux",
+      "tags": ["brunch", "VG", "pancakes"]
+    },
+    {
+      "name": "Sain Sushi",
+      "type": "restaurant",
+      "lat": 48.567118,
+      "lng": 7.757964,
+      "link": "https://maps.app.goo.gl/2Vvv9FnAJReU8MqW6",
+      "description": "Des sushis et un cuisinier au top.",
+      "tags": ["VG", "japonais"]
+    },
+    {
+      "name": "La Taverne Française",
+      "type": "café",
+      "lat": 48.58424218088011,
+      "lng": 7.738423119149092,
+      "link": "https://www.google.fr/maps/place/La+Taverne+Fran%C3%A7aise/@48.5853283,7.7534358,16z/data=!3m1!4b1!4m6!3m5!1s0x4796c9ccfb9dc6c7:0xf2b9abab96d60f2a!8m2!3d48.5853248!4d7.7560107!16s%2Fg%2F11fn6cth0c?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Un café agréable pour travailler ",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Pizza Cosy",
+      "type": "pizzeria",
+      "lat": 48.569968,
+      "lng": 7.762547,
+      "link": "https://www.google.com/maps/search/?api=1&query=Pizza+Cosy+Strasbourg",
+      "description": "Des pizzas tellement bonnes qu'on dirait pas qu'elles viennent d'une chaine. Pâte délicieuse et ingrédients de qualité.",
+      "tags": ["VG"]
+    },
+    {
+      "name": "La Pépinière",
+      "type": "restaurant",
+      "lat": 48.57813499320446,
+      "lng": 7.753185080658426,
+      "link": "https://www.google.fr/maps/place/La+P%C3%A9pini%C3%A8re/@48.5779966,7.750063,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c91dbc223357:0xc5ee809a700e51fe!8m2!3d48.5779931!4d7.7526379!16s%2Fg%2F11p56qhjx7?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Autant pour le brunch que pour y boire un verre et s'y restaurer. Local et fait maison.",
+      "tags": ["VG", "brunch"]
+    },
+    {
+      "name": "Lalibela Restaurant",
+      "type": "restaurant",
+      "lat": 48.56954472555225,
+      "lng": 7.753982486804729,
+      "link": "https://www.google.fr/maps/place/Lalibela+Restaurant/@48.5694489,7.7510428,17z/data=!3m2!4b1!5s0x4796c9a86ff1f10f:0xfe977d7df843a099!4m6!3m5!1s0x4796c9226db4c3bd:0x57b2017640674514!8m2!3d48.5694454!4d7.7536177!16s%2Fg%2F11fsynvv0q?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Pour goûter l'Ethiopie dans une ambiance chaleureuse. Un accueil plein de gentillesse et d'atention",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Pâtisserie Jaune Citron",
+      "type": "patisserie",
+      "lat": 48.57995460084825,
+      "lng": 7.74893712388484,
+      "link": "https://www.google.fr/maps/place/P%C3%A2tisserie+Jaune+Citron/@48.579873,7.7456863,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c98e3b735643:0xfa0f764d47dbbf54!8m2!3d48.5798695!4d7.7482612!16s%2Fg%2F11qp142y8t?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "description": "Des patisseries tout en finesse et des cookies à tomber.",
+      "tags": ["VG"]
+    },
+    {
+      "name": "La Grand' Pizzeria",
+      "type": "pizzeria",
+      "lat": 43.604916,
+      "lng": 1.45021,
+      "link": "https://www.google.fr/maps/place/La+Grand'+Pizzeria/@43.6049019,1.4476057,17z/data=!3m1!4b1!4m6!3m5!1s0x12aebc99733d7075:0x757b6f7172f3d25e!8m2!3d43.604898!4d1.4501806!16s%2Fg%2F1tjzms3p?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      "description": "Des pizzas énormes (taille au choix), cuites au feu de bois, miam !",
+      "tags": ["VG", "Gourmand"]
+    },
+    {
+      "name": "Pizza de l'Ormeau",
+      "type": "pizzeria",
+      "lat": 43.579137,
+      "lng": 1.484011,
+      "link": "https://www.google.fr/maps/place/Pizza+de+l'Ormeau/@43.5791606,1.4815034,17z/data=!3m1!4b1!4m6!3m5!1s0x12aebc56f81dc94b:0xe2baf5841a3963ff!8m2!3d43.5791567!4d1.4840783!16s%2Fg%2F1hc2m5wbx?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      "description": "Une des pizzéria les plus célèbre de Toulouse et on comprend vite pourquoi ! Uniquement à emporter",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Bep Chay",
+      "type": "restaurant",
+      "lat": 43.598677,
+      "lng": 1.44181,
+      "link": "https://www.google.fr/maps/place/Bep+Chay/@43.5985756,1.4392146,17z/data=!3m2!4b1!5s0x12aebb7d3dd76b11:0x174c07d967bb0d62!4m6!3m5!1s0x12aebb40cbe98bfd:0xf4dd80856812194a!8m2!3d43.5985717!4d1.4417895!16s%2Fg%2F11pcnwt14h?entry=ttu&g_ep=EgoyMDI1MTEwMi4wIKXMDSoASAFQAw%3D%3D",
+      "description": "Des pizzas énormes (taille au choix), cuites au feu de bois, miam !",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Gabriel Café",
+      "type": "restaurant",
+      "lat": 48.859457,
+      "lng": 2.38622,
+      "link": "https://maps.app.goo.gl/L3vdMXXif8w2s3fs8",
+      "description": "Un brunch en mode buffet avec des options originales et une touche brésielienne.",
+      "tags": ["VG", "brunch"]
+    },
+    {
+      "name": "Pizzeria Iovine's",
+      "type": "pizzeria",
+      "lat": 48.863251,
+      "lng": 2.340435,
+      "link": "https://maps.app.goo.gl/uLbtz56vYsAQczSm9",
+      "description": "Une délicieuse pâte et des garnitures qui changent les habitudes.",
+      "tags": ["VG"]
+    },
+    {
+      "name": "FAVE — Hendaye",
+      "type": "restaurant",
+      "lat": 43.3693,
+      "lng": -1.772,
+      "description": "Un brunch agréable au coeur de Hendaye.",
+      "link": "https://www.google.com/maps/search/?api=1&query=FAVE+Hendaye",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Granada — Hendaye",
+      "type": "fast-food",
+      "lat": 43.37250390234537,
+      "lng": -1.7724766413256565,
+      "description": "Un fast-food qui fait voyager.",
+      "link": "https://www.google.fr/maps/place/GRANADA/@43.3717321,-1.7763221,17z/data=!3m1!4b1!4m6!3m5!1s0xd5109ffd6f1fbef:0xc3c4ac37da0ab30d!8m2!3d43.3717282!4d-1.7737472!16s%2Fg%2F11t7z83_rs?entry=ttu&g_ep=EgoyMDI1MTEyMy4xIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG"]
+    },
+    {
+      "name": "Manekin",
+      "type": "restaurant",
+      "lat": 52.2319,
+      "lng": 21.0067,
+      "description": "Le paradis des crêpes (nalesniki) sucrées et salées. Très populaire !",
+      "link": "https://www.google.com/maps/search/?api=1&query=Manekin+Warsaw",
+      "tags": ["pancakes", "VG"]
+    },
+    {
+      "name": "Zapiecek",
+      "type": "restaurant",
+      "lat": 52.2497,
+      "lng": 21.0122,
+      "description": "Une institution pour manger des pierogis (raviolis polonais) traditionnels.",
+      "link": "https://www.google.com/maps/search/?api=1&query=Zapiecek+Warsaw",
+      "tags": ["local"]
+    }
+  ]
+}
