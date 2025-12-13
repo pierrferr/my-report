@@ -178,6 +178,29 @@
     setupFilters(); // Initialise les filtres après le chargement des données
   });
 
+  // --- Ajout de la fonctionnalité de géolocalisation ---
+  const GeolocateControl = L.Control.extend({
+      onAdd: function(map) {
+          const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
+          container.innerHTML = '⌖'; // Icône de cible
+          container.title = 'Me géolocaliser';
+
+          L.DomEvent.on(container, 'click', function(e) {
+              L.DomEvent.stopPropagation(e);
+              map.locate({setView: true, maxZoom: 14});
+          });
+
+          return container;
+      }
+  });
+
+  // Ajout du contrôle à la carte
+  new GeolocateControl().addTo(map);
+
+  // Gestion des événements de localisation
+  map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
+  map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
+
 </script>
 
 <!-- Nouvelle section : liens vers les sections du site -->
