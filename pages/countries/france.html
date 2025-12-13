@@ -70,133 +70,28 @@
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
   attribution: '&copy; OpenStreetMap contributors &copy; CARTO'
 }).addTo(map);
+    
+    // Fonction pour vérifier si un point est en France métropolitaine (approximatif)
+    function isInFrance(lat, lng) {
+      return lat > 42.3 && lat < 51.1 && lng > -5.0 && lng < 8.2;
+    }
 
-    // Villes avec lien vers leurs fiches
-    const villes = [
-      { name: "Strasbourg", lat: 48.5734, lng: 7.7521, page: "../cities/strasbourg.html" },
-      { name: "Toulouse",   lat: 43.6047, lng: 1.4442, page: "../cities/toulouse.html" },
-      { name: "Paris",      lat: 48.8566, lng: 2.3522, page: "../cities/paris.html" }
-    ];
-
-    // Configuration des icônes personnalisées
-    const icons = {
-        brunch: L.icon({ iconUrl: '../../img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        pizzeria: L.icon({ iconUrl: '../../img/pizza.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        'fast-food': L.icon({ iconUrl: '../../img/burger.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        restaurant: L.icon({ iconUrl: '../../img/cloche.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
-    };
-
-    let allMarkers = []; // Pour stocker tous les marqueurs (villes et restaurants)
-    let restaurantMarkers = []; // Pour stocker uniquement les marqueurs de restaurants pour le filtrage
-
-    // Ajout des marqueurs et génération de la liste
-    async function addMarkersAndList() {
-      const places = [];
-
-      // 1. Villes
-      villes.forEach(v => {
-        const m = L.marker([v.lat, v.lng]);
-        m.bindPopup(`<a href="${v.page}">${v.name}</a>`);
-        places.push({ type: 'Ville', name: v.name, href: v.page });
-        allMarkers.push(m);
-      });
-
-      // 2. Restaurants depuis JSON
-      try {
-        const response = await fetch('../../data/restaurants_france.json');
-        const data = await response.json();
-        const restaurants = data.places || []; // Assurez-vous que le JSON a une clé "places"
-
-        restaurants.forEach(r => {
-          const customIcon = icons[r.type];
-          const m = L.marker([r.lat, r.lng], { icon: customIcon });
-          
-          // Stocker les tags sur le marqueur pour le filtrage
-          m.options.tags = r.tags || [];
-
-          let popupContent = `<b>${r.name}</b>`;
-          if (r.description) popupContent += `<br>${r.description}`;
-          if (r.tags && r.tags.length > 0) {
-            popupContent += `<br><small>Tags: ${r.tags.join(', ')}</small>`;
-          }
-          if (r.link) popupContent += `<br><a href="${r.link}" target="_blank">Voir sur la carte</a>`;
-          m.bindPopup(popupContent);
-
-          places.push({ type: 'Restaurant', name: r.name, href: r.link });
-          restaurantMarkers.push(m);
-          allMarkers.push(m);
+    fetch('../../data/all_restaurants.json')
+      .then(response => response.json())
+      .then(data => {
+        // Filtrer les lieux pour ne garder que ceux en France
+        const francePlaces = data.places.filter(p => isInFrance(p.lat, p.lng));
+        
+        // Lancer le script de la carte avec les données filtrées
+        setupMapFilters(map, {
+            places: francePlaces,
+            listContainerId: 'places-content',
+            icons: { restaurant: '../../img/cloche.png', pizzeria: '../../img/pizza.png', 'fast-food': '../../img/burger.png', 'café': '../../img/tasse.png', patisserie: '../../img/croissant.png' }
         });
-      } catch (error) {
-        console.error("Erreur lors du chargement des restaurants pour la France :", error);
-      }
-
-      // Ajout de tous les marqueurs à la carte
-      allMarkers.forEach(m => m.addTo(map));
-
-      renderPlacesList(places);
-    }
-
-    function renderPlacesList(places) {
-      const container = document.getElementById('places-content');
-      if (!places || places.length === 0) {
-        container.innerHTML = '<p class="muted">Aucune adresse à afficher.</p>';
-        return;
-      }
-
-      // Tri pour afficher les villes en premier
-      places.sort((a, b) => a.type.localeCompare(b.type) || a.name.localeCompare(b.name));
-
-      const ul = document.createElement('ul');
-      places.forEach(p => {
-        const li = document.createElement('li');
-        if (p.href) {
-          const target = p.type === 'Restaurant' ? 'target="_blank"' : '';
-          li.innerHTML = `<strong>${p.type}:</strong> <a href="${p.href}" ${target}>${p.name}</a>`;
-        } else {
-          li.textContent = `${p.type}: ${p.name}`;
-        }
-        ul.appendChild(li);
-      });
-      container.innerHTML = '';
-      container.appendChild(ul);
-    }
-
-    // Logique de filtrage par tag
-    function setupTagFilters() {
-        const vgButton = document.getElementById('filter-vg');
-        const babyButton = document.getElementById('filter-baby');
-        const brunchButton = document.getElementById('filter-brunch');
-
-        function applyFilters() {
-            const vgActive = vgButton.classList.contains('active');
-            const babyActive = babyButton.classList.contains('active');
-            const brunchActive = brunchButton.classList.contains('active');
-
-            restaurantMarkers.forEach(marker => {
-                const tags = (marker.options.tags || []).map(t => String(t).toLowerCase());
-                const hasVg = tags.includes('vg');
-                const hasBaby = tags.includes('babyfriendly');
-                const hasBrunch = tags.includes('brunch');
-
-                const vgMatch = !vgActive || hasVg;
-                const babyMatch = !babyActive || hasBaby;
-                const brunchMatch = !brunchActive || hasBrunch;
-
-                if (vgMatch && babyMatch && brunchMatch) {
-                    marker.addTo(map);
-                } else {
-                    marker.removeFrom(map);
-                }
-            });
-        }
-
-        [vgButton, babyButton, brunchButton].forEach(button => button.addEventListener('click', () => {
-            button.classList.toggle('active');
-            applyFilters();
-        }));
-    }
-
-    addMarkersAndList().then(setupTagFilters);
+      })
+      .catch(error => console.error("Erreur lors du chargement des données pour la France:", error));
   </script>
+  <script src="../../js/map-filters.js"></script>
 </body>
 </html>
+```

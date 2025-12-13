@@ -10,6 +10,11 @@
     #map { height:500px; border-radius:8px; margin:1rem 0; }
     #filters { margin:0.5rem 0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;}
     .tag-button {
+      /* Styles pour les boutons de tag */
+    }
+    #site-header { text-align: center; }
+    #site-logo { height: 80px; }
+    .tag-button {
       display:inline-flex;
       align-items:center;
       gap:0.5rem;
@@ -33,7 +38,6 @@
     <a href="../../index.html" class="logo-link">
       <img src="../../img/logo-miam-bordeaux.png" alt="Mon Report - Accueil" id="site-logo">
     </a>
-    <h1 id="site-title">Les voyages du miam</h1>
   </header>
 
   <p style="margin:1rem 2rem;"><a href="../countries/france.html">← Retour à la carte France</a></p>
@@ -67,7 +71,6 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <script src="../../js/loadPlaces.js"></script>
   <script src="../../js/map-filters.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
