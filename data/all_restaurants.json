@@ -170,14 +170,6 @@
       "description": "Restaurant grec qui fait du bien",
       "link": "https://maps.app.goo.gl/kEtmPZW4ptpiXP296",
       "tags": ["VG"]
-    },
-    {
-      "name": "Strasbourg (fiche)",
-      "type": "ville",
-      "lat": 48.5734,
-      "lng": 7.7521,
-      "page": "../cities/strasbourg.html",
-      "description": "Fiche ville"
     }
   ]
 }
