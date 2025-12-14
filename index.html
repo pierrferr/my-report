@@ -38,8 +38,17 @@
     .banner-alsace { background-image: url('img/alsace.jpg'); }
     .banner-pologne { background-image: url('img/pologne.jpg'); }
     .banner-paris { background-image: url('img/paris.jpg'); }
+    .banner-amerique-du-sud { background-image: url('img/amerique-du-sud.jpg'); } /* À créer */
 
-Pir  </style>
+    /* Media query pour les écrans mobiles */
+    @media (max-width: 600px) {
+      .explore-banner-link {
+        padding: 2rem 1rem; /* Padding réduit pour une hauteur moindre */
+        font-size: 1.5rem;  /* Taille de police plus petite */
+      }
+    }
+
+  </style>
 </head>
 <body>
 <header id="site-header">
@@ -254,6 +263,7 @@ Pir  </style>
     <a href="pages/countries/alsace.html" class="explore-banner-link banner-alsace">Bien manger en Alsace</a>
     <a href="pages/countries/pologne.html" class="explore-banner-link banner-pologne">Voyager en Pologne</a>
     <a href="pages/cities/paris.html" class="explore-banner-link banner-paris">Miam à Paris</a>
+    <a href="pages/countries/amerique-du-sud.html" class="explore-banner-link banner-amerique-du-sud">Explorer l'Amérique du Sud</a>
     <a href="pages/cities/toulouse.html" class="explore-banner-link banner-toulouse">Bien manger à Toulouse</a>
   </div>
 </section>

@@ -201,6 +201,16 @@
       "link": "https://www.google.com/maps/place/Le+Local/@47.0909447,5.4943695,19z/data=!4m6!3m5!1s0x478d4c9a23ecf4e3:0x354dea423981a47b!8m2!3d47.0909447!4d5.494841!16s%2Fg%2F11cnx8ydxy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
       "tags": ["VG"],
       "Dernière visite": "05/2025"
+    },
+    {
+      "name": "Le Local",
+      "type": "restaurant",
+      "lat": 47.090984,
+      "lng": 5.4946398,
+      "description": "A Dole, de délicieux burgers dans un cadre idyllique au bord du canal",
+      "link": "https://www.google.com/maps/place/Le+Local/@47.0909447,5.4943695,19z/data=!4m6!3m5!1s0x478d4c9a23ecf4e3:0x354dea423981a47b!8m2!3d47.0909447!4d5.494841!16s%2Fg%2F11cnx8ydxy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG"],
+      "Dernière visite": "05/2025"
     }
   ]
 }
