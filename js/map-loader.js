@@ -21,7 +21,10 @@ function initializeMap(options) {
     }).addTo(map);
 
     let allPlaces = [];
-    const markers = L.layerGroup().addTo(map);
+    const markers = L.markerClusterGroup({
+        disableClusteringAtZoom: 13 // On désactive le regroupement à partir de ce niveau de zoom
+    });
+    map.addLayer(markers);
     const listContainer = config.listContainerId ? document.getElementById(config.listContainerId) : null;
 
     const customIcons = {

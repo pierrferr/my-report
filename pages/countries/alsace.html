@@ -6,6 +6,8 @@
   <title>Aleks Report — Alsace</title>
   <link rel="stylesheet" href="../../css/style.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.Default.css" />
   <style>
     #map { height:500px; border-radius:8px; margin:1rem 0; }
     #filters { margin:0.5rem 0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap;}
@@ -57,6 +59,7 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet.markercluster@1.5.1/dist/leaflet.markercluster.js"></script>
   <script src="../../js/map-loader.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
