@@ -282,3 +282,20 @@ header nav .button {
   #map{height:360px}
   #site-logo { height:96px; }
 }
+
+/* Styles pour les tags dans les popups de la carte Leaflet */
+.popup-tags {
+  margin-top: 8px;
+  /* Permet aux tags de passer à la ligne si l'espace manque */
+  line-height: 1.6;
+}
+.popup-tag {
+  background-color: var(--bg); /* Utilise la variable de couleur de fond */
+  border: 1px solid rgba(0,0,0,0.05);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 0.85em;
+  margin: 0 4px 4px 0;
+  display: inline-block;
+  color: var(--muted); /* Utilise la variable de couleur pour le texte secondaire */
+}

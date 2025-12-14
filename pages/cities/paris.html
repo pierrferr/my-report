@@ -119,7 +119,15 @@
                 if (place.tags && place.tags.includes('brunch')) chosenIcon = customIcons.brunch;
                 
                 const marker = L.marker([place.lat, place.lng], { icon: chosenIcon });
-                const popupContent = `<strong>${place.name}</strong><br>${place.description}<br><a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>`;
+                let tagsHtml = '';
+                if (place.tags && place.tags.length > 0) {
+                  tagsHtml = '<div class="popup-tags">' +
+                    place.tags.map(tag => `<span class="popup-tag">#${tag}</span>`).join('') +
+                    '</div>';
+                }
+                const popupContent = `<strong>${place.name}</strong><br>${place.description}<br>
+                                      <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
+                                      ${tagsHtml}`;
                 marker.bindPopup(popupContent);
                 markers.addLayer(marker);
 
