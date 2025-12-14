@@ -1,11 +1,11 @@
 /**
  * Initialise une carte Leaflet avec des lieux, des filtres et la géolocalisation.
  * @param {object} options - La configuration de la carte pour la page.
- * @param {string} options.mapId - L'ID de l'élément div pour la carte.
- * @param {string} options.listContainerId - L'ID de l'élément div pour la liste des lieux.
+ * @param {string} [options.mapId='map'] - L'ID de l'élément div pour la carte.
+ * @param {string} [options.listContainerId] - L'ID de l'élément div pour la liste des lieux.
  * @param {Array<number>} options.center - Les coordonnées [lat, lng] du centre de la carte.
  * @param {number} options.zoom - Le niveau de zoom initial.
- * @param {string} options.iconBasePath - Le chemin relatif vers le dossier des icônes.
+ * @param {string} [options.iconBasePath='../../img/'] - Le chemin relatif vers le dossier des icônes.
  * @param {boolean} [options.enableGeolocation=true] - Activer ou non le bouton de géolocalisation.
  * @param {function} options.dataFilter - Une fonction qui reçoit la liste de tous les lieux et retourne la liste filtrée pour la page.
  */
@@ -13,16 +13,16 @@ function initializeMap(options) {
     const config = {
         enableGeolocation: true,
         ...options
-    };
+    };    
 
     const map = L.map(config.mapId).setView(config.center, config.zoom);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
 
-    let pagePlaces = [];
+    let allPlaces = [];
     const markers = L.layerGroup().addTo(map);
-    const listContainer = document.getElementById(config.listContainerId);
+    const listContainer = config.listContainerId ? document.getElementById(config.listContainerId) : null;
 
     const customIcons = {
         pizzeria: L.icon({ iconUrl: `${config.iconBasePath}pizza.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
@@ -38,8 +38,8 @@ function initializeMap(options) {
         try {
             const response = await fetch(`${config.iconBasePath}../data/all_restaurants.json`);
             const data = await response.json();
-            pagePlaces = config.dataFilter(data.places);
-            displayContent(pagePlaces);
+            allPlaces = config.dataFilter(data.places);
+            displayContent(allPlaces);
         } catch (error) {
             console.error("Erreur de chargement:", error);
             if (listContainer) listContainer.innerHTML = '<p class="muted">Impossible de charger les adresses.</p>';
@@ -48,8 +48,8 @@ function initializeMap(options) {
 
     function displayContent(places) {
         markers.clearLayers();
-        if (listContainer) listContainer.innerHTML = '';
-        const ul = document.createElement('ul');
+        if (listContainer) listContainer.innerHTML = '<ul></ul>'; // Initialise avec une liste vide
+        const ul = listContainer ? listContainer.querySelector('ul') : null;
 
         places.forEach(place => {
             if (place.lat && place.lng) {
@@ -59,9 +59,9 @@ function initializeMap(options) {
                 const marker = L.marker([place.lat, place.lng], { icon: chosenIcon });
                 let tagsHtml = '';
                 if (place.tags && place.tags.length > 0) {
-                    tagsHtml = '<div class="popup-tags">' +
-                        place.tags.map(tag => `<span class="popup-tag">#${tag}</span>`).join('') +
-                        '</div>';
+                  tagsHtml = '<div class="popup-tags">' +
+                    place.tags.map(tag => `<span class="popup-tag">#${tag}</span>`).join('') +
+                    '</div>';
                 }
                 const popupContent = `<strong>${place.name}</strong><br>${place.description || ''}<br>
                                       <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
@@ -83,22 +83,30 @@ function initializeMap(options) {
         }
     }
 
-    function applyFilters() {
-        const selectedTypes = Array.from(document.querySelectorAll('#filters input[type="checkbox"]:checked')).map(cb => cb.id.replace('filter-', 's'));
-        const activeTags = Array.from(document.querySelectorAll('#filters button.tag-button.active')).map(btn => btn.dataset.tag || btn.id.replace('filter-', ''));
-
-        const filteredPlaces = pagePlaces.filter(place => {
-            const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(place.type + 's');
-            const tagMatch = activeTags.every(tag => (place.tags || []).map(t => String(t).toLowerCase()).includes(tag.toLowerCase()));
-            return typeMatch && tagMatch;
-        });
-        displayContent(filteredPlaces);
-    }
-
     function setupFilters() {
-        const filterElements = document.querySelectorAll('#filters input[type="checkbox"], #filters button.tag-button');
-        filterElements.forEach(el => el.addEventListener('click', () => {
-            if (el.tagName === 'BUTTON') el.classList.toggle('active');
+        const typeCheckboxes = document.querySelectorAll('#filters input[type="checkbox"]');
+        const tagButtons = document.querySelectorAll('#filters button.tag-button');
+        
+        function applyFilters() {
+            const selectedTypes = Array.from(typeCheckboxes)
+                .filter(cb => cb.checked)
+                .map(cb => cb.value);
+            
+            const activeTags = Array.from(tagButtons)
+                .filter(btn => btn.classList.contains('active'))
+                .map(btn => btn.dataset.tag);
+            
+            const filteredPlaces = allPlaces.filter(place => {
+                const typeMatch = selectedTypes.includes(place.type);
+                const placeTags = (place.tags || []).map(t => String(t).toLowerCase());
+                const tagMatch = activeTags.every(tag => placeTags.includes(tag.toLowerCase()));
+                return typeMatch && tagMatch;
+            });
+            displayContent(filteredPlaces);
+        }
+        typeCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+        tagButtons.forEach(button => button.addEventListener('click', () => {
+            button.classList.toggle('active');
             applyFilters();
         }));
     }

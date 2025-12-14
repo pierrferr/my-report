@@ -20,15 +20,15 @@
   <h2 style="margin-left:2rem;">Strasbourg — bonnes adresses</h2>
 
   <div id="filters" style="margin-left:2rem;">
-    <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
-    <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
-    <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
-    <label><input id="filter-cafes" type="checkbox" checked> Cafés</label>
+    <label><input type="checkbox" class="type-filter" value="pizzeria" checked> Pizzerias</label>
+    <label><input type="checkbox" class="type-filter" value="restaurant" checked> Restaurants</label>
+    <label><input type="checkbox" class="type-filter" value="fast-food" checked> Fast-food</label>
+    <label><input type="checkbox" class="type-filter" value="café" checked> Cafés</label>
 
     <!-- Nouveaux boutons de filtre par tag -->
-    <button id="filter-brunch" class="tag-button" title="Afficher seulement les lieux avec le tag brunch">#Brunch</button>
-    <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
-    <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
+    <button class="tag-button" data-tag="brunch" title="Afficher seulement les lieux avec le tag brunch">#Brunch</button>
+    <button class="tag-button" data-tag="VG" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button class="tag-button" data-tag="babyfriendly" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
   </div>
 
   <div id="map"></div>
@@ -63,7 +63,7 @@
       listContainerId: 'places-content',
       center: [48.5734, 7.7521],
       zoom: 13,
-      iconBasePath: '../../img/',
+      iconBasePath: '../../img/', // Chemin vers les icônes
       dataFilter: (places) => {
         const cityCenter = { lat: 48.58, lng: 7.75 };
         const filterRadius = 10; // 10km

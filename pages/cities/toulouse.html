@@ -34,15 +34,15 @@
   <h2 style="margin-left:2rem;">Toulouse — bonnes adresses</h2>
 
   <div id="filters" style="margin-left:2rem;">
-    <label><input id="filter-pizzerias" type="checkbox" checked> Pizzerias</label>
-    <label><input id="filter-restaurants" type="checkbox" checked> Restaurants</label>
-    <label><input id="filter-fast-food" type="checkbox" checked> Fast-food</label>
-    <label><input id="filter-cafes" type="checkbox" checked> Cafés</label>
+    <label><input type="checkbox" class="type-filter" value="pizzeria" checked> Pizzerias</label>
+    <label><input type="checkbox" class="type-filter" value="restaurant" checked> Restaurants</label>
+    <label><input type="checkbox" class="type-filter" value="fast-food" checked> Fast-food</label>
+    <label><input type="checkbox" class="type-filter" value="café" checked> Cafés</label>
 
     <!-- Tag buttons (VG / BabyFriendly) -->
-    <button id="filter-brunch" class="tag-button" title="Afficher seulement les lieux avec le tag brunch">#Brunch</button>
-    <button id="filter-vg" class="tag-button" title="Afficher seulement les lieux avec le tag VG">#VG</button>
-    <button id="filter-baby" class="tag-button" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
+    <button class="tag-button" data-tag="brunch" title="Afficher seulement les lieux avec le tag brunch">#Brunch</button>
+    <button class="tag-button" data-tag="VG" title="Afficher seulement les lieux avec le tag VG">#VG</button>
+    <button class="tag-button" data-tag="babyfriendly" title="Afficher seulement les lieux BabyFriendly">#BabyFriendly</button>
   </div>
 
   <div id="map"></div>
@@ -59,25 +59,9 @@
   </footer>
 
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="../../js/map-loader.js"></script>
   <script>
     document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
-
-    const map = L.map('map').setView([43.6047, 1.4442], 13);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>' }).addTo(map);
-
-    let allPlaces = [];
-    const markers = L.layerGroup().addTo(map);
-    const listContainer = document.getElementById('places-content');
-
-    const customIcons = {
-        pizzeria: L.icon({ iconUrl: '../../img/pizza.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        brunch: L.icon({ iconUrl: '../../img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        restaurant: L.icon({ iconUrl: '../../img/cloche.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        'fast-food': L.icon({ iconUrl: '../../img/burger.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        café: L.icon({ iconUrl: '../../img/tasse.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        patisserie: L.icon({ iconUrl: '../../img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
-    };
-    const defaultIcon = new L.Icon.Default();
 
     function distance(lat1, lon1, lat2, lon2) {
         const R = 6371; const dLat = (lat2 - lat1) * Math.PI / 180; const dLon = (lon2 - lon1) * Math.PI / 180;
@@ -85,87 +69,18 @@
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)); return R * c;
     }
 
-    async function fetchData() {
-        try {
-            const response = await fetch('../../data/all_restaurants.json');
-            const data = await response.json();
-            const cityCenter = { lat: 43.6047, lng: 1.4442 };
-            const filterRadius = 10; // 10km
-            allPlaces = data.places.filter(p => distance(cityCenter.lat, cityCenter.lng, p.lat, p.lng) < filterRadius);
-            displayContent(allPlaces);
-        } catch (error) {
-            console.error("Erreur de chargement:", error);
-            if (listContainer) listContainer.innerHTML = '<p class="muted">Impossible de charger les adresses.</p>';
-        }
-    }
-
-    function displayContent(places) {
-        markers.clearLayers();
-        if (listContainer) listContainer.innerHTML = '';
-        const ul = document.createElement('ul');
-
-        places.forEach(place => {
-            if (place.lat && place.lng) {
-                let chosenIcon = customIcons[place.type] || defaultIcon;
-                if (place.tags && place.tags.includes('brunch')) chosenIcon = customIcons.brunch;
-                
-                const marker = L.marker([place.lat, place.lng], { icon: chosenIcon });
-                const popupContent = `<strong>${place.name}</strong><br>${place.description}<br><a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>`;
-                marker.bindPopup(popupContent);
-                markers.addLayer(marker);
-
-                const li = document.createElement('li');
-                li.innerHTML = `<a href="${place.link}" target="_blank" rel="noopener">${place.name}</a> — <small class="muted">${place.type}</small>`;
-                ul.appendChild(li);
-            }
-        });
-
-        if (listContainer) {
-            if (!ul.children.length) listContainer.innerHTML = '<p class="muted">Aucune adresse à afficher.</p>';
-            else listContainer.appendChild(ul);
-        }
-    }
-
-    function setupFilters() {
-        const filterElements = document.querySelectorAll('#filters input[type="checkbox"], #filters button.tag-button');
-        filterElements.forEach(el => el.addEventListener('click', applyFilters));
-    }
-
-    function applyFilters() {
-        const selectedTypes = Array.from(document.querySelectorAll('#filters input[type="checkbox"]:checked')).map(cb => cb.id.replace('filter-', 's'));
-        const activeTags = Array.from(document.querySelectorAll('#filters button.tag-button.active')).map(btn => btn.id.replace('filter-', ''));
-
-        const filteredPlaces = allPlaces.filter(place => {
-            const typeMatch = selectedTypes.includes(place.type + 's');
-            const tagMatch = activeTags.every(tag => (place.tags || []).includes(tag));
-            return typeMatch && tagMatch;
-        });
-        displayContent(filteredPlaces);
-    }
-
-    fetchData().then(setupFilters);
-
-    // --- Ajout de la fonctionnalité de géolocalisation ---
-    const GeolocateControl = L.Control.extend({
-        onAdd: function(map) {
-            const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
-            container.innerHTML = '⌖'; // Icône de cible
-            container.title = 'Me géolocaliser';
-
-            L.DomEvent.on(container, 'click', function(e) {
-                L.DomEvent.stopPropagation(e);
-                map.locate({setView: true, maxZoom: 14});
-            });
-
-            return container;
-        }
+    initializeMap({
+      mapId: 'map',
+      listContainerId: 'places-content',
+      center: [43.6047, 1.4442],
+      zoom: 13,
+      iconBasePath: '../../img/',
+      dataFilter: (places) => {
+        const cityCenter = { lat: 43.6047, lng: 1.4442 };
+        const filterRadius = 10; // 10km
+        return places.filter(p => distance(cityCenter.lat, cityCenter.lng, p.lat, p.lng) < filterRadius);
+      }
     });
-
-    new GeolocateControl().addTo(map);
-
-    // Gestion des événements de localisation
-    map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
-    map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
   </script>
 </body>
 </html>
