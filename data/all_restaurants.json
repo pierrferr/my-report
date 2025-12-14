@@ -181,6 +181,26 @@
       "link": "https://www.google.com/maps/place/Base+Camp+Pizzeria+Patagonia/@-51.7316078,-72.5043994,17z/data=!3m1!4b1!4m6!3m5!1s0xbdafe81d12268f63:0xc1dbb2ce9f5ad6b6!8m2!3d-51.7316112!4d-72.4995285!16s%2Fg%2F11f2gssm1d?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
       "tags": ["VG"],
       "Dernière visite": "02/2025"
+    },
+    {
+      "name": "Les Merveilles d'Albertine",
+      "type": "café",
+      "lat": 48.584800720214844,
+      "lng": 7.737743854522705,
+      "description": "Un brunch délicieux qui allie fraîcheur et gourmandise. Chaque pièce est un régal pour les papilles. Une déco à tomber.",
+      "link": "https://www.google.com/maps/place/Les+Merveilles+d'Albertine/@48.5842742,7.7349241,17z/data=!3m1!4b1!4m6!3m5!1s0x4796c9eee64147a5:0xb5ed1386706a2e85!8m2!3d48.5842707!4d7.737499!16s%2Fg%2F11mlc7hf7q?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG","Vegan","BabyFriendly","brunch","Dog friendly"],
+      "Dernière visite": "14/12/2025"
+    },
+    {
+      "name": "Le Local",
+      "type": "restaurant",
+      "lat": 47.090984,
+      "lng": 5.4946398,
+      "description": "A Dole, de délicieux burgers dans un cadre idyllique au bord du canal",
+      "link": "https://www.google.com/maps/place/Le+Local/@47.0909447,5.4943695,19z/data=!4m6!3m5!1s0x478d4c9a23ecf4e3:0x354dea423981a47b!8m2!3d47.0909447!4d5.494841!16s%2Fg%2F11cnx8ydxy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG"],
+      "Dernière visite": "05/2025"
     }
   ]
 }
