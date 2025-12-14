@@ -168,7 +168,7 @@
         const typeMatch = selectedTypes.includes(place.type);
         
         const placeTags = (place.tags || []).map(t => String(t).toLowerCase());
-        const tagMatch = activeTags.every(tag => placeTags.includes(tag));
+        const tagMatch = activeTags.every(tag => placeTags.includes(tag.toLowerCase()));
 
         return typeMatch && tagMatch;
       });

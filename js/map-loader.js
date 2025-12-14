@@ -89,7 +89,7 @@ function initializeMap(options) {
 
         const filteredPlaces = pagePlaces.filter(place => {
             const typeMatch = selectedTypes.length === 0 || selectedTypes.includes(place.type + 's');
-            const tagMatch = activeTags.every(tag => (place.tags || []).map(t => String(t).toLowerCase()).includes(tag));
+            const tagMatch = activeTags.every(tag => (place.tags || []).map(t => String(t).toLowerCase()).includes(tag.toLowerCase()));
             return typeMatch && tagMatch;
         });
         displayContent(filteredPlaces);
