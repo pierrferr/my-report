@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Documentation Technique - Les voyages du miam</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <style>
+    .doc-section {
+      background: #fff;
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: var(--shadow-sm);
+    }
+    pre {
+      background-color: #f4f7f9;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid rgba(0,0,0,0.05);
+    }
+    code {
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 0.9em;
+    }
+    .doc-section h2 {
+      margin-top: 0;
+    }
+  </style>
+</head>
+<body>
+  <header id="site-header">
+    <a href="../index.html" class="logo-link">
+      <img src="../img/logo-miam-bordeaux.png" alt="Mon Report - Accueil" id="site-logo">
+    </a>
+  </header>
+
+  <div style="padding: 0 1rem;">
+    <p style="margin:1rem 0;"><a href="../index.html">← Retour à l'accueil</a></p>
+    <h1>Documentation Technique du Projet "Les voyages du miam"</h1>
+
+    <section class="doc-section">
+      <h2>Objectif du projet</h2>
+      <p>
+        "Les voyages du miam" est un site personnel qui a pour but de partager une sélection de bonnes adresses de restaurants, testées et approuvées, à travers le monde. Le site se présente sous la forme de cartes interactives.
+      </p>
+    </section>
+
+    <section class="doc-section">
+      <h2>Structure des fichiers</h2>
+      <p>Le projet est organisé de la manière suivante :</p>
+      <ul>
+        <li><code>index.html</code>: Page d'accueil principale, affichant la carte du monde avec tous les restaurants.</li>
+        <li><code>/data/</code>
+          <ul>
+            <li><code>all_restaurants.json</code>: <strong>Fichier central</strong>. Il contient les données de tous les restaurants sous forme d'un tableau JSON. C'est la seule source de vérité pour le contenu.</li>
+          </ul>
+        </li>
+        <li><code>/css/</code>
+          <ul>
+            <li><code>style.css</code>: Feuille de style principale, appliquée à l'ensemble du site.</li>
+          </ul>
+        </li>
+        <li><code>/js/</code>
+          <ul>
+            <li><code>map-loader.js</code>: Script réutilisable pour initialiser les cartes sur les pages secondaires (villes, pays).</li>
+          </ul>
+        </li>
+        <li><code>/pages/</code>
+          <ul>
+            <li><code>/cities/</code>: Contient les pages dédiées à une ville (ex: <code>paris.html</code>).</li>
+            <li><code>/countries/</code>: Contient les pages dédiées à un pays ou une région (ex: <code>alsace.html</code>).</li>
+            <li><code>about.html</code>, <code>credits.html</code>, <code>documentation.html</code>: Pages de contenu annexes.</li>
+          </ul>
+        </li>
+        <li><code>/img/</code>: Contient toutes les images (logo, icônes de carte, bannières des pages).</li>
+      </ul>
+    </section>
+
+    <section class="doc-section">
+      <h2>Fonctionnement technique</h2>
+      <h3>1. La source de données : <code>all_restaurants.json</code></h3>
+      <p>Toutes les informations proviennent de ce fichier. Pour ajouter un restaurant, il suffit d'ajouter un nouvel objet dans le tableau <code>"places"</code>. Chaque objet doit respecter la structure suivante :</p>
+      <pre><code>{
+  "name": "Nom du restaurant",
+  "type": "restaurant", // Type : restaurant, pizzeria, café, fast-food...
+  "lat": 48.8566,       // Latitude
+  "lng": 2.3522,        // Longitude
+  "link": "https://lien-vers-google-maps",
+  "description": "Une courte description.",
+  "tags": ["VG", "brunch"], // Tags pour les filtres
+  "Dernière visite": "12/2025" // Champ optionnel
+}</code></pre>
+
+      <h3>2. Les cartes interactives</h3>
+      <p>Les cartes sont gérées avec la librairie <a href="https://leafletjs.com/" target="_blank">Leaflet.js</a> et le plugin <a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank">Leaflet.markercluster</a> pour le regroupement des marqueurs.</p>
+      <ul>
+        <li><strong>Page d'accueil :</strong> Le script de la carte est directement intégré dans <code>index.html</code>. Il charge <code>all_restaurants.json</code> et affiche tous les points.</li>
+        <li><strong>Pages secondaires :</strong> Pour éviter la duplication de code, toutes les autres pages (Paris, Alsace, etc.) utilisent le script <code>/js/map-loader.js</code>.</li>
+      </ul>
+
+      <h3>3. Le script centralisé : <code>map-loader.js</code></h3>
+      <p>Ce script expose une fonction unique : <code>initializeMap(options)</code>. Chaque page secondaire (ex: <code>paris.html</code>) appelle cette fonction avec une configuration spécifique.</p>
+      <p>L'option la plus importante est <code>dataFilter</code> : c'est une fonction qui reçoit la liste complète des restaurants et ne retourne que ceux qui doivent être affichés sur la page en question (par exemple, en filtrant par coordonnées géographiques).</p>
+      <pre><code>// Exemple d'appel dans paris.html
+initializeMap({
+  mapId: 'map',
+  center: [48.8566, 2.3522], // Centre sur Paris
+  zoom: 12,
+  dataFilter: (places) => {
+    // Ne retourne que les restaurants dans un rayon de 15km autour de Paris
+    return places.filter(p => distance(parisCenter, p) < 15);
+  }
+});</code></pre>
+
+      <h3>4. Le système de filtres</h3>
+      <p>Les filtres (par type et par tag) sont gérés côté client, en JavaScript. Lorsqu'un filtre est activé/désactivé :</p>
+      <ol>
+        <li>La fonction <code>applyFilters()</code> est appelée.</li>
+        <li>Elle récupère les filtres actifs.</li>
+        <li>Elle filtre le tableau des restaurants chargés en mémoire.</li>
+        <li>Elle appelle la fonction <code>displayMarkers()</code> pour rafraîchir la carte avec les nouveaux points.</li>
+      </ol>
+    </section>
+
+  </div>
+
+  <footer>
+    <hr>
+    <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  </footer>
+
+  <script>
+    document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', { day:'2-digit', month:'long', year:'numeric' });
+  </script>
+</body>
+</html>
