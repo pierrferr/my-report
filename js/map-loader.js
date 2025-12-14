@@ -63,9 +63,14 @@ function initializeMap(options) {
                     place.tags.map(tag => `<span class="popup-tag">#${tag}</span>`).join('') +
                     '</div>';
                 }
+                let lastVisitHtml = '';
+                if (place["Dernière visite"]) {
+                    lastVisitHtml = `<br><small class="muted">Dernière visite : ${place["Dernière visite"]}</small>`;
+                }
                 const popupContent = `<strong>${place.name}</strong><br>${place.description || ''}<br>
                                       <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
-                                      ${tagsHtml}`;
+                                      ${tagsHtml}
+                                      ${lastVisitHtml}`;
                 marker.bindPopup(popupContent);
                 markers.addLayer(marker);
 
