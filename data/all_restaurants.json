@@ -171,6 +171,16 @@
       "description": "Restaurant grec qui fait du bien",
       "link": "https://maps.app.goo.gl/kEtmPZW4ptpiXP296",
       "tags": ["VG"]
+    },
+      {
+      "name": "Base Camp Pizzeria Patagonia",
+      "type": "pizzéria",
+      "lat": -51.7316078,
+      "lng": -72.5043994,
+      "description": "Jamais mangé d'aussi bons tacos et le ice-cream sandwich est à tester absoluement. Ambiance chaleureuse.",
+      "link": "https://www.google.com/maps/place/Base+Camp+Pizzeria+Patagonia/@-51.7316078,-72.5043994,17z/data=!3m1!4b1!4m6!3m5!1s0xbdafe81d12268f63:0xc1dbb2ce9f5ad6b6!8m2!3d-51.7316112!4d-72.4995285!16s%2Fg%2F11f2gssm1d?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG"],
+      "Dernière visite": "02/2025"
     }
   ]
 }
