@@ -174,7 +174,7 @@
     },
       {
       "name": "Base Camp Pizzeria Patagonia",
-      "type": "pizzéria",
+      "type": "pizzeria",
       "lat": -51.7316078,
       "lng": -72.5043994,
       "description": "Jamais mangé d'aussi bons tacos et le ice-cream sandwich est à tester absoluement. Ambiance chaleureuse.",
@@ -200,6 +200,16 @@
       "description": "A Dole, de délicieux burgers dans un cadre idyllique au bord du canal",
       "link": "https://www.google.com/maps/place/Le+Local/@47.0909447,5.4943695,19z/data=!4m6!3m5!1s0x478d4c9a23ecf4e3:0x354dea423981a47b!8m2!3d47.0909447!4d5.494841!16s%2Fg%2F11cnx8ydxy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
       "tags": ["VG"],
+      "Dernière visite": "05/2025"
+    },
+    {
+      "name": "Au Plaisirs d'Antan",
+      "type": "restaurant",
+      "lat": 46.67119598388672,
+      "lng": 5.554421424865723,
+      "description": "A Lons-le-Saunier, pour les amateurs de fromages et de gastronomie du Jura. On apprécie le train électrique qui fait le tour du restaurant !",
+      "link": "https://www.google.com/maps/place/Aux+Plaisirs+d'Antan/@46.6723472,5.5520924,17z/data=!3m1!4b1!4m6!3m5!1s0x478cd71c251147d1:0xdd7e3d540867595!8m2!3d46.6723435!4d5.5546673!16s%2Fg%2F11lcnw4cc3?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG","Gourmand","Fromages"],
       "Dernière visite": "05/2025"
     },
     {
