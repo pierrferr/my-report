@@ -221,6 +221,16 @@
       "link": "https://www.google.com/maps/place/Le+Local/@47.0909447,5.4943695,19z/data=!4m6!3m5!1s0x478d4c9a23ecf4e3:0x354dea423981a47b!8m2!3d47.0909447!4d5.494841!16s%2Fg%2F11cnx8ydxy?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
       "tags": ["VG"],
       "Dernière visite": "05/2025"
+    },
+    {
+      "name": "S Comme Saj",
+      "type": "fast-food",
+      "lat": 43.604636,
+      "lng": 1.441092,
+      "description": "De délicieuses galettes libanaises, à manger sur place ou à emporter.",
+      "link": "https://www.google.fr/maps/place/S+Com+Saj/@43.6046053,1.4385195,17z/data=!3m1!4b1!4m6!3m5!1s0x12aebb61803036eb:0xe10ab4a01cfb2f81!8m2!3d43.6046014!4d1.4410944!16s%2Fg%2F1q62ccxjg?entry=ttu&g_ep=EgoyMDI1MTIwOS4wIKXMDSoASAFQAw%3D%3D",
+      "tags": ["VG"],
+      "Dernière visite": "12/2025"
     }
   ]
 }
