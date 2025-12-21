@@ -48,6 +48,38 @@
       }
     }
 
+    /* Modal styles */
+    #imageModal {
+      display: none; 
+      position: fixed; 
+      z-index: 2000; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.9);
+    }
+    #modalImage {
+      margin: auto; 
+      display: block; 
+      max-width: 90%; 
+      max-height: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #closeModal {
+      position: absolute; 
+      top: 15px; 
+      right: 35px; 
+      color: #f1f1f1; 
+      font-size: 40px; 
+      font-weight: bold; 
+      cursor: pointer;
+      z-index: 2001;
+    }
   </style>
 </head>
 <body>
@@ -79,6 +111,12 @@
   </div>
 </div>
 <div id="map"></div>
+
+<!-- Modal for images -->
+<div id="imageModal">
+  <span id="closeModal">&times;</span>
+  <img id="modalImage">
+</div>
 
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet.markercluster@1.5.1/dist/leaflet.markercluster.js"></script>
@@ -157,12 +195,18 @@
           lastVisitHtml = `<br><small class="muted">Dernière visite : ${place["Dernière visite"]}</small>`;
         }
 
+        let pictureHtml = '';
+        if (place.picture) {
+          pictureHtml = `<br><img src="${place.picture}" alt="${place.name}" style="width:100%; max-width:200px; margin-top:8px; border-radius:4px; cursor:pointer;" onclick="openImageModal('${place.picture}')">`;
+        }
+
         const popupContent = `
           <strong>${place.name}</strong><br>
           ${place.description}<br>
           <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
           ${tagsHtml}
-          ${lastVisitHtml}`;
+          ${lastVisitHtml}
+          ${pictureHtml}`;
         marker.bindPopup(popupContent);
         markers.addLayer(marker);
 
@@ -252,6 +296,25 @@
   map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
   map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
 
+  // Modal Logic
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  const closeModal = document.getElementById('closeModal');
+
+  window.openImageModal = function(src) {
+    modal.style.display = "block";
+    modalImg.src = src;
+  }
+
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
 </script>
 
 <!-- Nouvelle section : liens vers les sections du site -->
