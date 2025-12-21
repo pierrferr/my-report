@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Les voyages du miam</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.Default.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    .explore-banner-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 3rem 1rem; /* Contrôle la hauteur pour la rendre "fine" */
+      background-size: cover;
+      background-position: center;
+      border-radius: 12px;
+      text-decoration: none;
+      color: white;
+      font-size: 2.2rem;
+      font-weight: 700;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.7); /* Ombre portée pour la lisibilité */
+      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+      transition: transform 0.2s ease-out;
+      overflow: hidden;
+      position: relative;
+    }
+    .explore-banner-link:hover {
+      transform: scale(1.02);
+    }
+    /* Classes spécifiques pour chaque image de fond */
+    .banner-toulouse { background-image: url('img/toulouse.jpg'); }
+    .banner-strasbourg { background-image: url('img/strasbourg.jpg'); }
+    .banner-alsace { background-image: url('img/alsace.jpg'); }
+    .banner-pologne { background-image: url('img/pologne.jpg'); }
+    .banner-paris { background-image: url('img/paris.jpg'); }
+    .banner-amerique-du-sud { background-image: url('img/amerique-du-sud.jpg'); } /* À créer */
+
+    /* Media query pour les écrans mobiles */
+    @media (max-width: 600px) {
+      .explore-banner-link {
+        padding: 2rem 1rem; /* Padding réduit pour une hauteur moindre */
+        font-size: 1.5rem;  /* Taille de police plus petite */
+      }
+    }
+
+    /* Modal styles */
+    #imageModal {
+      display: none; 
+      position: fixed; 
+      z-index: 2000; 
+      left: 0; 
+      top: 0; 
+      width: 100%; 
+      height: 100%; 
+      overflow: auto; 
+      background-color: rgba(0,0,0,0.9);
+    }
+    #modalImage {
+      margin: auto; 
+      display: block; 
+      max-width: 90%; 
+      max-height: 90%;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+    #closeModal {
+      position: absolute; 
+      top: 15px; 
+      right: 35px; 
+      color: #f1f1f1; 
+      font-size: 40px; 
+      font-weight: bold; 
+      cursor: pointer;
+      z-index: 2001;
+    }
+  </style>
+</head>
+<body>
+<header id="site-header">
+  <a href="index.html" class="logo-link">
+    <img src="img/logo-miam-bordeaux.png" alt="Logo MIAM" id="site-logo">
+  </a>
+ <!-- <h1 id="site-title">Les voyages du miam</h1>-->
+</header>
+
+<section id="presentation">
+  <p class="lead">
+    Bienvenue sur Les voyages du miam. Trouve ici ton prochain coup de cœur gourmand !
+  </p>
+</section>
+
+<h2>Miam à la carte</h2>
+<div id="filters-container">
+  <div id="type-filters">
+    <label><input type="checkbox" class="type-filter" value="restaurant" checked> Restaurants</label>
+    <label><input type="checkbox" class="type-filter" value="pizzeria" checked> Pizzerias</label>
+    <label><input type="checkbox" class="type-filter" value="fast-food" checked> Fast-food</label>
+    <label><input type="checkbox" class="type-filter" value="café" checked> Cafés</label>
+  </div>
+  <div id="tag-filters">
+    <button class="tag-button" data-tag="VG">#VG</button>
+    <button class="tag-button" data-tag="brunch">#Brunch</button>
+    <button class="tag-button" data-tag="babyfriendly">#BabyFriendly</button>
+  </div>
+</div>
+<div id="map"></div>
+
+<!-- Modal for images -->
+<div id="imageModal">
+  <span id="closeModal">&times;</span>
+  <img id="modalImage">
+</div>
+
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.1/dist/leaflet.markercluster.js"></script>
+<script>
+  const map = L.map('map').setView([46.63, 2.4], 5); // Centered on France
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
+  }).addTo(map);
+
+  let allPlaces = [];
+  const markers = L.markerClusterGroup({
+    disableClusteringAtZoom: 13 // On désactive le regroupement à partir de ce niveau de zoom
+  });
+  map.addLayer(markers);
+
+  // Définition des icônes personnalisées (en dehors de la fonction pour la performance)
+  const customIcons = {
+    pizzeria: L.icon({ iconUrl: 'img/pizza.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+    brunch: L.icon({ iconUrl: 'img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+    restaurant: L.icon({ iconUrl: 'img/cloche.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+    'fast-food': L.icon({ iconUrl: 'img/burger.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+    café: L.icon({ iconUrl: 'img/tasse.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+    patisserie: L.icon({ iconUrl: 'img/croissant.png', iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
+  };
+  const defaultIcon = new L.Icon.Default(); // Icône par défaut de Leaflet
+
+  async function fetchData() {
+    try {
+      const response = await fetch('data/all_restaurants.json');
+      const data = await response.json();
+      
+      if (data && data.places) {
+        allPlaces = data.places;
+      } else {
+        allPlaces = [];
+      }
+      
+      displayMarkers(allPlaces);
+
+    } catch (error) {
+      console.error("Erreur lors du chargement des données des restaurants:", error);
+    }
+  }
+
+  function displayMarkers(places) {
+    markers.clearLayers();
+    const zoomThreshold = 13; // Le niveau de zoom à partir duquel les icônes personnalisées apparaissent
+    const currentZoom = map.getZoom();
+
+    places.forEach(place => {
+      let chosenIcon = defaultIcon;
+
+      // On affiche les icônes personnalisées seulement si le zoom est suffisant
+      if (currentZoom >= zoomThreshold) {
+        if (place.tags && place.tags.includes('brunch')) {
+          chosenIcon = customIcons.brunch;
+        } else if (customIcons[place.type]) {
+          chosenIcon = customIcons[place.type];
+        }
+      }
+
+      if (place.lat && place.lng) {
+        const markerOptions = { icon: chosenIcon };
+
+        const marker = L.marker([place.lat, place.lng], markerOptions);
+
+        let tagsHtml = '';
+        if (place.tags && place.tags.length > 0) {
+          tagsHtml = '<div class="popup-tags">' +
+            place.tags.map(tag => `<span class="popup-tag">#${tag}</span>`).join('') +
+            '</div>';
+        }
+
+        let lastVisitHtml = '';
+        if (place["Dernière visite"]) {
+          lastVisitHtml = `<br><small class="muted">Dernière visite : ${place["Dernière visite"]}</small>`;
+        }
+
+        let pictureHtml = '';
+        if (place.picture) {
+          pictureHtml = `<br><img src="${place.picture}" alt="${place.name}" style="width:100%; max-width:200px; margin-top:8px; border-radius:4px; cursor:pointer;" onclick="openImageModal('${place.picture}')">`;
+        }
+
+        const popupContent = `
+          <strong>${place.name}</strong><br>
+          ${place.description}<br>
+          <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
+          ${tagsHtml}
+          ${lastVisitHtml}
+          ${pictureHtml}`;
+        marker.bindPopup(popupContent);
+        markers.addLayer(marker);
+
+        // On stocke les données du lieu dans le marqueur pour pouvoir changer l'icône au zoom
+        marker.placeData = place;
+      }
+    });
+  }
+
+  function setupFilters() {
+    const typeCheckboxes = document.querySelectorAll('.type-filter');
+    const tagButtons = document.querySelectorAll('.tag-button');
+
+    function applyFilters() {
+      const selectedTypes = Array.from(typeCheckboxes)
+        .filter(cb => cb.checked)
+        .map(cb => cb.value);
+
+      const activeTags = Array.from(tagButtons)
+        .filter(btn => btn.classList.contains('active'))
+        .map(btn => btn.dataset.tag);
+
+      const filteredPlaces = allPlaces.filter(place => {
+        const typeMatch = selectedTypes.includes(place.type);
+        
+        const placeTags = (place.tags || []).map(t => String(t).toLowerCase());
+        const tagMatch = activeTags.every(tag => placeTags.includes(tag.toLowerCase()));
+
+        return typeMatch && tagMatch;
+      });
+
+      displayMarkers(filteredPlaces);
+    }
+
+    typeCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
+    tagButtons.forEach(button => button.addEventListener('click', () => {
+      button.classList.toggle('active');
+      applyFilters();
+    }));
+  }
+
+
+  // Met à jour les icônes quand le niveau de zoom change
+  map.on('zoomend', function() {
+    const zoomThreshold = 13;
+    const currentZoom = map.getZoom();
+
+    markers.eachLayer(function(marker) {
+      let newIcon = defaultIcon;
+      const place = marker.placeData;
+
+      if (currentZoom >= zoomThreshold && place) {
+        if (place.tags && place.tags.includes('brunch')) {
+          newIcon = customIcons.brunch || defaultIcon;
+        } else if (customIcons[place.type]) {
+          newIcon = customIcons[place.type];
+        }
+      }
+      marker.setIcon(newIcon);
+    });
+  });
+
+  fetchData().then(() => {
+    setupFilters(); // Initialise les filtres après le chargement des données
+  });
+
+  // --- Ajout de la fonctionnalité de géolocalisation ---
+  const GeolocateControl = L.Control.extend({
+      onAdd: function(map) {
+          const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
+          container.innerHTML = '⌖'; // Icône de cible
+          container.title = 'Me géolocaliser';
+
+          L.DomEvent.on(container, 'click', function(e) {
+              L.DomEvent.stopPropagation(e);
+              map.locate({setView: true, maxZoom: 14});
+          });
+
+          return container;
+      }
+  });
+
+  // Ajout du contrôle à la carte
+  new GeolocateControl().addTo(map);
+
+  // Gestion des événements de localisation
+  map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
+  map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
+
+  // Modal Logic
+  const modal = document.getElementById('imageModal');
+  const modalImg = document.getElementById('modalImage');
+  const closeModal = document.getElementById('closeModal');
+
+  window.openImageModal = function(src) {
+    modal.style.display = "block";
+    modalImg.src = src;
+  }
+
+  closeModal.onclick = function() {
+    modal.style.display = "none";
+  }
+
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
+</script>
+
+<!-- Nouvelle section : liens vers les sections du site -->
+<section id="explore" style="margin:1.5rem 0;">
+  <h2>Les bonnes adresses</h2>
+
+  <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; width: 80%; margin: 1rem auto;">
+    <a href="pages/cities/strasbourg.html" class="explore-banner-link banner-strasbourg">Coups de cœur à Strasbourg</a>
+    <a href="pages/countries/alsace.html" class="explore-banner-link banner-alsace">Bien manger en Alsace</a>
+    <a href="pages/countries/pologne.html" class="explore-banner-link banner-pologne">Voyager en Pologne</a>
+    <a href="pages/cities/paris.html" class="explore-banner-link banner-paris">Miam à Paris</a>
+    <a href="pages/countries/amerique-du-sud.html" class="explore-banner-link banner-amerique-du-sud">Explorer l'Amérique du Sud</a>
+    <a href="pages/cities/toulouse.html" class="explore-banner-link banner-toulouse">Bien manger à Toulouse</a>
+  </div>
+</section>
+
+<section id="presentation">
+  <p class="lead">
+    Je partage ici des idées de cools restaus du monde entier, testés et adorés pour du bonheur dans l'assiette et de belles rencontres avec des restaurateurs passionnés.
+    <br />
+    <ul>
+<li>Brunchs</li>
+<li>Pizzas</li>
+<li>Choix VG de BG (des endroits où les végétariens ont du choix) </li>
+<li>Lieux baby friendly (avec au minimum une chaise haute et une table à langer) </li>
+</ul>
+
+  </p>
+</section>
+
+
+<footer>
+  <hr>
+  <p>© 2025 Aleks Report — dernière mise à jour : <span id="date"></span></p>
+  <nav aria-label="Site navigation" style="margin-left:auto;">
+    <a class="button" href="pages/about.html">Qui suis‑je ?</a>
+    <a class="button" href="pages/documentation.html" style="background: var(--muted);">Doc. Technique</a>
+  </nav>
+  <p><small><a href="../../credits.html">Crédits</a></small></p>
+</footer>
+
+<script>
+  document.getElementById("date").textContent = new Date().toLocaleDateString('fr-FR', {
+    day: '2-digit', month: 'long', year: 'numeric'
+  });
+</script>
+
+</body>
+</html>
