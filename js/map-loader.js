@@ -72,13 +72,19 @@ function initializeMap(options) {
                 }
                 let pictureHtml = '';
                 if (place.picture) {
-                    pictureHtml = `<br><img src="${place.picture}" alt="${place.name}" style="max-width:100%;height:auto;margin-top:5px;border-radius:4px;">`;
+                    const picPath = (options.pictureBasePath || '') + place.picture;
+                    pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${picPath}')"></div>`;
                 }
 
-                const popupContent = `<strong>${place.name}</strong><br>${place.description || ''}${pictureHtml}<br>
-                                      <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
-                                      ${tagsHtml}
-                                      ${lastVisitHtml}`;
+                const popupContent = `<div style="display:flex;gap:10px;align-items:start;min-width:200px;">
+                                        <div style="flex:1;"><strong>${place.name}</strong><br>${place.description || ''}</div>
+                                        ${pictureHtml}
+                                      </div>
+                                      <div style="margin-top:8px;">
+                                          <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
+                                          ${tagsHtml}
+                                          ${lastVisitHtml}
+                                      </div>`;
                 marker.bindPopup(popupContent);
                 markers.addLayer(marker);
 
