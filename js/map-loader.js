@@ -119,7 +119,17 @@ function initializeMap(options) {
                 }
                 let pictureHtml = '';
                 if (place.picture) {
-                    const picPath = (options.pictureBasePath || '') + place.picture;
+                    let picPath = place.picture;
+                    
+                    // Conversion automatique des liens de partage Google Drive en liens directs
+                    const driveRegex = /https:\/\/drive\.google\.com\/file\/d\/([-a-zA-Z0-9_]+)/;
+                    const match = picPath.match(driveRegex);
+                    if (match && match[1]) {
+                        picPath = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                    } else if (!picPath.startsWith('http') && !picPath.startsWith('//')) {
+                        // Si ce n'est pas une URL absolue (Drive ou autre), on applique le chemin relatif
+                        picPath = (options.pictureBasePath || '') + picPath;
+                    }
                     pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${picPath}')"></div>`;
                 }
 
