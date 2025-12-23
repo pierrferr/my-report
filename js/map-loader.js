@@ -70,7 +70,12 @@ function initializeMap(options) {
                 if (place["Dernière visite"]) {
                     lastVisitHtml = `<br><small class="muted">Dernière visite : ${place["Dernière visite"]}</small>`;
                 }
-                const popupContent = `<strong>${place.name}</strong><br>${place.description || ''}<br>
+                let pictureHtml = '';
+                if (place.picture) {
+                    pictureHtml = `<br><img src="${place.picture}" alt="${place.name}" style="max-width:100%;height:auto;margin-top:5px;border-radius:4px;">`;
+                }
+
+                const popupContent = `<strong>${place.name}</strong><br>${place.description || ''}${pictureHtml}<br>
                                       <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
                                       ${tagsHtml}
                                       ${lastVisitHtml}`;
