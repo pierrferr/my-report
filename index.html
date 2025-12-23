@@ -197,7 +197,14 @@
 
         let pictureHtml = '';
         if (place.picture) {
-          pictureHtml = `<div style="flex:0 0 80px;"><img src="${place.picture}" alt="${place.name}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="openImageModal('${place.picture}')"></div>`;
+          let picPath = place.picture;
+          // Conversion automatique des liens de partage Google Drive en liens directs
+          const driveRegex = /https:\/\/drive\.google\.com\/file\/d\/([-a-zA-Z0-9_]+)/;
+          const match = picPath.match(driveRegex);
+          if (match && match[1]) {
+            picPath = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+          }
+          pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="openImageModal('${picPath}')"></div>`;
         }
 
         const popupContent = `<div style="display:flex;gap:10px;align-items:start;min-width:200px;">
