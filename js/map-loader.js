@@ -8,6 +8,7 @@
  * @param {string} [options.iconBasePath='../../img/'] - Le chemin relatif vers le dossier des icônes.
  * @param {boolean} [options.enableGeolocation=true] - Activer ou non le bouton de géolocalisation.
  * @param {function} options.dataFilter - Une fonction qui reçoit la liste de tous les lieux et retourne la liste filtrée pour la page.
+ * @param {string} [options.dataSourceUrl] - (Optionnel) URL directe vers un fichier de données (ex: CSV Google Sheet). Si défini, remplace le fichier JSON par défaut.
  */
 function initializeMap(options) {
     const config = {
@@ -37,11 +38,57 @@ function initializeMap(options) {
     };
     const defaultIcon = new L.Icon.Default();
 
+    // Fonction utilitaire pour convertir le CSV (Google Sheet) en tableau d'objets
+    function parseCSV(csvText) {
+        const lines = csvText.split(/\r?\n/);
+        // On récupère les entêtes (name, type, lat, etc.)
+        const headers = lines[0].split(',').map(h => h.trim());
+        const places = [];
+
+        for (let i = 1; i < lines.length; i++) {
+            if (!lines[i].trim()) continue;
+            
+            // Découpage intelligent qui ignore les virgules à l'intérieur des guillemets
+            const row = lines[i].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(cell => {
+                let val = cell.trim();
+                // Enlève les guillemets autour du texte si présents (format CSV standard)
+                if (val.startsWith('"') && val.endsWith('"')) val = val.slice(1, -1).replace(/""/g, '"');
+                return val;
+            });
+
+            const place = {};
+            headers.forEach((header, index) => {
+                const value = row[index];
+                if (header === 'lat' || header === 'lng') {
+                    place[header] = parseFloat(value.replace(',', '.')); // Gère les virgules décimales
+                } else if (header === 'tags') {
+                    place[header] = value ? value.split(',').map(t => t.trim()) : [];
+                } else {
+                    place[header] = value;
+                }
+            });
+            if (place.lat && place.lng) places.push(place);
+        }
+        return places;
+    }
+
     async function fetchData() {
         try {
-            const response = await fetch(`${config.iconBasePath}../data/all_restaurants.json`);
-            const data = await response.json();
-            allPlaces = config.dataFilter(data.places);
+            let dataPlaces = [];
+            if (config.dataSourceUrl) {
+                // Chargement depuis Google Sheet (CSV)
+                const response = await fetch(config.dataSourceUrl);
+                const text = await response.text();
+                dataPlaces = parseCSV(text);
+            } else {
+                // Chargement par défaut (JSON)
+                const response = await fetch(`${config.iconBasePath}../data/all_restaurants.json`);
+                const data = await response.json();
+                dataPlaces = data.places;
+            }
+
+            // Application du filtre si nécessaire
+            allPlaces = config.dataFilter ? config.dataFilter(dataPlaces) : dataPlaces;
             displayContent(allPlaces);
         } catch (error) {
             console.error("Erreur de chargement:", error);
