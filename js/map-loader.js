@@ -121,19 +121,21 @@ function initializeMap(options) {
                 if (place.picture) {
                     let picPath = place.picture;
                     
-                    // Conversion automatique des liens de partage Google Drive en liens directs
-                    const driveRegex = /https:\/\/drive\.google\.com\/file\/d\/([-a-zA-Z0-9_]+)/;
-                    const match = picPath.match(driveRegex);
-                    if (match && match[1]) {
-                        picPath = `https://drive.google.com/uc?export=view&id=${match[1]}`;
+                    // Conversion robuste des liens Google Drive vers lh3.googleusercontent.com (plus fiable pour l'affichage)
+                    let driveId = null;
+                    const matchFile = picPath.match(/\/file\/d\/([-a-zA-Z0-9_]+)/);
+                    const matchId = picPath.match(/[?&]id=([-a-zA-Z0-9_]+)/);
+
+                    if (matchFile && matchFile[1]) driveId = matchFile[1];
+                    else if (matchId && matchId[1] && picPath.includes('drive.google.com')) driveId = matchId[1];
+
+                    if (driveId) {
+                        picPath = `https://lh3.googleusercontent.com/d/${driveId}`;
                     } else if (!picPath.startsWith('http') && !picPath.startsWith('//')) {
                         // Si ce n'est pas une URL absolue (Drive ou autre), on applique le chemin relatif
                         picPath = (options.pictureBasePath || '') + picPath;
                     }
                     pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" referrerpolicy="no-referrer" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${picPath}')"></div>`;
-                    // Ajout d'un paramètre pour contourner le cache navigateur qui retient parfois l'erreur 403
-                    const displayUrl = picPath.includes('drive.google.com') ? picPath + '&t=' + Date.now() : picPath;
-                    pictureHtml = `<div style="flex:0 0 80px;"><img src="${displayUrl}" alt="${place.name}" referrerpolicy="no-referrer" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${displayUrl}')"></div>`;
                 }
 
                 const popupContent = `<div style="display:flex;gap:10px;align-items:start;min-width:200px;">
