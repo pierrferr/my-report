@@ -130,7 +130,10 @@ function initializeMap(options) {
                         // Si ce n'est pas une URL absolue (Drive ou autre), on applique le chemin relatif
                         picPath = (options.pictureBasePath || '') + picPath;
                     }
-                    pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${picPath}')"></div>`;
+                    pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" referrerpolicy="no-referrer" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${picPath}')"></div>`;
+                    // Ajout d'un paramètre pour contourner le cache navigateur qui retient parfois l'erreur 403
+                    const displayUrl = picPath.includes('drive.google.com') ? picPath + '&t=' + Date.now() : picPath;
+                    pictureHtml = `<div style="flex:0 0 80px;"><img src="${displayUrl}" alt="${place.name}" referrerpolicy="no-referrer" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${displayUrl}')"></div>`;
                 }
 
                 const popupContent = `<div style="display:flex;gap:10px;align-items:start;min-width:200px;">
