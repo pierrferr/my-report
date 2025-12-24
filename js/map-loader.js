@@ -42,7 +42,7 @@ function initializeMap(options) {
     function parseCSV(csvText) {
         const lines = csvText.split(/\r?\n/);
         // On récupère les entêtes (name, type, lat, etc.)
-        const headers = lines[0].split(',').map(h => h.trim());
+        const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
         const places = [];
 
         for (let i = 1; i < lines.length; i++) {
@@ -63,6 +63,8 @@ function initializeMap(options) {
                     place[header] = parseFloat(value.replace(',', '.')); // Gère les virgules décimales
                 } else if (header === 'tags') {
                     place[header] = value ? value.split(',').map(t => t.trim()) : [];
+                } else if (header === 'type') {
+                    place[header] = value ? value.toLowerCase().trim() : '';
                 } else {
                     place[header] = value;
                 }
@@ -75,16 +77,18 @@ function initializeMap(options) {
     async function fetchData() {
         try {
             let dataPlaces = [];
-            if (config.dataSourceUrl) {
-                // Chargement depuis Google Sheet (CSV)
-                const response = await fetch(config.dataSourceUrl);
-                const text = await response.text();
-                dataPlaces = parseCSV(text);
-            } else {
-                // Chargement par défaut (JSON)
-                const response = await fetch(`${config.iconBasePath}../data/all_restaurants.json`);
+            // URL par défaut vers le Google Sheet (remplace l'ancien fichier JSON)
+            const defaultSheetUrl = "https://docs.google.com/spreadsheets/d/1h2CegxeHf_ALQDLAeVkLTByXbADVrwu1MPPDv0pZHms/export?format=csv";
+            const urlToFetch = config.dataSourceUrl || defaultSheetUrl;
+
+            const response = await fetch(urlToFetch);
+            
+            if (urlToFetch.endsWith('.json')) {
                 const data = await response.json();
                 dataPlaces = data.places;
+            } else {
+                const text = await response.text();
+                dataPlaces = parseCSV(text);
             }
 
             // Application du filtre si nécessaire
