@@ -122,8 +122,9 @@ function initializeMap(options) {
                     lastVisitHtml = `<br><small class="muted">Dernière visite : ${place.last}</small>`;
                 }
                 let pictureHtml = '';
+                let picPath = null;
                 if (place.picture) {
-                    let picPath = place.picture;
+                    picPath = place.picture;
                     
                     // Conversion robuste des liens Google Drive vers lh3.googleusercontent.com (plus fiable pour l'affichage)
                     let driveId = null;
@@ -156,18 +157,34 @@ function initializeMap(options) {
 
                 if (listContainer) {
                     const li = document.createElement('li');
-                    li.style.marginBottom = '15px';
+                    li.style.marginBottom = '20px';
+                    li.style.display = 'flex';
+                    li.style.gap = '15px';
+                    li.style.alignItems = 'flex-start';
                     
                     let listTags = '';
                     if (place.tags && place.tags.length > 0) {
-                        listTags = '<div style="margin-top:5px;">' + 
-                            place.tags.map(t => `<span style="display:inline-block; background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:12px; font-size:0.8rem; margin-right:5px;">${t}</span>`).join('') + 
+                        listTags = '<div style="margin-top:8px;">' + 
+                            place.tags.map(t => `<span style="display:inline-block; background:#f1f5f9; color:#475569; padding:4px 10px; border-radius:12px; font-size:0.75rem; margin-right:5px; font-weight:500;">${t}</span>`).join('') + 
                             '</div>';
                     }
 
-                    li.innerHTML = `<strong><a href="${place.link}" target="_blank" rel="noopener" style="color:#2c3e50; text-decoration:none;">${place.name}</a></strong> <small class="muted">(${place.type})</small>
-                                    <div style="margin-top:4px; color:#555;">${place.description || ''}</div>
-                                    ${listTags}`;
+                    let imgHtml = '';
+                    if (picPath) {
+                        imgHtml = `<div style="flex-shrink:0; width:120px;">
+                            <img src="${picPath}" alt="${place.name}" style="width:120px; height:90px; object-fit:cover; border-radius:8px; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);" onclick="window.openImageModal && window.openImageModal('${picPath}')" loading="lazy">
+                        </div>`;
+                    }
+
+                    li.innerHTML = `${imgHtml}
+                                    <div style="flex:1;">
+                                        <div style="font-size:1.1rem; font-weight:600; margin-bottom:4px;">
+                                            <a href="${place.link}" target="_blank" rel="noopener" style="color:#2c3e50; text-decoration:none;">${place.name}</a> 
+                                            <small class="muted" style="font-weight:400; font-size:0.9rem;">(${place.type})</small>
+                                        </div>
+                                        <div style="color:#555; line-height:1.5; font-size:0.95rem;">${place.description || ''}</div>
+                                        ${listTags}
+                                    </div>`;
                     ul.appendChild(li);
                 }
             }
