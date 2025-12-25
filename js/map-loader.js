@@ -162,6 +162,7 @@ function initializeMap(options) {
                     const li = document.createElement('li');
                     li.style.marginBottom = '20px';
                     li.style.display = 'flex';
+                    li.style.flexDirection = 'column';
                     li.style.gap = '15px';
                     li.style.alignItems = 'flex-start';
                     li.style.cursor = 'pointer';
@@ -183,8 +184,8 @@ function initializeMap(options) {
 
                     let imgHtml = '';
                     if (picPath) {
-                        imgHtml = `<div style="flex-shrink:0; width:120px;">
-                            <img src="${picPath}" alt="${place.name}" style="width:120px; height:90px; object-fit:cover; border-radius:8px; cursor:pointer; box-shadow:0 2px 4px rgba(0,0,0,0.1);" onclick="window.openImageModal && window.openImageModal('${picPath}')" loading="lazy">
+                        imgHtml = `<div style="width:100%;">
+                            <img src="${picPath}" alt="${place.name}" style="width:240px; max-width:100%; height:160px; object-fit:cover; border-radius:8px; border:4px solid #fff; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.15);" onclick="window.openImageModal && window.openImageModal('${picPath}')" loading="lazy">
                         </div>`;
                     }
 

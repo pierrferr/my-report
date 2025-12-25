@@ -1,6 +1,6 @@
 # Mon Report
 
-Site de recommandations de voyage minimaliste façon Drudge Report, auto-hébergé via **GitHub Pages**.
+Site de recommandations de voyage minimaliste auto-hébergé via **GitHub Pages**.
 
 ## Mise à jour
 
