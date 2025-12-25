@@ -168,7 +168,7 @@ function initializeMap(options) {
                     li.style.cursor = 'pointer';
 
                     li.onclick = (e) => {
-                        if (e.target.tagName === 'A' || e.target.closest('a') || e.target.tagName === 'IMG') return;
+                        if (e.target.tagName === 'A' || e.target.closest('a')) return;
                         document.getElementById(config.mapId).scrollIntoView({behavior: 'smooth'});
                         markers.zoomToShowLayer(marker, () => {
                             marker.openPopup();
@@ -185,7 +185,7 @@ function initializeMap(options) {
                     let imgHtml = '';
                     if (picPath) {
                         imgHtml = `<div style="width:100%;">
-                            <img src="${picPath}" alt="${place.name}" style="width:240px; max-width:100%; height:160px; object-fit:cover; border-radius:8px; border:4px solid #fff; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.15);" onclick="window.openImageModal && window.openImageModal('${picPath}')" loading="lazy">
+                            <img src="${picPath}" alt="${place.name}" style="width:240px; max-width:100%; height:160px; object-fit:cover; border-radius:8px; border:4px solid #fff; cursor:pointer; box-shadow:0 8px 20px rgba(0,0,0,0.15);" loading="lazy">
                         </div>`;
                     }
 
