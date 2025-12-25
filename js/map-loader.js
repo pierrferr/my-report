@@ -156,7 +156,18 @@ function initializeMap(options) {
 
                 if (listContainer) {
                     const li = document.createElement('li');
-                    li.innerHTML = `<a href="${place.link}" target="_blank" rel="noopener">${place.name}</a> — <small class="muted">${place.type}</small>`;
+                    li.style.marginBottom = '15px';
+                    
+                    let listTags = '';
+                    if (place.tags && place.tags.length > 0) {
+                        listTags = '<div style="margin-top:5px;">' + 
+                            place.tags.map(t => `<span style="display:inline-block; background:#f1f5f9; color:#475569; padding:2px 8px; border-radius:12px; font-size:0.8rem; margin-right:5px;">${t}</span>`).join('') + 
+                            '</div>';
+                    }
+
+                    li.innerHTML = `<strong><a href="${place.link}" target="_blank" rel="noopener" style="color:#2c3e50; text-decoration:none;">${place.name}</a></strong> <small class="muted">(${place.type})</small>
+                                    <div style="margin-top:4px; color:#555;">${place.description || ''}</div>
+                                    ${listTags}`;
                     ul.appendChild(li);
                 }
             }

@@ -71,14 +71,13 @@
       mapId: 'map',
       listContainerId: 'places-content',
       center: [52.0693, 19.4803], // Centre de la Pologne
-      zoom: 6,
+      zoom: 7,
       iconBasePath: '../../img/',
       pictureBasePath: '', // Les liens d'images dans le Sheet doivent être complets (http...) ou relatifs corrects
       dataSourceUrl: GOOGLE_SHEET_CSV_URL, // On force l'utilisation du Sheet
       dataFilter: (places) => {
-        // Ici on retourne tout car le Sheet est dédié à la Pologne
-        // Mais on peut filtrer si besoin
-        return places;
+        // Filtre pour ne garder que les lieux en Pologne (Longitude > 10 pour exclure Strasbourg)
+        return places.filter(p => parseFloat(p.lng) > 10);
       }
     });
 
