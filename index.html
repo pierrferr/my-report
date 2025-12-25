@@ -60,6 +60,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      align-items: center;
       margin: 1.5rem 0;
       color: white;
       text-align: center;
@@ -85,17 +86,23 @@
       margin: 0 auto;
       line-height: 1.4;
     }
+    /* Style pour le logo intégré dans la bannière */
+    .hero-logo {
+      width: 140px;
+      height: 140px;
+      object-fit: contain;
+      background: rgba(255, 255, 255, 0.95);
+      padding: 15px;
+      border-radius: 50%;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      z-index: 2;
+      margin-bottom: 1rem;
+    }
   </style>
 </head>
 <body>
-<header id="site-header">
-  <a href="index.html" class="logo-link">
-    <img src="img/logo-miam-bordeaux.png" alt="Logo MIAM" id="site-logo">
-  </a>
- <!-- <h1 id="site-title">Les voyages du miam</h1>-->
-</header>
-
 <div id="intro">
+  <img src="img/logo-miam-bordeaux.png" alt="Logo Les voyages du miam" class="hero-logo">
   <p class="lead">
     Bienvenue sur Les voyages du miam. Trouve ici ton prochain coup de cœur gourmand !
   </p>
