@@ -31,10 +31,10 @@ body {
 #site-header{
   display: flex;
   align-items: center;
-  padding: 0.6rem 1rem;
-  background: linear-gradient(90deg, rgba(139,43,43,0.08), rgba(255,127,80,0.04));
+  padding: 0.8rem 1rem;
+  background: #ffffff;
   border-radius: var(--radius);
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 2px 15px rgba(0,0,0,0.04);
   /* Styles ajoutés pour centrer le logo quand le titre est masqué */
   justify-content: center;
   position: static;
@@ -119,6 +119,18 @@ header nav .button {
   background: linear-gradient(180deg, rgba(139,43,43,0.05), rgba(255,127,80,0.02));
   border-radius: 12px;
   box-shadow: 0 4px 12px rgba(10,20,30,0.03);
+}
+
+/* Intro (haut de page d'accueil) */
+#intro {
+  text-align: center;
+  margin: 0.5rem auto 1.5rem auto;
+  max-width: 600px;
+}
+#intro .lead {
+  font-size: 1.1rem;
+  color: #555;
+  font-weight: 500;
 }
 
 .feature-list{display:flex;flex-wrap:wrap;gap:0.5rem 1rem;margin:0;padding:0;align-items:center}
