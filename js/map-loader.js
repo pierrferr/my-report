@@ -118,8 +118,8 @@ function initializeMap(options) {
                     '</div>';
                 }
                 let lastVisitHtml = '';
-                if (place["Dernière visite"]) {
-                    lastVisitHtml = `<br><small class="muted">Dernière visite : ${place["Dernière visite"]}</small>`;
+                if (place.last) {
+                    lastVisitHtml = `<br><small class="muted">Dernière visite : ${place.last}</small>`;
                 }
                 let pictureHtml = '';
                 if (place.picture) {
