@@ -148,7 +148,7 @@ function initializeMap(options) {
                                         ${pictureHtml}
                                       </div>
                                       <div style="margin-top:8px;">
-                                          <a href="${place.link}" target="_blank" rel="noopener noreferrer">Voir sur la carte</a>
+                                          <a href="${place.link}" target="_blank" rel="noopener noreferrer">Afficher dans Google Maps</a>
                                           ${tagsHtml}
                                           ${lastVisitHtml}
                                       </div>`;
