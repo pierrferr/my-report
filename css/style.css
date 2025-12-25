@@ -299,3 +299,20 @@ header nav .button {
   display: inline-block;
   color: var(--muted); /* Utilise la variable de couleur pour le texte secondaire */
 }
+
+/* Modal styles (partagé) */
+#imageModal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); }
+#modalImage { margin: auto; display: block; max-width: 90%; max-height: 90%; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); }
+#closeModal { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 2001; }
+
+/* Styles pour la liste des lieux (générée par map-loader.js) */
+#places-content li {
+  padding: 15px;
+  border-radius: 12px;
+  transition: transform 0.2s, box-shadow 0.2s, background-color 0.2s;
+}
+#places-content li:hover {
+  background-color: #fff;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.08);
+  transform: translateY(-3px);
+}

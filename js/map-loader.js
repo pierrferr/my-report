@@ -161,6 +161,15 @@ function initializeMap(options) {
                     li.style.display = 'flex';
                     li.style.gap = '15px';
                     li.style.alignItems = 'flex-start';
+                    li.style.cursor = 'pointer';
+
+                    li.onclick = (e) => {
+                        if (e.target.tagName === 'A' || e.target.closest('a') || e.target.tagName === 'IMG') return;
+                        document.getElementById(config.mapId).scrollIntoView({behavior: 'smooth'});
+                        markers.zoomToShowLayer(marker, () => {
+                            marker.openPopup();
+                        });
+                    };
                     
                     let listTags = '';
                     if (place.tags && place.tags.length > 0) {
