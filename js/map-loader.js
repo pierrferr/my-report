@@ -8,7 +8,7 @@
  * @param {string} [options.iconBasePath='../../img/'] - Le chemin relatif vers le dossier des icônes.
  * @param {boolean} [options.enableGeolocation=true] - Activer ou non le bouton de géolocalisation.
  * @param {function} options.dataFilter - Une fonction qui reçoit la liste de tous les lieux et retourne la liste filtrée pour la page.
- * @param {string} [options.dataSourceUrl] - (Optionnel) URL directe vers un fichier de données (ex: CSV Google Sheet). Si défini, remplace le fichier JSON par défaut.
+ * @param {string} [options.dataSourceUrl] - (Optionnel) URL directe vers un fichier de données (ex: CSV Google Sheet).
  */
 function initializeMap(options) {
     const config = {
@@ -77,19 +77,13 @@ function initializeMap(options) {
     async function fetchData() {
         try {
             let dataPlaces = [];
-            // URL par défaut vers le Google Sheet (remplace l'ancien fichier JSON)
+            // URL par défaut vers le Google Sheet
             const defaultSheetUrl = "https://docs.google.com/spreadsheets/d/1h2CegxeHf_ALQDLAeVkLTByXbADVrwu1MPPDv0pZHms/export?format=csv";
             const urlToFetch = config.dataSourceUrl || defaultSheetUrl;
 
             const response = await fetch(urlToFetch);
-            
-            if (urlToFetch.endsWith('.json')) {
-                const data = await response.json();
-                dataPlaces = data.places;
-            } else {
-                const text = await response.text();
-                dataPlaces = parseCSV(text);
-            }
+            const text = await response.text();
+            dataPlaces = parseCSV(text);
 
             // Application du filtre si nécessaire
             allPlaces = config.dataFilter ? config.dataFilter(dataPlaces) : dataPlaces;
