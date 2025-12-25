@@ -52,11 +52,6 @@
       <p>Le projet est organisé de la manière suivante :</p>
       <ul>
         <li><code>index.html</code>: Page d'accueil principale, affichant la carte du monde avec tous les restaurants.</li>
-        <li><code>/data/</code>
-          <ul>
-            <li><code>all_restaurants.json</code>: <strong>Fichier central</strong>. Il contient les données de tous les restaurants sous forme d'un tableau JSON. C'est la seule source de vérité pour le contenu.</li>
-          </ul>
-        </li>
         <li><code>/css/</code>
           <ul>
             <li><code>style.css</code>: Feuille de style principale, appliquée à l'ensemble du site.</li>
@@ -90,7 +85,7 @@
   "lng": 2.3522,        // Longitude
   "link": "https://lien-vers-google-maps",
   "description": "Une courte description.",
-  "tags": "VG, brunch", // Tableau en JSON, ou chaîne séparée par virgules en CSV
+  "tags": "VG, brunch", // Chaîne séparée par virgules
   "last": "12/2025",    // Date de dernière visite (anciennement "Dernière visite")
   "picture": "url..."   // Lien vers une photo (Google Drive ou autre)
 }</code></pre>
@@ -98,15 +93,15 @@
       <h3>2. Les cartes interactives</h3>
       <p>Les cartes sont gérées avec la librairie <a href="https://leafletjs.com/" target="_blank">Leaflet.js</a> et le plugin <a href="https://github.com/Leaflet/Leaflet.markercluster" target="_blank">Leaflet.markercluster</a> pour le regroupement des marqueurs.</p>
       <ul>
-        <li><strong>Page d'accueil :</strong> Le script de la carte est directement intégré dans <code>index.html</code>. Il charge <code>all_restaurants.json</code> et affiche tous les points.</li>
+        <li><strong>Page d'accueil :</strong> Le script de la carte est directement intégré dans <code>index.html</code>. Il charge les données depuis le Google Sheet et affiche tous les points.</li>
         <li><strong>Pages secondaires :</strong> Pour éviter la duplication de code, toutes les autres pages (Paris, Alsace, etc.) utilisent le script <code>/js/map-loader.js</code>.</li>
       </ul>
 
       <h3>3. Le script centralisé : <code>map-loader.js</code></h3>
-      <p>Ce script expose une fonction unique : <code>initializeMap(options)</code>. Il gère désormais le chargement des données (JSON ou CSV), l'affichage de la carte et la génération automatique d'une liste détaillée sous la carte.</p>
+      <p>Ce script expose une fonction unique : <code>initializeMap(options)</code>. Il gère le chargement des données CSV, l'affichage de la carte et la génération automatique d'une liste détaillée sous la carte.</p>
       <p>Principales options de configuration :</p>
       <ul>
-        <li><code>dataSourceUrl</code> : URL du fichier de données (ex: export CSV Google Sheet). Si omis, charge le JSON par défaut.</li>
+        <li><code>dataSourceUrl</code> : URL du fichier de données (ex: export CSV Google Sheet).</li>
         <li><code>listContainerId</code> : ID de l'élément HTML où afficher la liste des lieux (avec photos et descriptions).</li>
         <li><code>dataFilter</code> : Fonction pour filtrer les lieux à afficher sur la page spécifique.</li>
       </ul>
