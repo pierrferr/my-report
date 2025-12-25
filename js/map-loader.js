@@ -188,7 +188,7 @@ function initializeMap(options) {
                     li.innerHTML = `${imgHtml}
                                     <div style="flex:1;">
                                         <div style="font-size:1.1rem; font-weight:600; margin-bottom:4px;">
-                                            <a href="${place.link}" target="_blank" rel="noopener" style="color:#2c3e50; text-decoration:none;">${place.name}</a> 
+                                            <span style="color:#2c3e50;">${place.name}</span> 
                                             <small class="muted" style="font-weight:400; font-size:0.9rem;">(${place.type})</small>
                                         </div>
                                         <div style="color:#555; line-height:1.5; font-size:0.95rem;">${place.description || ''}</div>
