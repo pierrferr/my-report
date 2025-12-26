@@ -117,7 +117,7 @@ function initializeMap(options) {
                 }
                 let lastVisitHtml = '';
                 if (place.last) {
-                    lastVisitHtml = `<br><small class="muted">Dernière visite : ${place.last}</small>`;
+                    lastVisitHtml = `<br><small class="muted" style="font-size:0.75rem;">Dernière visite : ${place.last}</small>`;
                 }
                 let pictureHtml = '';
                 let picPath = null;
