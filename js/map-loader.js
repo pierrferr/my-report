@@ -1,4 +1,19 @@
 /**
+ * Helper pour résoudre l'URL d'une image (gère les liens Google Drive et les chemins relatifs)
+ */
+function resolveImageUrl(picPath, basePath) {
+    if (!picPath) return null;
+    
+    // Extraction ID Google Drive
+    const driveMatch = picPath.match(/\/file\/d\/([-a-zA-Z0-9_]+)/) || (picPath.includes('drive.google.com') && picPath.match(/[?&]id=([-a-zA-Z0-9_]+)/));
+    if (driveMatch && driveMatch[1]) return `https://lh3.googleusercontent.com/d/${driveMatch[1]}`;
+    
+    // URL absolue ou relative
+    if (picPath.startsWith('http') || picPath.startsWith('//')) return picPath;
+    return (basePath || '') + picPath;
+}
+
+/**
  * Initialise une carte Leaflet avec des lieux, des filtres et la géolocalisation.
  * @param {object} options - La configuration de la carte pour la page.
  * @param {string} [options.mapId='map'] - L'ID de l'élément div pour la carte.
@@ -120,24 +135,9 @@ function initializeMap(options) {
                     lastVisitHtml = `<br><small class="muted" style="font-size:0.75rem;">Dernière visite : ${place.last}</small>`;
                 }
                 let pictureHtml = '';
-                let picPath = null;
-                if (place.picture) {
-                    picPath = place.picture;
-                    
-                    // Conversion robuste des liens Google Drive vers lh3.googleusercontent.com (plus fiable pour l'affichage)
-                    let driveId = null;
-                    const matchFile = picPath.match(/\/file\/d\/([-a-zA-Z0-9_]+)/);
-                    const matchId = picPath.match(/[?&]id=([-a-zA-Z0-9_]+)/);
-
-                    if (matchFile && matchFile[1]) driveId = matchFile[1];
-                    else if (matchId && matchId[1] && picPath.includes('drive.google.com')) driveId = matchId[1];
-
-                    if (driveId) {
-                        picPath = `https://lh3.googleusercontent.com/d/${driveId}`;
-                    } else if (!picPath.startsWith('http') && !picPath.startsWith('//')) {
-                        // Si ce n'est pas une URL absolue (Drive ou autre), on applique le chemin relatif
-                        picPath = (options.pictureBasePath || '') + picPath;
-                    }
+                const picPath = resolveImageUrl(place.picture, options.pictureBasePath);
+                
+                if (picPath) {
                     pictureHtml = `<div style="flex:0 0 80px;"><img src="${picPath}" alt="${place.name}" referrerpolicy="no-referrer" style="width:80px;height:80px;object-fit:cover;border-radius:4px;cursor:pointer;" onclick="window.openImageModal && window.openImageModal('${picPath}')"></div>`;
                 }
 
