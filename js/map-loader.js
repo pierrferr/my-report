@@ -16,7 +16,8 @@ function initializeMap(options) {
         ...options
     };    
 
-    const map = L.map(config.mapId).setView(config.center, config.zoom);
+    const map = L.map(config.mapId, { zoomControl: false }).setView(config.center, config.zoom);
+    L.control.zoom({ position: 'bottomright' }).addTo(map);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>'
     }).addTo(map);
@@ -269,6 +270,7 @@ function initializeMap(options) {
 
     if (config.enableGeolocation) {
         const GeolocateControl = L.Control.extend({
+            options: { position: 'bottomright' },
             onAdd: function(map) {
                 const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
                 container.innerHTML = '⌖';
