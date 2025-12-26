@@ -234,3 +234,15 @@ body {
   box-shadow: var(--shadow-sm);
 }
 .button:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); background-color: var(--primary-600); color: white; }
+
+/* Bouton de géolocalisation plus grand */
+.leaflet-control-geolocate {
+  background-color: #fff;
+  width: 44px !important;
+  height: 44px !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #333;
+}

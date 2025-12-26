@@ -273,7 +273,7 @@ function initializeMap(options) {
             options: { position: 'bottomright' },
             onAdd: function(map) {
                 const container = L.DomUtil.create('div', 'leaflet-bar leaflet-control leaflet-control-geolocate');
-                container.innerHTML = '⌖';
+                container.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><line x1="1" y1="12" x2="23" y2="12"></line><circle cx="12" cy="12" r="7"></circle></svg>';
                 container.title = 'Me géolocaliser';
                 L.DomEvent.on(container, 'click', e => {
                     L.DomEvent.stopPropagation(e);
