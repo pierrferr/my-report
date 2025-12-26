@@ -18,286 +18,7 @@
 html,body{height:100%}
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-  background: linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
-  color: #25303a;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 1.2rem;
-  line-height: 1.5;
-  -webkit-font-smoothing:antialiased;
-}
-
-/* Header - layout uniforme et titre toujours à droite du logo (pas de troncature) */
-#site-header{
-  display: flex;
-  align-items: center;
-  padding: 0.8rem 1rem;
-  background: #ffffff;
-  border-radius: var(--radius);
-  box-shadow: 0 2px 15px rgba(0,0,0,0.04);
-  /* Styles ajoutés pour centrer le logo quand le titre est masqué */
-  justify-content: center;
-  position: static;
-  top: auto;
-  z-index: auto;
-}
-
-/* Logo */
-.logo-link {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  text-decoration: none;
-  flex: 0 0 auto; /* ne pas étirer */
-}
-#site-logo {
-  height: 80px; /* Taille harmonisée */
-  width: auto;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-}
-
-/* Title: reste à droite du logo, peut se wrap sur plusieurs lignes (jamais tronqué) */
-#site-title {
-  font-family: "Pacifico", cursive;
-  font-weight: 400;
-  color:333;
-  font-size: 2.3rem; /* augmenté */
-  margin: 0;
-  text-align: left;
-  letter-spacing: 1px;
-  flex: 1 1 auto;    /* prend l'espace restant */
-  min-width: 0;      /* permet au flex item de réduire correctement */
-  white-space: normal;/* autorise le retour à la ligne */
-  line-height: 1.05;
-}
-
-/* Navigation dans l'entête (bouton "Qui suis‑je ?") */
-header nav {
-  margin-left: auto;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-header nav .button {
-  padding: 0.36rem 0.7rem;
-  font-size: 0.95rem;
-  border-radius: 999px;
-}
-
-/* Mobile tweaks : conserver l'entête sur une ligne mais autoriser le titre à wrap proprement */
-@media (max-width:900px){
-  #site-header {
-    gap: 0.5rem;
-    padding: 0.5rem;
-  }
-  #site-logo { height:96px; } /* doublé (avant 48px) */
-  #site-title { font-size:1.25rem; } /* ajusté pour écrans moyens */
-}
-@media (max-width:480px){
-  #site-logo { height:88px; } /* doublé (avant 44px) */
-  header nav .button {
-    padding: 0.28rem 0.5rem;
-    font-size: 0.84rem;
-    max-width: 120px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  /* IMPORTANT: ne pas tronquer le titre - permet plusieurs lignes */
-  #site-title {
-    font-size: 1.06rem; /* légèrement réduit pour petits écrans mais non tronqué */
-    white-space: normal;
-    overflow: visible;
-  }
-}
-
-/* Presentation */
-#presentation {
-  margin:1.25rem 0;
-  padding:1rem;
-  background: linear-gradient(180deg, rgba(139,43,43,0.05), rgba(255,127,80,0.02));
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(10,20,30,0.03);
-}
-
-/* Intro (haut de page d'accueil) */
-#intro {
-  text-align: center;
-  margin: 0.5rem auto 1.5rem auto;
-  max-width: 600px;
-}
-#intro .lead {
-  font-size: 1.1rem;
-  color: #555;
-  font-weight: 500;
-}
-
-.feature-list{display:flex;flex-wrap:wrap;gap:0.5rem 1rem;margin:0;padding:0;align-items:center}
-.feature-list li { list-style:none; background:var(--card); padding:0.45rem 0.8rem; border-radius:999px; box-shadow: 0 2px 8px rgba(16,24,40,0.04); color:var(--primary-600); }
-
-/* Section headings */
-h2 {
-  margin-top:1.6rem;
-  margin-bottom:0.6rem;
-  font-size:1.2rem;
-  color:#10232b;
-  padding-bottom:0.5rem;
-  border-bottom: 1px solid rgba(16,24,40,0.06);
-}
-
-/* Cards and lists */
-.card {
-  background: var(--card);
-  border-radius: var(--radius);
-  padding:1rem;
-  box-shadow: var(--shadow-sm);
-  margin-bottom:1rem;
-}
-
-ul { padding-left: 0; margin:0; }
-li { margin:0.45rem 0; }
-
-/* Links & buttons */
-a {
-  color: var(--primary);
-  text-decoration: none;
-  font-weight: 600;
-}
-a:hover { color: var(--primary-600); text-decoration: underline; }
-
-.button {
-  display:inline-block;
-  background: linear-gradient(90deg,var(--primary),var(--primary-600));
-  color:white;
-  padding:0.5rem 0.9rem;
-  border-radius:999px;
-  box-shadow: 0 6px 18px rgba(0,163,224,0.12);
-  text-decoration:none;
-  font-weight:700;
-}
-
-/* Map styling (contained card) */
-#map {
-  height: 500px;
-  width: 100%;
-  margin-top: 1rem;
-  border: 0;
-  border-radius: 8px;
-  box-shadow: 0 10px 30px rgba(2,40,60,0.06);
-  overflow:hidden;
-}
-
-/* Conteneurs de filtres */
-#filters, #filters-container {
-  margin: 0.5rem 0 1rem 0;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  flex-wrap: wrap;
-}
-
-/* Explore grid */
-#explore > div {
-  margin-top:0.6rem;
-}
-#explore .column {
-  background: linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.95));
-  padding:0.9rem;
-  border-radius:10px;
-  box-shadow: 0 6px 20px rgba(16,24,40,0.04);
-}
-
-/* Footer */
-footer {
-  margin-top: 2rem;
-  text-align: center;
-  font-size: 0.92rem;
-  color: var(--muted);
-}
-
-/* Small utilities */
-.kicker { color:var(--primary); font-weight:700; font-size:0.95rem; }
-.muted { color:var(--muted); font-size:0.95rem; }
-
-/* Tag/filter buttons (reuse across pages) */
-.tag-button {
-  display:inline-flex;
-  align-items:center;
-  gap:0.5rem;
-  padding:0.38rem 0.7rem;
-  border-radius:999px;
-  border:1px solid rgba(16,24,40,0.06);
-  background:transparent;
-  cursor:pointer;
-  font-weight:700;
-  color:var(--primary);
-  transition: all 180ms ease;
-  user-select: none;
-}
-.tag-button:hover { transform: translateY(-1px); box-shadow: 0 6px 14px rgba(0,163,224,0.06); }
-.tag-button.active {
-  background: linear-gradient(90deg,var(--primary),var(--primary-600));
-  color:#fff;
-  box-shadow: 0 8px 20px rgba(0,163,224,0.12);
-}
-
-/* Smaller nav button for "Qui suis-je ?" to avoid hiding title on mobile */
-header nav .button {
-  padding: 0.4rem 0.72rem;
-  font-size: 0.95rem;
-  border-radius: 999px;
-}
-
-/* Mobile: reduce size further and ensure title keeps space */
-@media (max-width:480px){
-  header nav .button {
-    padding: 0.28rem 0.5rem;
-    font-size: 0.82rem;
-    max-width: 110px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  /* ensure title doesn't get pushed out by nav button on very small screens */
-  #site-title {
-    max-width: calc(100% - 132px); /* leave room for logo + nav button */
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-}
-
-/* Style pour le bouton de géolocalisation sur la carte Leaflet */
-.leaflet-control-geolocate {
-  background-color: white;
-  width: 38px;
-  height: 38px;
-  border-radius: 4px;
-  border: 2px solid rgba(0,0,0,0.2);
-  background-clip: padding-box;
-  text-align: center;
-  line-height: 34px;
-  cursor: pointer;
-  font-size: 26px;
-}
-@media (max-width:900px){
-  body{padding:0.8rem}
-  #site-header{
-    /* rester en ligne */
-    flex-direction: row;
-    gap:0.6rem;
-    padding:0.6rem;
-    align-items:center;
-  }
-  #site-title{font-size:1.05rem; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  #map{height:360px}
-  #site-logo { height:96px; }
-}
-
-/* Styles pour les tags dans les popups de la carte Leaflet */
-.popup-tags {
-  margin-top: 8px;
+...
   /* Permet aux tags de passer à la ligne si l'espace manque */
   line-height: 1.6;
 }
@@ -329,8 +50,78 @@ header nav .button {
   transform: translateY(-3px);
 }
 
-/* Styles spécifiques à la page À propos */
-.about-hero { display:flex; gap:2rem; align-items:center; padding:1rem; flex-wrap:wrap; justify-content:center; }
-.about-hero img { width:280px; height:280px; object-fit:cover; border-radius:14px; box-shadow:0 8px 20px rgba(2,40,60,0.06); }
-.about-card { margin:1rem 2rem; padding:1rem; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.9), #fff); box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
-.about-meta { color:var(--muted); font-size:0.95rem; margin-top:0.4rem; }
+/* --- Amélioration des filtres (Style "Chips") --- */
+#filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+/* Support pour la structure groupée de index.html */
+#type-filters, #tag-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+/* Style des labels contenant les checkboxes */
+#filters label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.2rem;
+  background-color: var(--card);
+  border: 1px solid rgba(0,0,0,0.08);
+  border-radius: 50px; /* Forme arrondie */
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: var(--shadow-sm);
+  user-select: none;
+}
+
+#filters label:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: var(--primary-600);
+  background-color: #fff;
+}
+
+/* Personnalisation de la checkbox */
+#filters input[type="checkbox"] {
+  accent-color: var(--primary);
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0;
+  cursor: pointer;
+}
+
+/* Style des boutons de tags (#VG, #Brunch...) */
+.tag-button {
+  padding: 0.6rem 1.2rem;
+  border-radius: 50px;
+  border: 1px solid var(--accent);
+  background-color: transparent;
+  color: var(--accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.tag-button:hover {
+  background-color: rgba(255, 127, 80, 0.08);
+  transform: translateY(-2px);
+}
+
+.tag-button.active {
+  background-color: var(--accent);
+  color: white;
+  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
+}
