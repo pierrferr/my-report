@@ -146,3 +146,9 @@ body {
   color: white;
   box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
 }
+
+/* Styles spécifiques à la page À propos */
+.about-hero { display:flex; gap:2rem; align-items:center; padding:1rem; flex-wrap:wrap; justify-content:center; }
+.about-hero img { width:280px; height:280px; object-fit:cover; border-radius:14px; box-shadow:0 8px 20px rgba(2,40,60,0.06); }
+.about-card { margin:1rem 2rem; padding:1rem; border-radius:12px; background:linear-gradient(180deg, rgba(255,255,255,0.9), #fff); box-shadow: 0 6px 18px rgba(16,24,40,0.04); }
+.about-meta { color:var(--muted); font-size:0.95rem; margin-top:0.4rem; }
