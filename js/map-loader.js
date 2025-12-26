@@ -34,7 +34,8 @@ function initializeMap(options) {
         restaurant: L.icon({ iconUrl: `${config.iconBasePath}cloche.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         snack: L.icon({ iconUrl: `${config.iconBasePath}burger.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         café: L.icon({ iconUrl: `${config.iconBasePath}tasse.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        patisserie: L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
+        patisserie: L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        'boulangerie-patisserie': L.icon({ iconUrl: `${config.iconBasePath}fouet.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
     };
     const defaultIcon = new L.Icon.Default();
 
@@ -66,6 +67,7 @@ function initializeMap(options) {
                 } else if (header === 'type') {
                     place[header] = value ? value.toLowerCase().trim() : '';
                     if (place[header] === 'fast-food') place[header] = 'snack';
+                    if (place[header] === 'boulangerie' || place[header] === 'boulangerie-pâtisserie') place[header] = 'boulangerie-patisserie';
                 } else {
                     place[header] = value;
                 }
@@ -205,7 +207,26 @@ function initializeMap(options) {
     }
 
     function setupFilters() {
-        const typeCheckboxes = document.querySelectorAll('#filters input[type="checkbox"]');
+        // Injection dynamique du filtre Boulangerie s'il est manquant sur la page (pour les pages non modifiées manuellement)
+        if (!document.querySelector('input[value="boulangerie-patisserie"]')) {
+            let container = document.getElementById('type-filters');
+            // Fallback : si #type-filters n'existe pas, on cherche un conteneur via une classe existante
+            if (!container) {
+                const existingFilter = document.querySelector('.type-filter');
+                if (existingFilter) container = existingFilter.closest('div');
+            }
+            
+            if (container) {
+                const label = document.createElement('label');
+                label.innerHTML = '<input type="checkbox" class="type-filter" value="boulangerie-patisserie" checked> Boulangeries/Pâtisseries';
+                // Insertion avant les boutons de tags si possible pour garder l'ordre
+                const firstTagBtn = container.querySelector('.tag-button');
+                if (firstTagBtn) container.insertBefore(label, firstTagBtn);
+                else container.appendChild(label);
+            }
+        }
+
+        const typeCheckboxes = document.querySelectorAll('.type-filter');
         
         // Nettoyage de l'interface : remplace "fast-food" par "snack" dans le DOM (valeurs et labels)
         typeCheckboxes.forEach(cb => {
