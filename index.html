@@ -9,94 +9,6 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.1/dist/MarkerCluster.Default.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Poppins:wght@600;700&display=swap" rel="stylesheet">
-  <style>
-    .explore-banner-link {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 3rem 1rem; /* Contrôle la hauteur pour la rendre "fine" */
-      background-size: cover;
-      background-position: center;
-      border-radius: 12px;
-      text-decoration: none;
-      color: white;
-      font-size: 2.2rem;
-      font-weight: 700;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.7); /* Ombre portée pour la lisibilité */
-      box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-      transition: transform 0.2s ease-out;
-      overflow: hidden;
-      position: relative;
-    }
-    .explore-banner-link:hover {
-      transform: scale(1.02);
-    }
-    /* Classes spécifiques pour chaque image de fond */
-    .banner-toulouse { background-image: url('img/toulouse.jpg'); }
-    .banner-strasbourg { background-image: url('img/strasbourg.jpg'); }
-    .banner-alsace { background-image: url('img/alsace.jpg'); }
-    .banner-pologne { background-image: url('img/pologne.jpg'); }
-    .banner-paris { background-image: url('img/paris.jpg'); }
-    .banner-amerique-du-sud { background-image: url('img/amerique-du-sud.jpg'); } /* À créer */
-
-    /* Media query pour les écrans mobiles */
-    @media (max-width: 600px) {
-      .explore-banner-link {
-        padding: 2rem 1rem; /* Padding réduit pour une hauteur moindre */
-        font-size: 1.5rem;  /* Taille de police plus petite */
-      }
-    }
-
-    /* Hero Banner Style */
-    #intro {
-      position: relative;
-      background-image: url('img/head3.jpg');
-      background-size: cover;
-      background-position: center;
-      border-radius: 12px;
-      padding: 2rem 1.5rem;
-      min-height: 40vh; /* Hauteur adaptative (40% de l'écran) */
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      margin: 1.5rem 0;
-      color: white;
-      text-align: center;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-      overflow: hidden;
-      max-width: 100%;
-    }
-    #intro::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
-      z-index: 1;
-    }
-    #intro .lead {
-      position: relative;
-      z-index: 2;
-      font-size: 1.2rem;
-      font-weight: 600;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-      max-width: 700px;
-      color: #ffffff;
-      margin: 0 auto;
-      line-height: 1.4;
-    }
-    /* Style pour le logo intégré dans la bannière */
-    .hero-logo {
-      width: 120px;
-      height: 120px;
-      object-fit: contain;
-      border-radius: 50%;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      z-index: 2;
-      margin-bottom: 1rem;
-    }
-  </style>
 </head>
 <body>
 <div id="intro">
@@ -167,7 +79,7 @@
 <section id="explore" style="margin:1.5rem 0;">
   <h2>Les bonnes adresses</h2>
 
-  <div style="display: grid; grid-template-columns: 1fr; gap: 1rem; width: 80%; margin: 1rem auto;">
+  <div class="explore-grid">
     <a href="pages/cities/strasbourg.html" class="explore-banner-link banner-strasbourg">Coups de cœur à Strasbourg</a>
     <a href="pages/countries/alsace.html" class="explore-banner-link banner-alsace">Bien manger en Alsace</a>
     <a href="pages/countries/pologne.html" class="explore-banner-link banner-pologne">Voyager en Pologne</a>
