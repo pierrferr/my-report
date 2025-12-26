@@ -22,6 +22,27 @@ body {
   /* Permet aux tags de passer à la ligne si l'espace manque */
   line-height: 1.6;
 }
+
+/* En-tête des pages internes */
+#site-header {
+  padding: 1rem 2rem;
+}
+
+#site-logo {
+  height: 80px;
+  width: auto;
+  display: block;
+}
+
+#map {
+  height: 60vh;
+  min-height: 400px;
+  width: 100%;
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-md);
+  z-index: 1;
+}
+
 .popup-tag {
   background-color: var(--bg); /* Utilise la variable de couleur de fond */
   border: 1px solid rgba(0,0,0,0.05);
