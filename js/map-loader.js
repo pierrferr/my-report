@@ -32,7 +32,7 @@ function initializeMap(options) {
         pizzeria: L.icon({ iconUrl: `${config.iconBasePath}pizza.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         brunch: L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         restaurant: L.icon({ iconUrl: `${config.iconBasePath}cloche.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        'fast-food': L.icon({ iconUrl: `${config.iconBasePath}burger.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
+        snack: L.icon({ iconUrl: `${config.iconBasePath}burger.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         café: L.icon({ iconUrl: `${config.iconBasePath}tasse.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         patisserie: L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
     };
@@ -65,6 +65,7 @@ function initializeMap(options) {
                     place[header] = value ? value.split(',').map(t => t.trim()) : [];
                 } else if (header === 'type') {
                     place[header] = value ? value.toLowerCase().trim() : '';
+                    if (place[header] === 'fast-food') place[header] = 'snack';
                 } else {
                     place[header] = value;
                 }
@@ -205,6 +206,20 @@ function initializeMap(options) {
 
     function setupFilters() {
         const typeCheckboxes = document.querySelectorAll('#filters input[type="checkbox"]');
+        
+        // Nettoyage de l'interface : remplace "fast-food" par "snack" dans le DOM (valeurs et labels)
+        typeCheckboxes.forEach(cb => {
+            if (cb.value === 'fast-food') {
+                cb.value = 'snack';
+                // Met à jour le texte du label parent si présent
+                if (cb.parentElement && cb.parentElement.tagName === 'LABEL') {
+                    cb.parentElement.childNodes.forEach(node => {
+                        if (node.nodeType === 3) node.nodeValue = node.nodeValue.replace(/fast-food/i, 'Snack');
+                    });
+                }
+            }
+        });
+
         const tagButtons = document.querySelectorAll('#filters button.tag-button');
         
         function applyFilters() {
