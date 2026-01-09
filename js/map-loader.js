@@ -277,6 +277,8 @@ function initializeMap(options) {
                 container.title = 'Me géolocaliser';
                 L.DomEvent.on(container, 'click', e => {
                     L.DomEvent.stopPropagation(e);
+                    const svg = container.querySelector('svg');
+                    if (svg) svg.classList.add('spinning');
                     map.locate({setView: true, maxZoom: 14});
                 });
                 return container;
@@ -285,6 +287,16 @@ function initializeMap(options) {
         new GeolocateControl().addTo(map);
         map.on('locationfound', e => L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup());
         map.on('locationerror', e => alert("Impossible de vous géolocaliser.\n" + e.message));
+        map.on('locationfound', e => {
+            const svg = document.querySelector('.leaflet-control-geolocate svg');
+            if (svg) svg.classList.remove('spinning');
+            L.marker(e.latlng).addTo(map).bindPopup("Vous êtes ici !").openPopup();
+        });
+        map.on('locationerror', e => {
+            const svg = document.querySelector('.leaflet-control-geolocate svg');
+            if (svg) svg.classList.remove('spinning');
+            alert("Impossible de vous géolocaliser.\n" + e.message);
+        });
     }
 
     fetchData().then(setupFilters);
