@@ -101,9 +101,17 @@ body {
   font-weight: 500;
   color: var(--muted);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease-in-out;
   box-shadow: var(--shadow-sm);
   user-select: none;
+}
+
+/* Style visuel lorsque le filtre est actif (case cochée) */
+#filters label:has(input:checked) {
+  background-color: #fff0f0;
+  border-color: var(--primary);
+  color: var(--primary-600);
+  box-shadow: 0 2px 6px rgba(139, 43, 43, 0.15);
 }
 
 #filters label:hover {
@@ -115,36 +123,36 @@ body {
 
 /* Personnalisation de la checkbox */
 #filters input[type="checkbox"] {
-  accent-color: var(--primary);
-  width: 1.1em;
-  height: 1.1em;
-  margin: 0;
-  cursor: pointer;
+  display: none;
 }
 
 /* Style des boutons de tags (#VG, #Brunch...) */
 .tag-button {
   padding: 0.4rem 0.75rem;
   border-radius: 50px;
-  border: 1px solid var(--accent);
-  background-color: transparent;
-  color: var(--accent);
+  border: 1px solid rgba(0,0,0,0.08);
+  background-color: var(--card);
+  color: var(--muted);
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease-in-out;
   font-family: inherit;
+  box-shadow: var(--shadow-sm);
 }
 
 .tag-button:hover {
-  background-color: rgba(255, 127, 80, 0.08);
+  background-color: #fff;
   transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  color: var(--accent);
 }
 
 .tag-button.active {
-  background-color: var(--accent);
-  color: white;
-  box-shadow: 0 4px 12px rgba(255, 127, 80, 0.3);
+  background-color: #fff5f2;
+  border-color: var(--accent);
+  color: var(--accent);
+  box-shadow: 0 2px 6px rgba(255, 127, 80, 0.15);
 }
 
 /* Styles spécifiques à la page À propos */
