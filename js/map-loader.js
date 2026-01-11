@@ -31,6 +31,14 @@ function initializeMap(options) {
         ...options
     };    
 
+    // Déplace les filtres sous la carte pour une meilleure ergonomie
+    const mapContainer = document.getElementById(config.mapId || 'map');
+    const filtersContainer = document.getElementById('filters');
+    if (mapContainer && filtersContainer && mapContainer.parentNode) {
+        mapContainer.parentNode.insertBefore(filtersContainer, mapContainer.nextSibling);
+        filtersContainer.style.marginTop = '1.5rem';
+    }
+
     const map = L.map(config.mapId, { zoomControl: false }).setView(config.center, config.zoom);
     L.control.zoom({ position: 'bottomright' }).addTo(map);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
