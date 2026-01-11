@@ -46,12 +46,11 @@ function initializeMap(options) {
 
     const customIcons = {
         pizzeria: L.icon({ iconUrl: `${config.iconBasePath}pizza.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        brunch: L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         restaurant: L.icon({ iconUrl: `${config.iconBasePath}cloche.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         snack: L.icon({ iconUrl: `${config.iconBasePath}burger.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         café: L.icon({ iconUrl: `${config.iconBasePath}tasse.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
         patisserie: L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] }),
-        'boulangerie-patisserie': L.icon({ iconUrl: `${config.iconBasePath}fouet.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
+        'boulangerie-patisserie': L.icon({ iconUrl: `${config.iconBasePath}croissant.png`, iconSize: [32, 32], iconAnchor: [16, 32], popupAnchor: [0, -32] })
     };
     const defaultIcon = new L.Icon.Default();
 
@@ -121,7 +120,6 @@ function initializeMap(options) {
         places.forEach(place => {
             if (place.lat && place.lng) {
                 let chosenIcon = customIcons[place.type] || defaultIcon;
-                if (place.tags && place.tags.includes('brunch')) chosenIcon = customIcons.brunch;
                 
                 const marker = L.marker([place.lat, place.lng], { icon: chosenIcon });
                 let tagsHtml = '';
